@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+:where(.css-dev-only-do-not-override-17a39f8).ant-dropdown
+  .ant-dropdown-menu
+  .ant-dropdown-menu-item {
+  margin-bottom: 10px;
+  padding: 20px 10px;
+  line-height: 20px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif !important;
+}
+
+.ant-layout-sider-children .ant-menu-item-selected {
+  color: #000b90;
+  font-weight: bold;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > th,
+:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper
+  .ant-table-thead
+  > tr
+  > td {
+  background: white;
+  color: black;
+  border: 0;
+}
+
+.ant-pagination .ant-pagination-item-active a {
+  background-color: #6c6c6c;
+  color: white !important;
+}
+.ant-pagination .ant-pagination-item-active a:hover {
+  color: "white" !important;
+}
+
+.ant-pagination .ant-pagination-item a {
+  border-radius: 8px !important;
+}
+
+.ant-pagination .ant-pagination-item-active {
+  border-color: transparent !important; /* Remove border color */
+  border-radius: 8px !important;
+}
+
+:where(.css-dev-only-do-not-override-17a39f8).ant-input-affix-wrapper:hover {
+  border-color: #e0e4ec !important;
+}
+:where(.css-dev-only-do-not-override-17a39f8).ant-input:hover {
+  border-color: #e0e4ec !important;
+}
+:where(.css-dev-only-do-not-override-17a39f8).ant-btn-default:hover {
+  border-color: none !important;
+}
+
+/* btn custom color change */
+:where(.css-dev-only-do-not-override-17a39f8).ant-btn:hover {
+  border-color: none !important;
+}
+
+:where(.ant-input-password-icon) {
+  font-size: 24px !important;
+  color: #636363 !important;
+}
+
+.ant-checkbox-inner {
+  border-color: #00b047 !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+:where(.ant-checkbox-checked) .ant-checkbox-inner {
+  background-color: #00b047 !important;
+  border-color: #00b047 !important;
+}
+
+:where(.ant-checkbox-checked) .ant-checkbox-inner::after {
+  border-color: white !important;
+  transform: rotate(45deg) scale(1.5) !important;
+  top: 28% !important;
+  left: 35% !important;
+}
+
+input::placeholder {
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+.slider-container {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 30px;
+}
+.ant-upload-select {
+  width: 100% !important;
+  height: 190px !important;
+}
+
+.ant-layout-sider {
+  background: #f0f0f0 !important;
+  width: 225px !important;
+}
