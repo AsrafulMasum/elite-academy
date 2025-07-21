@@ -11,7 +11,7 @@ import {
   Area,
 } from "recharts";
 
-const TotalEarningGrowth = () => {
+const UsersAreaChart = () => {
   const data = [
     {
       name: "Jan",
@@ -136,18 +136,19 @@ const TotalEarningGrowth = () => {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "end",
+          justifyContent: "space-between",
+          marginBottom: "25px"
         }}
       >
+        <h3 className="text-xl font-medium text-[#EEEEEE]">User Statistics</h3>
         <Dropdown menu={{ items, onClick }}>
-          <p
+          <p className="rounded-full"
             style={{
               cursor: "pointer",
-              border: "1px solid #636363",
-              borderRadius: "4px",
-              padding: "4px",
-              fontSize: "10px",
-              color: "#636363",
+              backgroundColor: "#F4E6FF",
+              padding: "6px 12px",
+              fontSize: "14px",
+              color: "#121212",
             }}
             onClick={(e) => e.preventDefault()}
           >
@@ -157,7 +158,7 @@ const TotalEarningGrowth = () => {
         </Dropdown>
       </div>
       
-      <ResponsiveContainer width={"100%"} height={250}>
+      <ResponsiveContainer width={"100%"} height={270}>
         <AreaChart data={data} barGap={100}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -195,4 +196,4 @@ const TotalEarningGrowth = () => {
   );
 };
 
-export default TotalEarningGrowth;
+export default UsersAreaChart;

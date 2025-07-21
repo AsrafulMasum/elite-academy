@@ -392,7 +392,7 @@ const Dashboard = () => {
             marginRight: "16px",
             borderRadius: "8px",
             overflow: "auto",
-            backgroundColor: "#13333A",
+            // backgroundColor: "#13333A",
             overflowX: "hidden",
           }}
         >

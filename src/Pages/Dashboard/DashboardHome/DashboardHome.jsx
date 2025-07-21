@@ -4,14 +4,17 @@ import React from "react";
 import TotalSellerChart from "./TotalSellerChart";
 import DailyOverviewChart from "./DailyOverviewChart";
 import { HiMiniUserGroup } from "react-icons/hi2";
-import TotalEarningGoth from "./TotalEarningGrowth";
+import TotalEarningGoth from "./UsersAreaChart";
 import doner from "../../../assets/doner.png";
 import donation from "../../../assets/donation.png";
 import earningsIcon from "../../../assets/dashboardHome/earningsIcon.png";
 import totalEmployee from "../../../assets/dashboardHome/totalEmployee.png";
 import totalUserIcon from "../../../assets/dashboardHome/totalUserIcon.png";
 import { FiUsers } from "react-icons/fi";
-import TotalEarningGrowth from "./TotalEarningGrowth";
+import { FaArrowUpLong } from "react-icons/fa6";
+import UsersAreaChart from "./UsersAreaChart";
+import EarningsBarChart from "./EarningsBarChart";
+import SellingLineChart from "./SellingLineChart";
 
 function DashboardHome() {
   const onChange = (pageNumber) => {
@@ -86,50 +89,32 @@ function DashboardHome() {
             <div className="flex flex-col gap-1 text-[#EEEEEE]">
               <div className="flex justify-between">
                 <p>Total : {amount}</p>
-                <p>Daily : {amount}</p>
+                <p className="flex gap-1">
+                  Daily :{" "}
+                  <span
+                    className={`text-[#1E90FF] ${
+                      title === "Total Users" && "text-[#008000]"
+                    } flex items-center gap-1`}
+                  >
+                    {amount}{" "}
+                    {title === "Total Users" && (
+                      <FaArrowUpLong className="text-xs" />
+                    )}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
         ))}
       </div>
+
       <div className="bg-[#13333A] rounded-lg p-4">
-        <TotalEarningGrowth />
+        <UsersAreaChart />
       </div>
 
-      <div className="grid grid-cols-2 gap-x-4 mt-4">
-        {data?.map((item, index) => (
-          <div key={index} className="bg-[#F7F7F7] rounded-2xl shadow">
-            {item?.name !== "Total Earning" && (
-              <>
-                <div className="bg-[#FDFDFD] m-2 rounded-lg p-2 w-[285px] h-[126px]">
-                  <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#EFEFEF] flex justify-center items-center">
-                      {item?.icon}
-                    </div>
-                    <h4 className="text-lg font-medium leading-6">
-                      {item?.name}
-                    </h4>
-                  </div>
-                  <h2
-                    className="text-xl font-semibold mt-2"
-                    style={{
-                      color: `${item?.textColor}`,
-                    }}
-                  >
-                    ${item?.total}
-                  </h2>
-                  <div className="flex items-center gap-4 mt-1 text-base">
-                    <p className="text-[#333333]">{item?.title1}</p>
-                    <p className="text-[#767676]">{item?.daily}</p>
-                  </div>
-                </div>
-                <div className="p-4 -mt-12">
-                  <TotalSellerChart barColor={item?.barColor} />
-                </div>
-              </>
-            )}
-          </div>
-        ))}
+      <div className="grid grid-cols-2 gap-x-4 mt-2">
+        <EarningsBarChart />
+        <SellingLineChart />
       </div>
     </div>
   );
