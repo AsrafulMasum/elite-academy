@@ -11,7 +11,6 @@ import PrivateRoute from "./routes/PrivateRoute";
 import MakeAdmin from "./Pages/Dashboard/MakeAdmin";
 import ChangePassword from "./Pages/Dashboard/ChangePassword";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
-import ProviderDetailsList from "../src/Pages/Dashboard/ProviderDetailsList";
 import AdminProfile from "./Pages/Dashboard/AdminProfile";
 import Feedback from "./Pages/Dashboard/Feedback";
 import EmployeeDetailsList from "./Pages/Dashboard/EmployeeDetailsList";
@@ -24,6 +23,7 @@ import FAQ from "./Pages/Dashboard/FAQ";
 import PrivacyPolicy from "./Pages/Dashboard/PrivacyPolicy";
 import Terms from "./Pages/Dashboard/Terms";
 import Notification from "./Pages/Dashboard/Notification";
+import StudentLists from "./Pages/Dashboard/StudentLists";
 
 function App() {
   return (
@@ -41,8 +41,8 @@ function App() {
           >
             <Route path="/" element={<DashboardHome />} />
             <Route
-              path="/service-provider-list"
-              element={<ProviderDetailsList />}
+              path="/student-lists"
+              element={<StudentLists />}
             />
             <Route path="/employee-list" element={<EmployeeDetailsList />} />
 

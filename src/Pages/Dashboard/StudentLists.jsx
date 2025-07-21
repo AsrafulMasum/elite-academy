@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Input, Pagination, Rate, Select, Table } from "antd";
+import { ConfigProvider, Input, Pagination, Rate, Select, Table } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Logo from "../../assets/logo.png";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
@@ -233,7 +233,10 @@ const data = [
   },
 ];
 
-const ProviderDetailsList = () => {
+const itemsPerPage = 10;
+const total = 50;
+
+const StudentLists = () => {
   const [page, setPage] = useState(() => {
     const urlPage = new URLSearchParams(window.location.search).get("page");
     return urlPage ? parseInt(urlPage, 10) : 1;
@@ -409,11 +412,10 @@ const ProviderDetailsList = () => {
   };
 
   return (
-    <div className="h-[77vh]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
-          background: "white",
-          borderRadius: "12px",
+          borderRadius: "8px",
           height: "100%",
         }}
       >
@@ -422,7 +424,7 @@ const ProviderDetailsList = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            margin: "24px 16px",
+            margin: "0px 16px",
           }}
         >
           <div>
@@ -484,14 +486,34 @@ const ProviderDetailsList = () => {
             </div>
           </div>
         </div>
+
         <div className="relative h-full">
-          <Table
-            size="small"
-            columns={columns}
-            dataSource={paginatedData}
-            pagination={false}
-          />
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+          <ConfigProvider
+            theme={{
+              components: {
+                Pagination: {
+                  itemActiveBg: "#0F665A",
+                  borderRadius: "100%",
+                },
+              },
+              token: {
+                colorPrimary: "white",
+              },
+            }}
+          >
+            <Table
+              size="small"
+              columns={columns}
+              dataSource={paginatedData}
+              pagination={{
+                total: total,
+                current: page,
+                pageSize: itemsPerPage,
+                onChange: (page) => setPage(page),
+              }}
+            />
+          </ConfigProvider>
+          {/* <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-50">
             <Pagination
               current={page}
               pageSize={pageSize}
@@ -503,7 +525,7 @@ const ProviderDetailsList = () => {
                 if (type === "prev") {
                   return (
                     <a
-                      className="hover:text-[#333333]"
+                      className="text-[#EAF2F3] hover:text-[#FFC107]"
                       style={{ display: "flex", alignItems: "center", gap: 4 }}
                     >
                       <LeftOutlined />
@@ -514,7 +536,7 @@ const ProviderDetailsList = () => {
                 if (type === "next") {
                   return (
                     <a
-                      className="hover:text-[#333333]"
+                      className="text-[#EAF2F3] hover:text-[#FFC107]"
                       style={{ display: "flex", alignItems: "center", gap: 4 }}
                     >
                       <span className="ml-2">Next</span>
@@ -525,7 +547,7 @@ const ProviderDetailsList = () => {
                 return originalElement;
               }}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
@@ -533,4 +555,4 @@ const ProviderDetailsList = () => {
   );
 };
 
-export default ProviderDetailsList;
+export default StudentLists;

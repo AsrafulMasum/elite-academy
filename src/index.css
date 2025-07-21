@@ -32,11 +32,14 @@
 }
 
 .ant-table-thead .ant-table-cell {
-  background-color: #fef1e6 !important;
-  color: #734d2c !important;
+  background-color: #2e7a8a !important;
+  color: #eaf2f3 !important;
   border-radius: 0 !important;
 }
 
+/* :where(.css-dev-only-do-not-override-djtmh8).ant-layout * {
+  background-color: #13333a;
+} */
 /* .ant-table-thead > tr > th {
   height: 58px;
   padding: 50px 0px;
@@ -92,6 +95,7 @@ li {
 
 .ant-table-wrapper .ant-table-tbody > tr > td {
   border-bottom: none !important;
+  background-color: #13333a;
 }
 
 .ant-table-wrapper .ant-table-thead > tr > th {
@@ -100,19 +104,6 @@ li {
 
 .ant-table-wrapper .ant-table-tbody > tr > td {
   padding: 9px 16px !important;
-}
-
-/* center pagination */
-:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper
-  .ant-table-pagination {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-:where(.css-dev-only-do-not-override-17a39f8).ant-table-wrapper
-  .ant-table-pagination.ant-pagination {
-  margin: 8px 0 !important;
 }
 
 /* alert button */
@@ -192,13 +183,4 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
 .ant-table-wrapper .ant-table-thead > tr > th.action-column {
   padding-right: 80px !important;
-}
-
-.ant-pagination .ant-pagination-item-active a {
-  background-color: #bb6d42 !important;
-  border-radius: 100% !important;
-}
-
-.ant-pagination .ant-pagination-item-active a {
-  color: white !important;
 }

@@ -113,8 +113,8 @@ function DashboardHome() {
       </div>
 
       <div className="grid grid-cols-2 gap-x-4 mt-2">
-        <EarningsBarChart />
         <SellingLineChart />
+        <EarningsBarChart />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import logoutIcon from "../../assets/logoutIcon.png";
 import logoutActiveIcon from "../../assets/logoutActiveIcon.png";
-import adminImg from "../../assets/adminImg.png";
+import adminImg from "../../assets/admin.jpg";
 import notificationIcon from "../../assets/notificationIcon.png";
 import logo from "../../assets/logo.svg";
 import faqIcon from "../../assets/faqIcon.png";
@@ -33,6 +33,7 @@ import dashboardIcon from "../../assets/dashboardIcon.png";
 import dashboardActiveIcon from "../../assets/dashboardActiveIcon.png";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications } from "react-icons/io";
+import { TbUsersGroup } from "react-icons/tb";
 
 const { Header, Sider, Content } = Layout;
 
@@ -58,16 +59,13 @@ const Dashboard = () => {
       ),
     },
     {
-      title: "Service Providers",
-      path: "/service-provider-list",
+      title: "Student Lists",
+      path: "/student-lists",
       icon: (pathname) => (
-        <img
-          src={
-            pathname === "/service-provider-list"
-              ? serviceProvidersActiveIcon
-              : serviceProviderIcon
-          }
-          alt="dashboard"
+        <TbUsersGroup
+          className={`text-xl ${
+            pathname === "/student-lists" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
         />
       ),
     },
