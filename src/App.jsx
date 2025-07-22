@@ -13,7 +13,6 @@ import ChangePassword from "./Pages/Dashboard/ChangePassword";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import AdminProfile from "./Pages/Dashboard/AdminProfile";
 import Feedback from "./Pages/Dashboard/Feedback";
-import EmployeeDetailsList from "./Pages/Dashboard/EmployeeDetailsList";
 import Category from "./Pages/Dashboard/Category";
 import Services from "./Pages/Dashboard/Services";
 import TransectionDetails from "./Pages/Dashboard/TransectionDetails";
@@ -24,6 +23,7 @@ import PrivacyPolicy from "./Pages/Dashboard/PrivacyPolicy";
 import Terms from "./Pages/Dashboard/Terms";
 import Notification from "./Pages/Dashboard/Notification";
 import StudentLists from "./Pages/Dashboard/StudentLists";
+import UserLists from "./Pages/Dashboard/UserLists";
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
               path="/student-lists"
               element={<StudentLists />}
             />
-            <Route path="/employee-list" element={<EmployeeDetailsList />} />
+            <Route path="/user-lists" element={<UserLists />} />
 
             <Route path="/service-list" element={<Services />} />
             <Route path="/transection-list" element={<TransectionDetails />} />

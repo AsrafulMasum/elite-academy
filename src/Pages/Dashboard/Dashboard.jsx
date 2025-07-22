@@ -33,7 +33,7 @@ import dashboardIcon from "../../assets/dashboardIcon.png";
 import dashboardActiveIcon from "../../assets/dashboardActiveIcon.png";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications } from "react-icons/io";
-import { TbUsersGroup } from "react-icons/tb";
+import { TbUsers, TbUsersGroup } from "react-icons/tb";
 
 const { Header, Sider, Content } = Layout;
 
@@ -65,6 +65,18 @@ const Dashboard = () => {
         <TbUsersGroup
           className={`text-xl ${
             pathname === "/student-lists" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+
+    {
+      title: "User Lists",
+      path: "/user-lists",
+      icon: (pathname) => (
+        <TbUsers
+          className={`text-xl ${
+            pathname === "/user-lists" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
@@ -261,6 +273,7 @@ const Dashboard = () => {
                   background: item.path === pathname ? "#2E7A8A" : "none",
                   width: "100%",
                   padding: "12px 8px 12px 35px",
+                  borderBottom: item?.title === "User Lists" ? "2px solid #19434C" : "none"
                 }}
               >
                 <div style={{ height: "24px" }}>{item.icon(pathname)}</div>

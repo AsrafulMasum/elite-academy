@@ -6,6 +6,8 @@ import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
 import providerIcon from "../../assets/providerIcon.png";
+import { CiUnlock } from "react-icons/ci";
+import { GoArrowUpRight } from "react-icons/go";
 
 const data = [
   {
@@ -18,6 +20,7 @@ const data = [
     email: "mr101@mail.ru",
     contact: "(+33)7 00 55 59 27",
     location: "Corona, Michigan",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1238",
@@ -29,6 +32,7 @@ const data = [
     email: "xterris@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Great Falls, Maryland ",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1237",
@@ -40,6 +44,7 @@ const data = [
     email: "irnabela@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Syracuse, Connecticut ",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1236",
@@ -51,6 +56,7 @@ const data = [
     email: "codence@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Lafayette, California",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1235",
@@ -62,6 +68,7 @@ const data = [
     email: "quasiah@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Pasadena, Oklahoma",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1234",
@@ -73,6 +80,7 @@ const data = [
     email: "xeno@yandex.ru",
     contact: "(+33)7 00 55 59 27",
     location: "Lansing, Illinois",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1233",
@@ -84,6 +92,7 @@ const data = [
     email: "redaniel@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Coppell, Virginia",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1233",
@@ -95,6 +104,7 @@ const data = [
     email: "redaniel@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Coppell, Virginia",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1233",
@@ -106,6 +116,7 @@ const data = [
     email: "redaniel@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Coppell, Virginia",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#1233",
@@ -117,6 +128,7 @@ const data = [
     email: "redaniel@gmail.com",
     contact: "(+33)7 00 55 59 27",
     location: "Coppell, Virginia",
+    courses: "Under 20 summer 25",
   },
 
   {
@@ -132,6 +144,7 @@ const data = [
     status: "Inactive",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#5",
@@ -146,6 +159,7 @@ const data = [
     status: "Active",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#6",
@@ -160,6 +174,7 @@ const data = [
     status: "Inactive",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#7",
@@ -174,6 +189,7 @@ const data = [
     status: "Active",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#8",
@@ -188,6 +204,7 @@ const data = [
     status: "Inactive",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#9",
@@ -202,6 +219,7 @@ const data = [
     status: "Active",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#10",
@@ -216,6 +234,7 @@ const data = [
     status: "Active",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
   {
     key: "#11",
@@ -230,6 +249,7 @@ const data = [
     status: "Inactive",
     selling: "500",
     balance: "600",
+    courses: "Under 20 summer 25",
   },
 ];
 
@@ -277,13 +297,13 @@ const StudentLists = () => {
 
   const columns = [
     {
-      title: "S.No",
+      title: "Student Id",
       dataIndex: "key",
       key: "key",
-      render: (text) => <span className="text-[#636363]">{text}</span>,
+      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
-      title: "Providers Name",
+      title: "Student Name",
       dataIndex: "user",
       key: "user",
       render: (user) => {
@@ -302,7 +322,7 @@ const StudentLists = () => {
                 letterSpacing: 0.4,
                 fontSize: "#666666",
                 fontWeight: "400",
-                color: "#636363",
+                color: "#FDFDFD",
               }}
             >
               {user?.name}
@@ -311,44 +331,50 @@ const StudentLists = () => {
         );
       },
     },
-    {
-      title: "Rating",
-      dataIndex: "rating",
-      key: "rating",
-      render: () => {
-        return (
-          <Rate
-            disabled
-            allowHalf
-            defaultValue={4.5}
-            style={{
-              fontSize: "14px",
-              color: "#FEA500",
-            }}
-          />
-        );
-      },
-    },
+    // {
+    //   title: "Rating",
+    //   dataIndex: "rating",
+    //   key: "rating",
+    //   render: () => {
+    //     return (
+    //       <Rate
+    //         disabled
+    //         allowHalf
+    //         defaultValue={4.5}
+    //         style={{
+    //           fontSize: "14px",
+    //           color: "#FEA500",
+    //         }}
+    //       />
+    //     );
+    //   },
+    // },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
+      title: "Courses",
+      dataIndex: "courses",
+      key: "courses",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
 
-    {
-      title: "Contact",
-      dataIndex: "contact",
-      key: "contact",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
-    },
+    // {
+    //   title: "Contact",
+    //   dataIndex: "contact",
+    //   key: "contact",
+    //   render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    // },
 
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
-    },
+    // {
+    //   title: "Location",
+    //   dataIndex: "location",
+    //   key: "location",
+    //   render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    // },
     {
       title: "Action",
       dataIndex: "action",
@@ -370,17 +396,28 @@ const StudentLists = () => {
               cursor: "pointer",
               border: "none",
               outline: "none",
-              backgroundColor: "#F9F9F9",
+              backgroundColor: "#121212",
               width: "40px",
               height: "32px",
             }}
           >
-            <FiArrowUpRight size={26} className="text-[#A1A1A1]" />
+            <GoArrowUpRight size={26} className="text-secondary" />
           </button>
 
           <div>
-            <button className="bg-[#F9F9F9] w-10 h-8 flex justify-center items-center rounded-md pl-2">
-              <img src={providerIcon} alt="" />
+            <button
+              className="flex justify-center items-center rounded-md"
+              onClick={() => setOpen(true)}
+              style={{
+                cursor: "pointer",
+                border: "none",
+                outline: "none",
+                backgroundColor: "#121212",
+                width: "40px",
+                height: "32px",
+              }}
+            >
+              <CiUnlock size={26} className="text-secondary" />
             </button>
           </div>
         </div>
@@ -425,18 +462,19 @@ const StudentLists = () => {
             alignItems: "center",
             justifyContent: "space-between",
             margin: "0px 16px",
+            padding: "16px 0px",
           }}
         >
           <div>
             <h3
               style={{
-                color: "#333333",
+                color: "#FDFDFD",
                 fontSize: 18,
                 fontWeight: "500",
                 lineHeight: "24px",
               }}
             >
-              All Service Providers
+              Student Lists
             </h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -492,12 +530,15 @@ const StudentLists = () => {
             theme={{
               components: {
                 Pagination: {
-                  itemActiveBg: "#0F665A",
+                  itemActiveBg: "#FFC107",
                   borderRadius: "100%",
+                },
+                Table: {
+                  rowHoverBg: "#13333A",
                 },
               },
               token: {
-                colorPrimary: "white",
+                colorPrimary: "#13333A",
               },
             }}
           >

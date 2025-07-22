@@ -5,7 +5,8 @@ export default {
     extend: {
       colors: {
         green: "#13333A",
-        action: "#BB6D42",
+        action: "#2E7A8A",
+        secondary: "#FFC107",
         base: "#EBEBEB",
       },
       boxShadow: {

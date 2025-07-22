@@ -80,10 +80,10 @@ function DashboardHome() {
         {statistics.map(({ title, amount, icon }) => (
           <div
             key={title}
-            className="bg-secondary rounded-lg py-4 px-5 gap-4 bg-[#13333A]"
+            className="rounded-lg py-4 px-5 gap-4 bg-green"
           >
             <div className="flex justify-start items-start gap-4 mb-4">
-              <div className="bg-[#215762] p-3 rounded-full">{icon}</div>
+              <div className="bg-action p-3 rounded-full">{icon}</div>
               <h2 className="text-lg text-[#EEEEEE] font-medium">{title}</h2>
             </div>
             <div className="flex flex-col gap-1 text-[#EEEEEE]">

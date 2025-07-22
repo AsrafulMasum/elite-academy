@@ -1,245 +1,227 @@
 import { useEffect, useRef, useState } from "react";
-import { Input, Pagination, Select, Table } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import Logo from "../../assets/logo.png";
-import { FiArrowUpRight, FiSearch } from "react-icons/fi";
+import { ConfigProvider, Input, Select, Table } from "antd";
+import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
-import providerIcon from "../../assets/providerIcon.png";
+import { CiUnlock } from "react-icons/ci";
+import { GoArrowUpRight } from "react-icons/go";
 
 const data = [
   {
-    key: "#1239",
-
+    key: "U1001",
     user: {
       name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "mr101@mail.ru",
-    contact: "(+33)7 00 55 59 27",
-    location: "Corona, Michigan",
+    email: "mahmud1@example.com",
+    type: "Subscribed User",
+    createdAt: "2024-12-01",
   },
   {
-    key: "#1238",
-
+    key: "U1002",
     user: {
-      name: "Lily",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "xterris@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Great Falls, Maryland ",
+    email: "mahmud2@example.com",
+    type: "Normal User",
+    createdAt: "2025-01-05",
   },
   {
-    key: "#1237",
-
+    key: "U1003",
     user: {
-      name: "Kathry",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
+    email: "mahmud3@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-01-12",
   },
   {
-    key: "#1236",
-
+    key: "U1004",
     user: {
-      name: "Priscilla",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "codence@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Lafayette, California",
+    email: "mahmud4@example.com",
+    type: "Normal User",
+    createdAt: "2025-02-01",
   },
   {
-    key: "#1235",
-
+    key: "U1005",
     user: {
-      name: "Claire",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "quasiah@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Pasadena, Oklahoma",
+    email: "mahmud5@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-02-14",
   },
   {
-    key: "#1234",
-
+    key: "U1006",
     user: {
-      name: "Irmar",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "xeno@yandex.ru",
-    contact: "(+33)7 00 55 59 27",
-    location: "Lansing, Illinois",
+    email: "mahmud6@example.com",
+    type: "Normal User",
+    createdAt: "2025-02-20",
   },
   {
-    key: "#1233",
-
+    key: "U1007",
     user: {
-      name: "Gloria",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
+    email: "mahmud7@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-03-01",
   },
   {
-    key: "#1233",
-
+    key: "U1008",
     user: {
-      name: "Gloria",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
+    email: "mahmud8@example.com",
+    type: "Normal User",
+    createdAt: "2025-03-15",
   },
   {
-    key: "#1233",
-
+    key: "U1009",
     user: {
-      name: "Gloria",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
+    email: "mahmud9@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-03-22",
   },
   {
-    key: "#1233",
-
+    key: "U1010",
     user: {
-      name: "Gloria",
+      name: "Mr. Mahmud",
       img: <img src={provider} height={46} width={46} />,
     },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
-  },
-
-  {
-    key: "#4",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "jusef@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
+    email: "mahmud10@example.com",
+    type: "Normal User",
+    createdAt: "2025-03-29",
   },
   {
-    key: "#5",
-
+    key: "U1011",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "asad@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
+    email: "mahmud11@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-04-05",
   },
   {
-    key: "#6",
-
+    key: "U1012",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "fahim@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
+    email: "mahmud12@example.com",
+    type: "Normal User",
+    createdAt: "2025-04-11",
   },
   {
-    key: "#7",
-    name: "Nadir",
+    key: "U1013",
     user: {
-      name: "Ashutosh",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "nadir@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
+    email: "mahmud13@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-04-17",
   },
   {
-    key: "#8",
-
+    key: "U1014",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "tushar@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
+    email: "mahmud14@example.com",
+    type: "Normal User",
+    createdAt: "2025-04-23",
   },
   {
-    key: "#9",
-
+    key: "U1015",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "rahman@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
+    email: "mahmud15@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-04-30",
   },
   {
-    key: "#10",
-
+    key: "U1016",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "rafsan@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
+    email: "mahmud16@example.com",
+    type: "Normal User",
+    createdAt: "2025-05-08",
   },
   {
-    key: "#11",
-
+    key: "U1017",
     user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} className="rounded-full" />,
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
     },
-    email: "jusef@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
+    email: "mahmud17@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-05-15",
+  },
+  {
+    key: "U1018",
+    user: {
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
+    },
+    email: "mahmud18@example.com",
+    type: "Normal User",
+    createdAt: "2025-05-22",
+  },
+  {
+    key: "U1019",
+    user: {
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
+    },
+    email: "mahmud19@example.com",
+    type: "Subscribed User",
+    createdAt: "2025-05-28",
+  },
+  {
+    key: "U1020",
+    user: {
+      name: "Mr. Mahmud",
+      img: <img src={provider} height={46} width={46} />,
+    },
+    email: "mahmud20@example.com",
+    type: "Normal User",
+    createdAt: "2025-06-03",
   },
 ];
 
-const EmployeeDetailsList = () => {
+
+const itemsPerPage = 10;
+const total = 20;
+
+const UserLists = () => {
   const [page, setPage] = useState(() => {
     const urlPage = new URLSearchParams(window.location.search).get("page");
     return urlPage ? parseInt(urlPage, 10) : 1;
   });
+
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [selectedRating, setSelectedRating] = useState("Rating");
   const [selectedLocation, setSelectedLocation] = useState("Location");
 
   const dropdownRef = useRef();
@@ -251,6 +233,11 @@ const EmployeeDetailsList = () => {
     { value: "Virginia", label: "Virginia" },
     { value: "California", label: "California" },
     { value: "Oklahoma", label: "Oklahoma" },
+  ];
+
+  const ratings = [
+    { value: "Above 4", label: "Above 4" },
+    { value: "Below 4", label: "Below 4" },
   ];
 
   useEffect(() => {
@@ -267,13 +254,13 @@ const EmployeeDetailsList = () => {
 
   const columns = [
     {
-      title: "S.No",
+      title: "User Id",
       dataIndex: "key",
       key: "key",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
-      title: "Employer Name",
+      title: "User Name",
       dataIndex: "user",
       key: "user",
       render: (user) => {
@@ -290,8 +277,9 @@ const EmployeeDetailsList = () => {
             <p
               style={{
                 letterSpacing: 0.4,
-                color: "#636363",
+                fontSize: "#666666",
                 fontWeight: "400",
+                color: "#FDFDFD",
               }}
             >
               {user?.name}
@@ -304,21 +292,19 @@ const EmployeeDetailsList = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
-
     {
-      title: "Contact",
-      dataIndex: "contact",
-      key: "contact",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
-
     {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      title: "Start Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
       title: "Action",
@@ -341,17 +327,28 @@ const EmployeeDetailsList = () => {
               cursor: "pointer",
               border: "none",
               outline: "none",
-              backgroundColor: "#F9F9F9",
+              backgroundColor: "#121212",
               width: "40px",
               height: "32px",
             }}
           >
-            <FiArrowUpRight size={26} className="text-[#A1A1A1]" />
+            <GoArrowUpRight size={26} className="text-secondary" />
           </button>
 
           <div>
-            <button className="bg-[#F9F9F9] w-10 h-8 flex justify-center items-center rounded-md pl-2">
-              <img src={providerIcon} alt="" />
+            <button
+              className="flex justify-center items-center rounded-md"
+              onClick={() => setOpen(true)}
+              style={{
+                cursor: "pointer",
+                border: "none",
+                outline: "none",
+                backgroundColor: "#121212",
+                width: "40px",
+                height: "32px",
+              }}
+            >
+              <CiUnlock size={26} className="text-secondary" />
             </button>
           </div>
         </div>
@@ -374,16 +371,19 @@ const EmployeeDetailsList = () => {
     setSearchText(e.target.value);
   };
 
+  const handleRatingChange = (value) => {
+    setSelectedRating(value);
+  };
+
   const handleLocationChange = (value) => {
     setSelectedLocation(value);
   };
 
   return (
-    <div className="h-[77vh]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
-          background: "white",
-          borderRadius: "12px",
+          borderRadius: "8px",
           height: "100%",
         }}
       >
@@ -392,19 +392,20 @@ const EmployeeDetailsList = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            margin: "24px 16px",
+            margin: "0px 16px",
+            padding: "16px 0px",
           }}
         >
           <div>
             <h3
               style={{
-                color: "#333333",
+                color: "#FDFDFD",
                 fontSize: 18,
                 fontWeight: "500",
                 lineHeight: "24px",
               }}
             >
-              All Employer Details
+              User Lists
             </h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -431,6 +432,18 @@ const EmployeeDetailsList = () => {
 
             <div>
               <Select
+                value={selectedRating}
+                onChange={handleRatingChange}
+                style={{
+                  width: 115,
+                  height: 40,
+                }}
+                options={ratings}
+              />
+            </div>
+
+            <div>
+              <Select
                 value={selectedLocation}
                 onChange={handleLocationChange}
                 style={{
@@ -444,13 +457,35 @@ const EmployeeDetailsList = () => {
         </div>
 
         <div className="relative h-full">
-          <Table
-            size="small"
-            columns={columns}
-            dataSource={paginatedData}
-            pagination={false}
-          />
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+          <ConfigProvider
+            theme={{
+              components: {
+                Pagination: {
+                  itemActiveBg: "#FFC107",
+                  borderRadius: "100%",
+                },
+                Table: {
+                  rowHoverBg: "#13333A",
+                },
+              },
+              token: {
+                colorPrimary: "#13333A",
+              },
+            }}
+          >
+            <Table
+              size="small"
+              columns={columns}
+              dataSource={paginatedData}
+              pagination={{
+                total: total,
+                current: page,
+                pageSize: itemsPerPage,
+                onChange: (page) => setPage(page),
+              }}
+            />
+          </ConfigProvider>
+          {/* <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-50">
             <Pagination
               current={page}
               pageSize={pageSize}
@@ -462,7 +497,7 @@ const EmployeeDetailsList = () => {
                 if (type === "prev") {
                   return (
                     <a
-                      className="hover:text-[#333333]"
+                      className="text-[#EAF2F3] hover:text-[#FFC107]"
                       style={{ display: "flex", alignItems: "center", gap: 4 }}
                     >
                       <LeftOutlined />
@@ -473,7 +508,7 @@ const EmployeeDetailsList = () => {
                 if (type === "next") {
                   return (
                     <a
-                      className="hover:text-[#333333]"
+                      className="text-[#EAF2F3] hover:text-[#FFC107]"
                       style={{ display: "flex", alignItems: "center", gap: 4 }}
                     >
                       <span className="ml-2">Next</span>
@@ -484,7 +519,7 @@ const EmployeeDetailsList = () => {
                 return originalElement;
               }}
             />
-          </div>
+          </div> */}
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
@@ -492,4 +527,4 @@ const EmployeeDetailsList = () => {
   );
 };
 
-export default EmployeeDetailsList;
+export default UserLists;

@@ -37,19 +37,6 @@
   border-radius: 0 !important;
 }
 
-/* :where(.css-dev-only-do-not-override-djtmh8).ant-layout * {
-  background-color: #13333a;
-} */
-/* .ant-table-thead > tr > th {
-  height: 58px;
-  padding: 50px 0px;
-} */
-
-.ant-layout {
-  /* background: #EAFBF9 ; */
-  /* background-color: "white"; */
-}
-
 *,
 h1,
 h2,
