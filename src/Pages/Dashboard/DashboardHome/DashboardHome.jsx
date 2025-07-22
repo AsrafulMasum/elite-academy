@@ -1,10 +1,6 @@
 import { Col, Row } from "antd";
 import React from "react";
-
-import TotalSellerChart from "./TotalSellerChart";
-import DailyOverviewChart from "./DailyOverviewChart";
 import { HiMiniUserGroup } from "react-icons/hi2";
-import TotalEarningGoth from "./UsersAreaChart";
 import doner from "../../../assets/doner.png";
 import donation from "../../../assets/donation.png";
 import earningsIcon from "../../../assets/dashboardHome/earningsIcon.png";
@@ -89,8 +85,10 @@ function DashboardHome() {
                 <p className="flex gap-1">
                   Daily :{" "}
                   <span
-                    className={`text-[#1E90FF] ${
-                      title === "Total Users" && "text-[#008000]"
+                    className={`${
+                      title === "Total Users"
+                        ? "text-[#008000]"
+                        : "text-[#1E90FF]"
                     } flex items-center gap-1`}
                   >
                     {amount}{" "}

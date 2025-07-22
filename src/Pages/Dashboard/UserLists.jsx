@@ -463,6 +463,8 @@ const UserLists = () => {
                 Pagination: {
                   itemActiveBg: "#FFC107",
                   borderRadius: "100%",
+                  colorText: "white",
+                  colorTextDisabled: "#6C6C6C",
                 },
                 Table: {
                   rowHoverBg: "#13333A",
@@ -485,41 +487,6 @@ const UserLists = () => {
               }}
             />
           </ConfigProvider>
-          {/* <div className="absolute bottom-16 left-1/2 transform -translate-x-1/2 z-50">
-            <Pagination
-              current={page}
-              pageSize={pageSize}
-              total={data.length}
-              onChange={handlePageChange}
-              showSizeChanger={false}
-              size="small"
-              itemRender={(pageNum, type, originalElement) => {
-                if (type === "prev") {
-                  return (
-                    <a
-                      className="text-[#EAF2F3] hover:text-[#FFC107]"
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
-                      <LeftOutlined />
-                      <span className="mr-2">Previous</span>
-                    </a>
-                  );
-                }
-                if (type === "next") {
-                  return (
-                    <a
-                      className="text-[#EAF2F3] hover:text-[#FFC107]"
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
-                      <span className="ml-2">Next</span>
-                      <RightOutlined />
-                    </a>
-                  );
-                }
-                return originalElement;
-              }}
-            />
-          </div> */}
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
