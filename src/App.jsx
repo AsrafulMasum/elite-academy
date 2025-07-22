@@ -14,7 +14,6 @@ import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import AdminProfile from "./Pages/Dashboard/AdminProfile";
 import Feedback from "./Pages/Dashboard/Feedback";
 import Category from "./Pages/Dashboard/Category";
-import Services from "./Pages/Dashboard/Services";
 import TransectionDetails from "./Pages/Dashboard/TransectionDetails";
 import SubCategory from "./Pages/Dashboard/SubCategory";
 import AboutUs from "./Pages/Dashboard/AboutUs";
@@ -24,6 +23,7 @@ import Terms from "./Pages/Dashboard/Terms";
 import Notification from "./Pages/Dashboard/Notification";
 import StudentLists from "./Pages/Dashboard/StudentLists";
 import UserLists from "./Pages/Dashboard/UserLists";
+import SellingsDetails from "./Pages/Dashboard/SellingsDetails";
 
 function App() {
   return (
@@ -46,7 +46,7 @@ function App() {
             />
             <Route path="/user-lists" element={<UserLists />} />
 
-            <Route path="/service-list" element={<Services />} />
+            <Route path="/sellings-details" element={<SellingsDetails />} />
             <Route path="/transection-list" element={<TransectionDetails />} />
 
             <Route path="/add-category" element={<Category />} />
