@@ -13,8 +13,8 @@ import totalUserIcon from "../../../assets/dashboardHome/totalUserIcon.png";
 import { FiUsers } from "react-icons/fi";
 import { FaArrowUpLong } from "react-icons/fa6";
 import UsersAreaChart from "./UsersAreaChart";
-import EarningsBarChart from "./EarningsBarChart";
 import SellingLineChart from "./SellingLineChart";
+import StudentsBarChart from "./StudentsBarChart";
 
 function DashboardHome() {
   const onChange = (pageNumber) => {
@@ -78,10 +78,7 @@ function DashboardHome() {
     <div className="flex flex-col bg-[#121212]">
       <div className="grid grid-cols-4 gap-2 max-h-[150px] mb-2">
         {statistics.map(({ title, amount, icon }) => (
-          <div
-            key={title}
-            className="rounded-lg py-4 px-5 gap-4 bg-green"
-          >
+          <div key={title} className="rounded-lg py-4 px-5 gap-4 bg-green">
             <div className="flex justify-start items-start gap-4 mb-4">
               <div className="bg-action p-3 rounded-full">{icon}</div>
               <h2 className="text-lg text-[#EEEEEE] font-medium">{title}</h2>
@@ -114,7 +111,7 @@ function DashboardHome() {
 
       <div className="grid grid-cols-2 gap-x-4 mt-2">
         <SellingLineChart />
-        <EarningsBarChart />
+        <StudentsBarChart />
       </div>
     </div>
   );

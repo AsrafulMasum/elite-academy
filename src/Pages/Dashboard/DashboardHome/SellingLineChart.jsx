@@ -14,32 +14,36 @@ import {
 const { Option } = Select;
 
 const earnChartData = [
-  { name: "Jan", saleTotal: 70, profit: 54 },
-  { name: "Feb", saleTotal: 85, profit: 60 },
-  { name: "Mar", saleTotal: 90, profit: 75 },
-  { name: "Apr", saleTotal: 75, profit: 58 },
-  { name: "May", saleTotal: 100, profit: 80 },
-  { name: "Jun", saleTotal: 95, profit: 68 },
-  { name: "Jul", saleTotal: 110, profit: 88 },
-  { name: "Aug", saleTotal: 120, profit: 60 },
-  { name: "Sep", saleTotal: 105, profit: 72 },
-  { name: "Oct", saleTotal: 115, profit: 68 },
-  { name: "Nov", saleTotal: 98, profit: 77 },
-  { name: "Dec", saleTotal: 130, profit: 95 },
+  { name: "Jan", totalSale: 70, profit: 54, enrollment: 64 },
+  { name: "Feb", totalSale: 85, profit: 60, enrollment: 63 },
+  { name: "Mar", totalSale: 90, profit: 75, enrollment: 67 },
+  { name: "Apr", totalSale: 75, profit: 58, enrollment: 68 },
+  { name: "May", totalSale: 100, profit: 80, enrollment: 52 },
+  { name: "Jun", totalSale: 95, profit: 68, enrollment: 75 },
+  { name: "Jul", totalSale: 110, profit: 88, enrollment: 80 },
+  { name: "Aug", totalSale: 120, profit: 60, enrollment: 69 },
+  { name: "Sep", totalSale: 105, profit: 72, enrollment: 42 },
+  { name: "Oct", totalSale: 115, profit: 68, enrollment: 49 },
+  { name: "Nov", totalSale: 98, profit: 77, enrollment: 39 },
+  { name: "Dec", totalSale: 130, profit: 95, enrollment: 70 },
 ];
 
 const CustomLegend = () => {
   return (
     <div className="flex gap-2 2xl:gap-4 text-sm text-[#EEEEEE]">
-        <div className="flex items-center gap-1 whitespace-nowrap">
-          <div className="w-3 h-3 bg-[#EAF2F3] rounded-sm " />
-          Products
-        </div>
-        <div className="flex items-center gap-1 whitespace-nowrap">
-          <div className="w-3 h-3 bg-[#FFC107] rounded-sm " />
-          Device
-        </div>
+      <div className="flex items-center gap-1 whitespace-nowrap">
+        <div className="w-3 h-3 bg-[#1E90FF] rounded-sm " />
+        Sale
       </div>
+      <div className="flex items-center gap-1 whitespace-nowrap">
+        <div className="w-3 h-3 bg-[#1976D2] rounded-sm " />
+        Profit
+      </div>
+      <div className="flex items-center gap-1 whitespace-nowrap">
+        <div className="w-3 h-3 bg-[#FFC107] rounded-sm " />
+        Enrollment
+      </div>
+    </div>
   );
 };
 
@@ -95,7 +99,7 @@ const SellingLineChart = () => {
           </Dropdown>
         </div>
       </div>
-      
+
       <ResponsiveContainer width="100%" height={250}>
         <LineChart
           data={earnChartData}
@@ -107,14 +111,20 @@ const SellingLineChart = () => {
           <Tooltip />
           <Line
             type="monotone"
-            dataKey="saleTotal"
-            stroke="#EAF2F3"
+            dataKey="enrollment"
+            stroke="#FFC107"
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="totalSale"
+            stroke="#1E90FF"
             activeDot={{ r: 8 }}
           />
           <Line
             type="monotone"
             dataKey="profit"
-            stroke="#FFC107"
+            stroke="#1976D2"
             activeDot={{ r: 8 }}
           />
         </LineChart>

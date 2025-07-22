@@ -15,72 +15,72 @@ import {
 const salesChartData = [
   {
     name: "Jan",
-    saleTotal: 70,
+    students: 70,
     profit: "45",
   },
   {
     name: "Feb",
-    saleTotal: 40,
+    students: 40,
     profit: "26",
   },
   {
     name: "Mar",
-    saleTotal: 55,
+    students: 55,
     profit: "30",
   },
   {
     name: "Apr",
-    saleTotal: 35,
+    students: 35,
     profit: "20",
   },
   {
     name: "May",
-    saleTotal: 52,
+    students: 52,
     profit: "46",
   },
   {
     name: "Jun",
-    saleTotal: 42,
+    students: 42,
     profit: "38",
   },
   {
     name: "Jul",
-    saleTotal: 39,
+    students: 39,
     profit: "68",
   },
   {
     name: "Aug",
-    saleTotal: 46,
+    students: 46,
     profit: "45",
   },
   {
     name: "Aug",
-    saleTotal: 68,
+    students: 68,
     profit: "35",
   },
   {
     name: "Sep",
-    saleTotal: 60,
+    students: 60,
     profit: "5",
   },
   {
     name: "Oct",
-    saleTotal: 70,
+    students: 70,
     profit: "5",
   },
   {
     name: "Nov",
-    saleTotal: 70,
+    students: 70,
     profit: "5",
   },
   {
     name: "Dec",
-    saleTotal: 70,
+    students: 70,
     profit: "5",
   },
 ];
 
-const EarningsBarChart = () => {
+const StudentsBarChart = () => {
   const [year, setYear] = useState(2024);
 
   const items = [
@@ -110,12 +110,8 @@ const EarningsBarChart = () => {
     return (
       <div className="flex gap-2 2xl:gap-4 text-sm text-[#EEEEEE]">
         <div className="flex items-center gap-1 whitespace-nowrap">
-          <div className="w-3 h-3 bg-[#EAF2F3] rounded-sm " />
-          Income
-        </div>
-        <div className="flex items-center gap-1 whitespace-nowrap">
           <div className="w-3 h-3 bg-[#FFC107] rounded-sm " />
-          Profit
+          Students
         </div>
       </div>
     );
@@ -125,7 +121,7 @@ const EarningsBarChart = () => {
     <div className=" py-6 rounded-xl w-full  bg-[#13333A]">
       <div className="flex items-center justify-between px-10 mb-4">
         <h1 className="text-xl font-medium text-[#EEEEEE]">
-          Earning Statistics
+          Students Statistics
         </h1>
         <div className="flex items-center gap-2 2xl:gap-6">
           <CustomLegend />
@@ -161,12 +157,12 @@ const EarningsBarChart = () => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Bar barSize={10} radius={50} dataKey="saleTotal" fill="#EAF2F3" />
-          <Bar barSize={10} radius={50} dataKey="profit" fill="#FFC107" />
+          {/* <Bar barSize={10} radius={50} dataKey="saleTotal" fill="#EAF2F3" /> */}
+          <Bar barSize={10} radius={50} dataKey="students" fill="#FFC107" />
         </BarChart>
       </ResponsiveContainer>
     </div>
   );
 };
 
-export default EarningsBarChart;
+export default StudentsBarChart;
