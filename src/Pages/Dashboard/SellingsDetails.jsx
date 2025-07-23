@@ -5,6 +5,7 @@ import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
 import { CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
+import SellingsDetailsModal from "../../Components/Dashboard/SellingsDetailsModal";
 
 const data = [
   {
@@ -221,10 +222,8 @@ const data = [
   },
 ];
 
-
-
 const itemsPerPage = 10;
-const total = 20;
+const total = 10;
 
 const SellingsDetails = () => {
   const [page, setPage] = useState(() => {
@@ -232,13 +231,13 @@ const SellingsDetails = () => {
     return urlPage ? parseInt(urlPage, 10) : 1;
   });
 
-  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [selectedRating, setSelectedRating] = useState("Rating");
   const [selectedLocation, setSelectedLocation] = useState("Location");
 
   const dropdownRef = useRef();
-
+  console.log(value);
   const locations = [
     { value: "London", label: "London" },
     { value: "Dhaka", label: "Dhaka" },
@@ -264,6 +263,33 @@ const SellingsDetails = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", page);
+    window.history.replaceState(null, "", `?${params.toString()}`);
+  };
+
+  const pageSize = 10;
+  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
+
+  const handleSearchChange = (e) => {
+    e.preventDefault();
+    setSearchText(e.target.value);
+  };
+
+  const handleRatingChange = (value) => {
+    setSelectedRating(value);
+  };
+
+  const handleLocationChange = (value) => {
+    setSelectedLocation(value);
+  };
+
+  const handleModalClose = () => {
+    setValue(null);
+  };
 
   const columns = [
     {
@@ -374,7 +400,7 @@ const SellingsDetails = () => {
         >
           <button
             className="flex justify-center items-center rounded-md"
-            onClick={() => setOpen(true)}
+            onClick={() => setValue(record)}
             style={{
               cursor: "pointer",
               border: "none",
@@ -390,7 +416,7 @@ const SellingsDetails = () => {
           <div>
             <button
               className="flex justify-center items-center rounded-md"
-              onClick={() => setOpen(true)}
+              onClick={() => setValue(record)}
               style={{
                 cursor: "pointer",
                 border: "none",
@@ -408,31 +434,8 @@ const SellingsDetails = () => {
     },
   ];
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
-  const pageSize = 9;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
-
-  const handleSearchChange = (e) => {
-    e.preventDefault();
-    setSearchText(e.target.value);
-  };
-
-  const handleRatingChange = (value) => {
-    setSelectedRating(value);
-  };
-
-  const handleLocationChange = (value) => {
-    setSelectedLocation(value);
-  };
-
   return (
-    <div className="w-full h-full bg-[#13333A]">
+    <div className="w-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
@@ -541,7 +544,7 @@ const SellingsDetails = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
+      <SellingsDetailsModal value={value} handleModalClose={handleModalClose} />
     </div>
   );
 };
