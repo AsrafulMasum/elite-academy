@@ -3,38 +3,12 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import logoutIcon from "../../assets/logoutIcon.png";
 import logoutActiveIcon from "../../assets/logoutActiveIcon.png";
 import adminImg from "../../assets/admin.jpg";
-// import notificationIcon from "../../assets/notificationIcon.png";
-// import logo from "../../assets/logo.svg";
-// import faqIcon from "../../assets/faqIcon.png";
-// import faqActiveIcon from "../../assets/faqActiveIcon.png";
-// import aboutUsIcon from "../../assets/aboutUsIcon.png";
-// import aboutUsActiveIcon from "../../assets/aboutUsActiveIcon.png";
-// import addCategoryIcon from "../../assets/addCategoryIcon.png";
-// import addCategoryActiveIcon from "../../assets/addCategoryActiveIcon.png";
-// import employeeDetailsIcon from "../../assets/employeeDetailsIcon.png";
-// import employeeDetailsActiveIcon from "../../assets/employeeDetailsActiveIcon.png";
-// import serviceListIcon from "../../assets/serviceListIcon.png";
-// import serviceListActiveIcon from "../../assets/serviceListActiveIcon.png";
-// import serviceProviderIcon from "../../assets/serviceProviderIcon.png";
-// import serviceProvidersActiveIcon from "../../assets/serviceProvidersActiveIcon.png";
-// import transectionDetailsIcon from "../../assets/transectionDetailsIcon.png";
-// import transectionDetailsActiveIcon from "../../assets/transectionDetailsActiveIcon.png";
-// import addSubCategoryIcon from "../../assets/addSubCategoryIcon.png";
-// import addSubCategoryActiveIcon from "../../assets/addSubCategoryActiveIcon.png";
-// import addAdminIcon from "../../assets/addAdminIcon.png";
-// import addAdminActiveIcon from "../../assets/addAdminActiveIcon.png";
-// import privacyPolicyIcon from "../../assets/privacyPolicyIcon.png";
-// import privacyActiveIcon from "../../assets/privacyActiveIcon.png";
-// import termsConditionIcon from "../../assets/termsConditionIcon.png";
-// import termsActiveIcon from "../../assets/termsActiveIcon.png";
-// import reportsIcon from "../../assets/reportsIcon.png";
-// import reportsActiveIcon from "../../assets/reportsActiveIcon.png";
-// import dashboardIcon from "../../assets/dashboardIcon.png";
-// import dashboardActiveIcon from "../../assets/dashboardActiveIcon.png";
+import { GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications } from "react-icons/io";
-import { TbUsers, TbUsersGroup } from "react-icons/tb";
+import { TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
+import { CiBookmark } from "react-icons/ci";
 
 const { Header, Sider, Content } = Layout;
 
@@ -88,7 +62,44 @@ const Dashboard = () => {
       icon: (pathname) => (
         <LiaHandHoldingUsdSolid
           className={`text-xl ${
-            pathname === "/user-lists" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+            pathname === "/sellings-details"
+              ? "text-[#EEEEEE]"
+              : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Enrollment Fees",
+      path: "/enrollment-fees",
+      icon: (pathname) => (
+        <GiTakeMyMoney
+          className={`text-xl ${
+            pathname === "/enrollment-fees"
+              ? "text-[#EEEEEE]"
+              : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Wishlist",
+      path: "/wishlist",
+      icon: (pathname) => (
+        <CiBookmark
+          className={`text-xl ${
+            pathname === "/wishlist" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Interested User",
+      path: "/interestedUser",
+      icon: (pathname) => (
+        <TbPlayFootball
+          className={`text-xl ${
+            pathname === "/interestedUser" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
@@ -271,7 +282,6 @@ const Dashboard = () => {
                   background: item.path === pathname ? "#2E7A8A" : "none",
                   width: "100%",
                   padding: "12px 8px 12px 35px",
-                  // borderBottom:item?.title === "User Lists" ? "2px solid #19434C" : "none",
                 }}
               >
                 <div style={{ height: "24px" }}>{item.icon(pathname)}</div>
@@ -286,7 +296,22 @@ const Dashboard = () => {
                 </div>
               </Link>
               {item.title === "User Lists" && (
-                <hr style={{ border: "none", borderTop: "1px solid #19434C", margin: "8px 0" }} />
+                <hr
+                  style={{
+                    border: "none",
+                    borderTop: "1px solid #19434C",
+                    margin: "8px 0",
+                  }}
+                />
+              )}
+              {item.title === "Interested User" && (
+                <hr
+                  style={{
+                    border: "none",
+                    borderTop: "1px solid #19434C",
+                    margin: "8px 0",
+                  }}
+                />
               )}
             </li>
           ))}

@@ -417,7 +417,7 @@ const StudentLists = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#13333A]">
+    <div className="w-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",

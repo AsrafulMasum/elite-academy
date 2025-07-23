@@ -14,7 +14,6 @@ import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import AdminProfile from "./Pages/Dashboard/AdminProfile";
 import Feedback from "./Pages/Dashboard/Feedback";
 import Category from "./Pages/Dashboard/Category";
-import TransectionDetails from "./Pages/Dashboard/TransectionDetails";
 import SubCategory from "./Pages/Dashboard/SubCategory";
 import AboutUs from "./Pages/Dashboard/AboutUs";
 import FAQ from "./Pages/Dashboard/FAQ";
@@ -24,6 +23,9 @@ import Notification from "./Pages/Dashboard/Notification";
 import StudentLists from "./Pages/Dashboard/StudentLists";
 import UserLists from "./Pages/Dashboard/UserLists";
 import SellingsDetails from "./Pages/Dashboard/SellingsDetails";
+import EnrollmentFees from "./Pages/Dashboard/EnrollmentFees";
+import Wishlist from "./Pages/Dashboard/Wishlist";
+import InterestedUser from "./Pages/Dashboard/InterestedUser";
 
 function App() {
   return (
@@ -40,14 +42,13 @@ function App() {
             }
           >
             <Route path="/" element={<DashboardHome />} />
-            <Route
-              path="/student-lists"
-              element={<StudentLists />}
-            />
+            <Route path="/student-lists" element={<StudentLists />} />
             <Route path="/user-lists" element={<UserLists />} />
 
             <Route path="/sellings-details" element={<SellingsDetails />} />
-            <Route path="/transection-list" element={<TransectionDetails />} />
+            <Route path="/enrollment-fees" element={<EnrollmentFees />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/interestedUser" element={<InterestedUser />} />
 
             <Route path="/add-category" element={<Category />} />
             <Route path="/add-sub-category" element={<SubCategory />} />

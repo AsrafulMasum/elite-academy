@@ -412,23 +412,6 @@ const SellingsDetails = () => {
           >
             <GoArrowUpRight size={26} className="text-secondary" />
           </button>
-
-          <div>
-            <button
-              className="flex justify-center items-center rounded-md"
-              onClick={() => setValue(record)}
-              style={{
-                cursor: "pointer",
-                border: "none",
-                outline: "none",
-                backgroundColor: "#121212",
-                width: "40px",
-                height: "32px",
-              }}
-            >
-              <CiUnlock size={26} className="text-secondary" />
-            </button>
-          </div>
         </div>
       ),
     },

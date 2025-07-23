@@ -363,7 +363,7 @@ const UserLists = () => {
     window.history.replaceState(null, "", `?${params.toString()}`);
   };
 
-  const pageSize = 9;
+  const pageSize = 10;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   const handleSearchChange = (e) => {
@@ -380,7 +380,7 @@ const UserLists = () => {
   };
 
   return (
-    <div className="w-full h-full bg-[#13333A]">
+    <div className="w-full  bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
