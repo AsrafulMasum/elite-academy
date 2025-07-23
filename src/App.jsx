@@ -27,6 +27,8 @@ import EnrollmentFees from "./Pages/Dashboard/EnrollmentFees";
 import Wishlist from "./Pages/Dashboard/Wishlist";
 import InterestedUser from "./Pages/Dashboard/InterestedUser";
 import Products from "./Pages/Dashboard/Products";
+import CoachLists from "./Pages/Dashboard/CoachList";
+import Subscription from "./Pages/Dashboard/Subscription";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/interestedUser" element={<InterestedUser />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/coach" element={<CoachLists />} />
+            <Route path="/subscription" element={<Subscription />} />
 
             <Route path="/add-category" element={<Category />} />
             <Route path="/add-sub-category" element={<SubCategory />} />

@@ -3,7 +3,7 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import logoutIcon from "../../assets/logoutIcon.png";
 import logoutActiveIcon from "../../assets/logoutActiveIcon.png";
 import adminImg from "../../assets/admin.jpg";
-import { GiTakeMyMoney } from "react-icons/gi";
+import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications } from "react-icons/io";
 import { TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
@@ -112,6 +112,28 @@ const Dashboard = () => {
         <IoFootballOutline
           className={`text-xl ${
             pathname === "/products" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Coach",
+      path: "/coach",
+      icon: (pathname) => (
+        <TbPlayFootball
+          className={`text-xl ${
+            pathname === "/coach" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Subscription",
+      path: "/subscription",
+      icon: (pathname) => (
+        <GiMoneyStack
+          className={`text-xl ${
+            pathname === "/subscription" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
