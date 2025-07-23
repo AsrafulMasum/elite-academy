@@ -1,30 +1,48 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import { CiImageOn } from "react-icons/ci";
-import ChipsInput from "./ChipsInput";
 
-const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
+const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
 
   const [form, setForm] = useState({
     productName: "",
-    image: "",
-    startDate: "",
-    endDate: "",
+    image: [],
     price: "",
     quantity: "",
+    subCategory: "",
+    productSize: "",
+    description: "",
   });
 
-  const handleAdd = (e) => {
+  useEffect(() => {
+    if (product) {
+      setForm({
+        productName: product.productsName || "",
+        price: product.price || "",
+        quantity: product.stock || "",
+        subCategory: product.category || "",
+        productSize: product.productSize || "",
+        description: product.description || "",
+        image: [],
+      });
+
+      if (product.imageUrls && Array.isArray(product.imageUrls)) {
+        setImgURLs(product.imageUrls);
+      }
+    }
+  }, [product]);
+
+  const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image" && files && files.length > 0) {
+    if (name === "image" && files?.length > 0) {
       const fileArray = Array.from(files);
       const urls = fileArray.map((file) => URL.createObjectURL(file));
       setImgURLs(urls);
       setImageFiles(fileArray);
-      setForm((prev) => ({ ...prev, [name]: fileArray }));
+      setForm((prev) => ({ ...prev, image: fileArray }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
@@ -32,76 +50,54 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("name", form.productName);
-    //   formData.append("price", form.price);
-    //   formData.append("startDate", form.startDate);
-    //   formData.append("endDate", form.endDate);
-    //   if (imageFile) {
-    //     formData.append("image", imageFile);
-    //   }
-    //   const res = await createOffer(formData).unwrap();
-    //   if (res?.success) {
-    //     setOpenAddModel(false);
-    //     setForm({
-    //       productName: "",
-    //       imageUrl: "",
-    //       price: "",
-    //       startDate: "",
-    //       endDate: "",
-    //     });
-    //     setImgURL("");
-    //     setImageFile(null);
-    //     refetch();
-    //     toast.success("Offer added successfully");
-    //   }
-    // } catch (err) {
-    //   console.error("Add offer failed", err);
-    //   toast.error("Add offer failed");
-    // }
+
+    // Submit logic here
+    console.log("Editing product:", form, imageFiles);
+
+    // Reset and close
+    setOpenEditModel(false);
   };
 
   useEffect(() => {
     return () => {
-      imgURLs.forEach((url) => URL.revokeObjectURL(url));
+      imgURLs.forEach((url) => URL.revokeObjectURL?.(url));
     };
   }, [imgURLs]);
 
   return (
     <Modal
       centered
-      open={openAddModel}
-      onCancel={() => setOpenAddModel(false)}
+      open={openEditModel}
+      onCancel={() => setOpenEditModel(false)}
       width={700}
       footer={false}
     >
       <div className="p-6 bg-action rounded-lg">
         <h1 className="text-[20px] font-medium mb-3 text-white">
-          Add Products
+          Edit Product
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center items-center gap-10 mb-10">
             <div className="h-32 w-full flex items-center justify-center bg-gray-300 rounded-lg relative">
               {imgURLs.length > 0 ? (
-                <div className="w-full h-full flex gap-2 overflow-x-auto p-2">
-                  {imgURLs.map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`preview-${index}`}
-                      className="h-full w-20 rounded-lg object-cover"
-                    />
-                  ))}
+                <div className="w-full max-h-32 overflow-x-auto overflow-y-hidden p-2">
+                  <div className="flex gap-2 w-max">
+                    {imgURLs.map((url, index) => (
+                      <img
+                        key={index}
+                        src={url}
+                        alt={`preview-${index}`}
+                        className="h-28 w-28 object-cover rounded-md flex-shrink-0"
+                      />
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <CiImageOn className="text-5xl text-[#121212] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
               )}
-
               <input
-                onChange={handleAdd}
+                onChange={handleChange}
                 type="file"
-                id="img"
                 name="image"
                 multiple
                 accept="image/*"
@@ -110,32 +106,18 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
             </div>
           </div>
 
-          <div style={{ marginBottom: "16px" }}>
-            <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
-            >
-              Product Name
-            </label>
-            <input
-              value={form.productName}
-              onChange={handleAdd}
-              type="text"
-              name="productName"
-              placeholder="Enter Product Name"
-              style={{
-                border: "1px solid #E0E4EC",
-                padding: "10px",
-                height: "52px",
-                background: "white",
-                borderRadius: "8px",
-                outline: "none",
-                width: "100%",
-              }}
-            />
-          </div>
-
-          <div className="w-full flex justify-center items-center gap-4 mb-4">
-            <div className="w-1/2">
+          {[
+            { label: "Product Name", name: "productName", type: "text" },
+            { label: "Price", name: "price", type: "number" },
+            { label: "Quantity", name: "quantity", type: "number" },
+            {
+              label: "Product Size",
+              name: "productSize",
+              type: "text",
+              placeholder: "Enter sizes separated by commas",
+            },
+          ].map((input) => (
+            <div style={{ marginBottom: "16px" }} key={input.name}>
               <label
                 style={{
                   display: "block",
@@ -143,14 +125,14 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
                   color: "white",
                 }}
               >
-                Price
+                {input.label}
               </label>
               <input
-                value={form.price}
-                onChange={handleAdd}
-                type="number"
-                name="price"
-                placeholder="Price"
+                value={form[input.name]}
+                onChange={handleChange}
+                type={input.type}
+                name={input.name}
+                placeholder={input.placeholder || input.label}
                 style={{
                   border: "1px solid #E0E4EC",
                   padding: "10px",
@@ -162,36 +144,9 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
                 }}
               />
             </div>
+          ))}
 
-            <div className="w-1/2">
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "5px",
-                  color: "white",
-                }}
-              >
-                Quantity
-              </label>
-              <input
-                value={form.quantity}
-                onChange={handleAdd}
-                type="number"
-                name="quantity"
-                placeholder="Quantity"
-                style={{
-                  border: "1px solid #E0E4EC",
-                  padding: "10px",
-                  height: "52px",
-                  background: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                  width: "100%",
-                }}
-              />
-            </div>
-          </div>
-
+          {/* Subcategory */}
           <div style={{ marginBottom: "16px" }}>
             <label
               style={{ display: "block", marginBottom: "5px", color: "white" }}
@@ -201,7 +156,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
             <select
               name="subCategory"
               value={form.subCategory}
-              onChange={handleAdd}
+              onChange={handleChange}
               style={{
                 border: "1px solid #E0E4EC",
                 padding: "10px",
@@ -221,8 +176,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
             </select>
           </div>
 
-          <ChipsInput />
-
+          {/* Description */}
           <div style={{ marginBottom: "16px" }}>
             <label
               style={{ display: "block", marginBottom: "5px", color: "white" }}
@@ -231,8 +185,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
             </label>
             <textarea
               value={form.description}
-              onChange={handleAdd}
-              type="text"
+              onChange={handleChange}
               name="description"
               placeholder="Description"
               style={{
@@ -260,7 +213,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
               outline: "none",
               padding: "10px 20px",
             }}
-            value="Submit"
+            value="Update"
             type="submit"
           />
         </form>
@@ -269,4 +222,4 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
   );
 };
 
-export default AddProductsModal;
+export default EditProductsModal;

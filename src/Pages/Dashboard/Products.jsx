@@ -6,6 +6,7 @@ import SellingsDetailsModal from "../../Components/Dashboard/SellingsDetailsModa
 import { PlusOutlined } from "@ant-design/icons";
 import { FiEdit } from "react-icons/fi";
 import AddProductsModal from "../../Components/Dashboard/AddProductsModal";
+import EditProductsModal from "../../Components/Dashboard/EditProductsModal";
 
 const data = [
   {
@@ -199,6 +200,7 @@ const Products = () => {
     return urlPage ? parseInt(urlPage, 10) : 1;
   });
   const [openAddModal, setOpenAddModel] = useState(false);
+  const [openEditModel, setOpenEditModel] = useState(false);
 
   const [value, setValue] = useState(null);
 
@@ -258,6 +260,12 @@ const Products = () => {
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
       title: "Stock",
       dataIndex: "stock",
       key: "stock",
@@ -310,7 +318,10 @@ const Products = () => {
         >
           <button
             className="flex justify-center items-center rounded-md"
-            onClick={() => setValue(record)}
+            onClick={() => {
+              setValue(record);
+              setOpenEditModel(true);
+            }}
             style={{
               cursor: "pointer",
               border: "none",
@@ -414,10 +425,15 @@ const Products = () => {
           </ConfigProvider>
         </div>
       </div>
-      <SellingsDetailsModal value={value} handleModalClose={handleModalClose} />
       <AddProductsModal
         openAddModel={openAddModal}
         setOpenAddModel={setOpenAddModel}
+      />
+
+      <EditProductsModal
+        openEditModel={openEditModel}
+        setOpenEditModel={setOpenEditModel}
+        product={value}
       />
     </div>
   );
