@@ -318,7 +318,7 @@ const EnrollmentFees = () => {
                 lineHeight: "24px",
               }}
             >
-              User Lists
+              Enrollment Fees
             </h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

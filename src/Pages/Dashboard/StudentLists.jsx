@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { ConfigProvider, Input, Pagination, Rate, Select, Table } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import { ConfigProvider, Input, Table } from "antd";
 import Logo from "../../assets/logo.png";
-import { FiArrowUpRight, FiSearch } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
-import providerIcon from "../../assets/providerIcon.png";
 import { CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 
@@ -264,36 +262,6 @@ const StudentLists = () => {
 
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [selectedRating, setSelectedRating] = useState("Rating");
-  const [selectedLocation, setSelectedLocation] = useState("Location");
-
-  const dropdownRef = useRef();
-
-  const locations = [
-    { value: "London", label: "London" },
-    { value: "Dhaka", label: "Dhaka" },
-    { value: "Washington DC", label: "Washington DC" },
-    { value: "Virginia", label: "Virginia" },
-    { value: "California", label: "California" },
-    { value: "Oklahoma", label: "Oklahoma" },
-  ];
-
-  const ratings = [
-    { value: "Above 4", label: "Above 4" },
-    { value: "Below 4", label: "Below 4" },
-  ];
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   const columns = [
     {
@@ -393,27 +361,12 @@ const StudentLists = () => {
     },
   ];
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
   const pageSize = 10;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
-  };
-
-  const handleRatingChange = (value) => {
-    setSelectedRating(value);
-  };
-
-  const handleLocationChange = (value) => {
-    setSelectedLocation(value);
   };
 
   return (
@@ -464,30 +417,6 @@ const StudentLists = () => {
                   backgroundColor: "#FAFAFA",
                 }}
                 size="middle"
-              />
-            </div>
-
-            <div>
-              <Select
-                value={selectedRating}
-                onChange={handleRatingChange}
-                style={{
-                  width: 115,
-                  height: 40,
-                }}
-                options={ratings}
-              />
-            </div>
-
-            <div>
-              <Select
-                value={selectedLocation}
-                onChange={handleLocationChange}
-                style={{
-                  width: 115,
-                  height: 40,
-                }}
-                options={locations}
               />
             </div>
           </div>

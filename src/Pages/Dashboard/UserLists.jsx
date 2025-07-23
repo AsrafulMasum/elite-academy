@@ -209,7 +209,6 @@ const data = [
   },
 ];
 
-
 const itemsPerPage = 10;
 const total = 20;
 
@@ -221,36 +220,12 @@ const UserLists = () => {
 
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [selectedRating, setSelectedRating] = useState("Rating");
-  const [selectedLocation, setSelectedLocation] = useState("Location");
+  const [userType, setUserType] = useState("User Type");
 
-  const dropdownRef = useRef();
-
-  const locations = [
-    { value: "London", label: "London" },
-    { value: "Dhaka", label: "Dhaka" },
-    { value: "Washington DC", label: "Washington DC" },
-    { value: "Virginia", label: "Virginia" },
-    { value: "California", label: "California" },
-    { value: "Oklahoma", label: "Oklahoma" },
+  const UserType = [
+    { value: "Normal User", label: "Normal User" },
+    { value: "Subscribed User", label: "Subscribed User" },
   ];
-
-  const ratings = [
-    { value: "Above 4", label: "Above 4" },
-    { value: "Below 4", label: "Below 4" },
-  ];
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   const columns = [
     {
@@ -356,13 +331,6 @@ const UserLists = () => {
     },
   ];
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
   const pageSize = 10;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
@@ -371,12 +339,8 @@ const UserLists = () => {
     setSearchText(e.target.value);
   };
 
-  const handleRatingChange = (value) => {
-    setSelectedRating(value);
-  };
-
-  const handleLocationChange = (value) => {
-    setSelectedLocation(value);
+  const handleUserType = (value) => {
+    setUserType(value);
   };
 
   return (
@@ -396,62 +360,70 @@ const UserLists = () => {
             padding: "16px 0px",
           }}
         >
-          <div>
-            <h3
-              style={{
-                color: "#FDFDFD",
-                fontSize: 18,
-                fontWeight: "500",
-                lineHeight: "24px",
-              }}
-            >
-              User Lists
-            </h3>
-          </div>
+          <h3
+            style={{
+              color: "#FDFDFD",
+              fontSize: 18,
+              fontWeight: "500",
+              lineHeight: "24px",
+            }}
+          >
+            User Lists
+          </h3>
+
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <div
               style={{
-                width: "353px",
+                width: "350px",
                 height: "40px",
                 borderRadius: "8px",
               }}
             >
-              <Input
-                placeholder="Search..."
-                onChange={handleSearchChange}
-                prefix={<FiSearch size={14} color="#868FA0" />}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  fontSize: "14px",
-                  backgroundColor: "#FAFAFA",
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#13333A",
+                  },
                 }}
-                size="middle"
-              />
+              >
+                <Input
+                  placeholder="Search..."
+                  onChange={handleSearchChange}
+                  prefix={<FiSearch size={14} color="#868FA0" />}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    fontSize: "14px",
+                    backgroundColor: "#FAFAFA",
+                  }}
+                  size="middle"
+                />
+              </ConfigProvider>
             </div>
 
             <div>
-              <Select
-                value={selectedRating}
-                onChange={handleRatingChange}
-                style={{
-                  width: 115,
-                  height: 40,
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#13333A",
+                  },
+                  components: {
+                    Select: {
+                      optionSelectedBg: "#2E7A8A",
+                    },
+                  },
                 }}
-                options={ratings}
-              />
-            </div>
-
-            <div>
-              <Select
-                value={selectedLocation}
-                onChange={handleLocationChange}
-                style={{
-                  width: 115,
-                  height: 40,
-                }}
-                options={locations}
-              />
+              >
+                <Select
+                  value={userType}
+                  onChange={handleUserType}
+                  style={{
+                    width: 150,
+                    height: 40,
+                  }}
+                  options={UserType}
+                />
+              </ConfigProvider>
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiBookmark } from "react-icons/ci";
+import { IoFootballOutline } from "react-icons/io5";
 
 const { Header, Sider, Content } = Layout;
 
@@ -104,20 +105,17 @@ const Dashboard = () => {
         />
       ),
     },
-    // {
-    //   title: "Service List",
-    //   path: "/service-list",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={
-    //         pathname === "/service-list"
-    //           ? serviceListActiveIcon
-    //           : serviceListIcon
-    //       }
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
+    {
+      title: "Products",
+      path: "/products",
+      icon: (pathname) => (
+        <IoFootballOutline
+          className={`text-xl ${
+            pathname === "/products" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
 
     // {
     //   title: "Transection Details",

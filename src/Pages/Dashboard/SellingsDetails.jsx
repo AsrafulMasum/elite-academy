@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ConfigProvider, Input, Select, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
-import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
-import { CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import SellingsDetailsModal from "../../Components/Dashboard/SellingsDetailsModal";
 
@@ -264,13 +262,6 @@ const SellingsDetails = () => {
     };
   }, []);
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
   const pageSize = 10;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
@@ -434,64 +425,16 @@ const SellingsDetails = () => {
             padding: "16px 0px",
           }}
         >
-          <div>
-            <h3
-              style={{
-                color: "#FDFDFD",
-                fontSize: 18,
-                fontWeight: "500",
-                lineHeight: "24px",
-              }}
-            >
-              User Lists
-            </h3>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
-              style={{
-                width: "353px",
-                height: "40px",
-                borderRadius: "8px",
-              }}
-            >
-              <Input
-                placeholder="Search..."
-                onChange={handleSearchChange}
-                prefix={<FiSearch size={14} color="#868FA0" />}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  fontSize: "14px",
-                  backgroundColor: "#FAFAFA",
-                }}
-                size="middle"
-              />
-            </div>
-
-            <div>
-              <Select
-                value={selectedRating}
-                onChange={handleRatingChange}
-                style={{
-                  width: 115,
-                  height: 40,
-                }}
-                options={ratings}
-              />
-            </div>
-
-            <div>
-              <Select
-                value={selectedLocation}
-                onChange={handleLocationChange}
-                style={{
-                  width: 115,
-                  height: 40,
-                }}
-                options={locations}
-              />
-            </div>
-          </div>
+          <h3
+            style={{
+              color: "#FDFDFD",
+              fontSize: 18,
+              fontWeight: "500",
+              lineHeight: "24px",
+            }}
+          >
+            Sellings Details
+          </h3>
         </div>
 
         <div className="relative h-full">
