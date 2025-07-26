@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { CiEdit } from "react-icons/ci";
 import adminImg from "../../assets/admin.jpg";
 const AdminProfile = () => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",

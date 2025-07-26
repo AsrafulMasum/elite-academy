@@ -1,20 +1,31 @@
 import { Layout } from "antd";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import logoutIcon from "../../assets/logoutIcon.png";
-import logoutActiveIcon from "../../assets/logoutActiveIcon.png";
 import adminImg from "../../assets/admin.jpg";
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { IoIosNotifications } from "react-icons/io";
-import { TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
+import { IoIosNotifications, IoMdPaper } from "react-icons/io";
+import {
+  TbPlayFootball,
+  TbUserHeart,
+  TbUsers,
+  TbUsersGroup,
+} from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
-import { CiBookmark } from "react-icons/ci";
-import { IoFootballOutline } from "react-icons/io5";
+import { CiBookmark, CiLogout, CiSettings } from "react-icons/ci";
+import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
 import { RiAdminLine } from "react-icons/ri";
+import { PiInfoThin } from "react-icons/pi";
+import { useState } from "react";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { GoQuestion } from "react-icons/go";
+import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { BsExclamationCircle } from "react-icons/bs";
+import { MdOutlineCategory } from "react-icons/md";
 
 const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
+  const [openSubMenu, setOpenSubMenu] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +57,6 @@ const Dashboard = () => {
         />
       ),
     },
-
     {
       title: "User Lists",
       path: "/user-lists",
@@ -99,7 +109,7 @@ const Dashboard = () => {
       title: "Interested User",
       path: "/interestedUser",
       icon: (pathname) => (
-        <TbPlayFootball
+        <TbUserHeart
           className={`text-xl ${
             pathname === "/interestedUser" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
@@ -113,6 +123,17 @@ const Dashboard = () => {
         <IoFootballOutline
           className={`text-xl ${
             pathname === "/products" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Add Category",
+      path: "/addCategory",
+      icon: (pathname) => (
+        <MdOutlineCategory
+          className={`text-xl ${
+            pathname === "/addCategory" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
@@ -134,7 +155,7 @@ const Dashboard = () => {
       icon: (pathname) => (
         <RiAdminLine
           className={`text-xl ${
-            pathname === "/coach" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+            pathname === "/manage-admin" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
@@ -150,117 +171,80 @@ const Dashboard = () => {
         />
       ),
     },
+    {
+      title: "Settings",
+      path: "/settings",
+      icon: (pathname) => (
+        <CiSettings
+          className={`text-xl ${
+            pathname === "/subscription" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+      submenu: [
+        {
+          title: "FAQ",
+          path: "/settings/faq",
+          icon: (pathname) => (
+            <GoQuestion
+              className={`text-xl ${
+                pathname === "/settings/faq"
+                  ? "text-[#EEEEEE]"
+                  : "text-[#A3A3A3]"
+              }`}
+            />
+          ),
+        },
+        {
+          title: "About Us",
+          path: "/settings/about-us",
+          icon: (pathname) => (
+            <BsExclamationCircle
+              className={`text-xl ${
+                pathname === "/settings/about-us"
+                  ? "text-[#EEEEEE]"
+                  : "text-[#A3A3A3]"
+              }`}
+            />
+          ),
+        },
+        {
+          title: "Privacy & Policy",
+          path: "/settings/privacy-policy",
+          icon: (pathname) => (
+            <IoDocumentLockOutline
+              className={`text-xl ${
+                pathname === "/settings/privacy-policy"
+                  ? "text-[#EEEEEE]"
+                  : "text-[#A3A3A3]"
+              }`}
+            />
+          ),
+        },
+        {
+          title: "Terms & Conditions",
+          path: "/settings/terms-conditions",
+          icon: (pathname) => (
+            <IoMdPaper
+              className={`text-xl ${
+                pathname === "/settings/terms-conditions"
+                  ? "text-[#EEEEEE]"
+                  : "text-[#A3A3A3]"
+              }`}
+            />
+          ),
+        },
+      ],
+    },
 
-    // {
-    //   title: "Transection Details",
-    //   path: "/transection-list",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={
-    //         pathname === "/transection-list"
-    //           ? transectionDetailsActiveIcon
-    //           : transectionDetailsIcon
-    //       }
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Add Category",
-    //   path: "/add-category",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={
-    //         pathname === "/add-category"
-    //           ? addCategoryActiveIcon
-    //           : addCategoryIcon
-    //       }
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Add Sub-category",
-    //   path: "/add-sub-category",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={
-    //         pathname === "/add-sub-category"
-    //           ? addSubCategoryActiveIcon
-    //           : addSubCategoryIcon
-    //       }
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "About Us",
-    //   path: "/aboutUs",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/aboutUs" ? aboutUsActiveIcon : aboutUsIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "FAQ",
-    //   path: "/faq",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/faq" ? faqActiveIcon : faqIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Privacy Policy",
-    //   path: "/privacy",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/privacy" ? privacyActiveIcon : privacyPolicyIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Terms & Condition",
-    //   path: "/terms",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/terms" ? termsActiveIcon : termsConditionIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Reports",
-    //   path: "/feedback",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/feedback" ? reportsActiveIcon : reportsIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
-
-    // {
-    //   title: "Add admin",
-    //   path: "/make-admin",
-    //   icon: (pathname) => (
-    //     <img
-    //       src={pathname === "/make-admin" ? addAdminActiveIcon : addAdminIcon}
-    //       alt="dashboard"
-    //     />
-    //   ),
-    // },
     {
       title: "Log out",
       path: "/login",
       icon: (pathname) => (
-        <img
-          src={pathname === "/login" ? logoutActiveIcon : logoutIcon}
-          alt="dashboard"
+        <CiLogout
+          className={`text-xl ${
+            pathname === "/subscription" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
         />
       ),
     },
@@ -295,38 +279,88 @@ const Dashboard = () => {
           }}
         >
           {linkItems.map((item, index) => (
-            <li
-              key={index}
-              style={{
-                width: "100%",
-                position: "relative",
-              }}
-            >
-              <Link
-                to={item.path}
-                style={{
-                  display: "flex",
-                  justifyItems: "center",
-                  color: item.path === pathname ? "#EEEEEE" : "#A3A3A3",
-                  alignItems: "center",
-                  margin: "auto  0 auto 0",
-                  gap: "8px",
-                  background: item.path === pathname ? "#2E7A8A" : "none",
-                  width: "100%",
-                  padding: "12px 8px 12px 35px",
-                }}
-              >
-                <div style={{ height: "24px" }}>{item.icon(pathname)}</div>
+            <li key={index} style={{ width: "100%", position: "relative" }}>
+              {item.submenu ? (
+                // Menu item with submenu
                 <div
+                  onClick={() => setOpenSubMenu((prev) => !prev)}
                   style={{
-                    fontSize: "14px",
-                    textAlign: "center",
-                    height: "fit-content",
+                    display: "flex",
+                    cursor: "pointer",
+                    alignItems: "center",
+                    color: "#A3A3A3",
+                    gap: "8px",
+                    padding: "12px 8px 12px 35px",
+                    justifyContent: "space-between",
                   }}
                 >
-                  {item.title}
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div style={{ height: "24px" }}>{item.icon(pathname)}</div>
+                    <div style={{ fontSize: "14px" }}>{item.title}</div>
+                  </div>
+                  <div style={{ marginRight: "20px" }}>
+                    {openSubMenu ? (
+                      <FiChevronUp className="text-[#A3A3A3]" />
+                    ) : (
+                      <FiChevronDown className="text-[#A3A3A3]" />
+                    )}
+                  </div>
                 </div>
-              </Link>
+              ) : (
+                // Normal link item
+                <Link
+                  to={item.path}
+                  style={{
+                    display: "flex",
+                    justifyItems: "center",
+                    color: item.path === pathname ? "#EEEEEE" : "#A3A3A3",
+                    alignItems: "center",
+                    gap: "8px",
+                    background: item.path === pathname ? "#2E7A8A" : "none",
+                    width: "100%",
+                    padding: "12px 8px 12px 35px",
+                  }}
+                >
+                  <div style={{ height: "24px" }}>{item.icon(pathname)}</div>
+                  <div style={{ fontSize: "14px" }}>{item.title}</div>
+                </Link>
+              )}
+
+              {/* Submenu rendering */}
+              {item.submenu && openSubMenu && (
+                <ul style={{ marginLeft: "30px", marginTop: "4px" }}>
+                  {item.submenu.map((subItem, subIndex) => (
+                    <li key={subIndex}>
+                      <Link
+                        to={subItem.path}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          color:
+                            subItem.path === pathname ? "#EEEEEE" : "#A3A3A3",
+                          background:
+                            subItem.path === pathname ? "#2E7A8A" : "none",
+                          padding: "8px 8px 8px 20px",
+                          gap: "6px",
+                          fontSize: "14px",
+                        }}
+                      >
+                        <div style={{ height: "24px" }}>
+                          {subItem.icon(pathname)}
+                        </div>
+                        <div>{subItem.title}</div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
               {item.title === "User Lists" && (
                 <hr
                   style={{

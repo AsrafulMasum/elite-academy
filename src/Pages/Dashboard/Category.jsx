@@ -200,10 +200,10 @@ const Category = () => {
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   return (
-    <div className="h-[77vh]">
+    <div className="h-full">
       <div
         style={{
-          background: "white",
+          background: "#13333A",
           borderRadius: "12px",
           height: "100%",
         }}

@@ -26,7 +26,7 @@ const Terms = () => {
   };
 
   return (
-    <div className=" bg-white px-4 py-2 rounded-lg pb-10 ">
+    <div className=" bg-green h-full px-4 py-2 rounded-lg pb-10 ">
       <div
         style={{
           display: "flex",
@@ -39,7 +39,7 @@ const Terms = () => {
           <h3
             className="font-semibold"
             style={{
-              color: "#333333",
+              color: "#FDFDFD",
               fontSize: 18,
               fontWeight: "500",
               lineHeight: "24px",
@@ -73,7 +73,7 @@ const Terms = () => {
           style={{
             height: 48,
             width: 173,
-            backgroundColor: "#BB6D42",
+            backgroundColor: "#2E7A8A",
             color: "white",
             borderRadius: "8px",
             fontWeight: 500,

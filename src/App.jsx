@@ -58,9 +58,9 @@ function App() {
             <Route path="/manage-admin" element={<ManageAdmin />} />
             <Route path="/subscription" element={<Subscription />} />
 
-            <Route path="/add-category" element={<Category />} />
+            <Route path="/addCategory" element={<Category />} />
             <Route path="/add-sub-category" element={<SubCategory />} />
-            <Route path="/aboutUs" element={<AboutUs />} />
+            <Route path="/settings/about-us" element={<AboutUs />} />
             <Route path="/make-admin" element={<MakeAdmin />} />
             <Route path="/admin-profile" element={<AdminProfile />} />
             <Route path="/notification" element={<Notification />} />
@@ -69,9 +69,12 @@ function App() {
               path="/setting-change-password"
               element={<ChangePassword />}
             />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/terms" element={<Terms />} />
+            <Route path="/settings/faq" element={<FAQ />} />
+            <Route
+              path="/settings/privacy-policy"
+              element={<PrivacyPolicy />}
+            />
+            <Route path="/settings/terms-conditions" element={<Terms />} />
 
             <Route path="/feedback" element={<Feedback />} />
           </Route>

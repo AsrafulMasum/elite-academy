@@ -73,7 +73,7 @@ const FAQ = () => {
   };
 
   return (
-    <div className="bg-white  px-3 py-2 rounded-lg">
+    <div className="bg-green  px-3 py-2 rounded-lg">
       <div style={{ margin: "24px 16px" }}>
         <div
           style={{
@@ -85,7 +85,7 @@ const FAQ = () => {
         >
           <h3
             style={{
-              color: "#333333",
+              color: "#FDFDFD",
               fontSize: 18,
               fontWeight: "500",
               lineHeight: "24px",
@@ -100,45 +100,37 @@ const FAQ = () => {
                 width: "177px",
                 height: "40px",
                 boxShadow: "0px 2px 4px 0px #0000001A",
-                backgroundColor: "#C1EEBD",
+                backgroundColor: "#2E7A8A",
                 border: "none",
                 transition: "none",
-                color: "#767676",
+                color: "#FDFDFD",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#C1EEBD";
-                e.currentTarget.style.color = "#767676";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#C1EEBD";
-                e.currentTarget.style.color = "#767676";
-              }}
             >
               <PlusOutlined />
-              <span style={{ margin: 0 }}>Add sub-category</span>
+              <span style={{ margin: 0 }}>Add FAQ</span>
             </Button>
           </div>
         </div>
       </div>
-      <div className="bg-white pb-6 px-4 rounded-md">
+      <div className="bg-green pb-6 px-4 rounded-md">
         {data.map((item, index) => (
           <div key={index} className="flex justify-between items-start gap-4 ">
             <div className="mt-3">
-              <GoQuestion color="#F27405" size={25} />
+              <GoQuestion color="#FFC107" size={25} />
             </div>
             <div className="w-full ">
-              <p className="text-base font-medium border-b rounded-xl py-2 px-4 flex items-center gap-8 bg-[#F9F9F9]">
-                <span className=" flex-1 text-[#636363]">
+              <p className="text-base font-medium border-b rounded-lg py-2 px-4 flex items-center gap-8 bg-action">
+                <span className=" flex-1 text-[#FDFDFD]">
                   {" "}
                   {item?.question}
                 </span>
               </p>
-              <div className="flex justify-start items-start gap-2 border-b  py-2 px-4  rounded-xl my-4 bg-[#F9F9F9]">
-                <p className="text-[#818181] leading-[24px] mb-6 ">
+              <div className="flex justify-start items-start gap-2 border-b  py-2 px-4  rounded-lg my-4 bg-action shadow-none">
+                <p className="text-[#FDFDFD] leading-[24px] mb-6 ">
                   NIFI is a comprehensive nail salon platform app designed to
                   connect clients with top-rated nail salons and professionals,
                   offering features like appointment booking, style exploration,
@@ -157,7 +149,7 @@ const FAQ = () => {
                   setans(filterdData[0]?.answer);
                   seteditID(item?._id);
                 }}
-                className="text-3xl font-semibold cursor-pointer text-[#F27405]"
+                className="text-3xl font-semibold cursor-pointer text-[#FFC107]"
               />
               <RiDeleteBin6Line
                 onClick={() => {

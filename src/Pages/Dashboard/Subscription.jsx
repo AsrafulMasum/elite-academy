@@ -8,7 +8,7 @@ import AddInputForm from "../../Components/Dashboard/AddInputForm";
 
 const initialPackages = [
   {
-    id: "basic",
+    _id: "basic",
     packageName: "Basic",
     packageFees: 5,
     packagePrice: 30,
@@ -21,7 +21,7 @@ const initialPackages = [
     ],
   },
   {
-    id: "gold",
+    _id: "gold",
     packageName: "Gold",
     packageFees: 3,
     packagePrice: 110,
@@ -34,7 +34,7 @@ const initialPackages = [
     ],
   },
   {
-    id: "premium",
+    _id: "premium",
     packageName: "Premium",
     packageFees: 0,
     packagePrice: 180,

@@ -23,10 +23,10 @@ const AboutUs = () => {
     setContent("");
   };
   return (
-    <div className="px-4">
+    <div className="px-4 bg-green h-full">
       <h3
         style={{
-          color: "#333333",
+          color: "#FDFDFD",
           fontSize: 18,
           fontWeight: "500",
           paddingTop: "24px",
@@ -59,7 +59,7 @@ const AboutUs = () => {
           style={{
             height: 48,
             width: 173,
-            backgroundColor: "#BB6D42",
+            backgroundColor: "#2E7A8A",
             color: "white",
             borderRadius: "8px",
             fontWeight: 500,
