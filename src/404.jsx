@@ -53,7 +53,7 @@ function NotFound() {
             width: "147px",
             fontWeight: "500",
             fontSize: "14px",
-            background: "#BB6D42",
+            background: "#2E7A8A",
             borderRadius: "8px",
             marginTop: "60px",
           }}

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, ConfigProvider, Form, Input } from "antd";
 import Swal from "sweetalert2";
 import { CiEdit } from "react-icons/ci";
-import adminImg from "../../assets/admin.jpg"
+import adminImg from "../../assets/admin.jpg";
 const AdminProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const handleDelete = (id) => {
@@ -62,7 +62,7 @@ const AdminProfile = () => {
     <div>
       <div
         style={{
-          background: "white",
+          background: "#13333A",
           padding: "20px",
           borderRadius: "12px",
         }}
@@ -79,7 +79,7 @@ const AdminProfile = () => {
           <div>
             <h3
               style={{
-                color: "black",
+                color: "white",
                 fontSize: 18,
                 fontWeight: "500",
                 textAlign: "center",
@@ -96,7 +96,7 @@ const AdminProfile = () => {
         <div>
           <div className="flex justify-center items-center">
             <div
-              className=" w-[75%] bg-[#F9F9F9] rounded-lg py-5"
+              className=" w-[75%] bg-action rounded-lg py-5"
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -144,7 +144,7 @@ const AdminProfile = () => {
                 style={{
                   fontSize: 32,
                   fontWeight: 500,
-                  color: "#333333",
+                  color: "#FDFDFD",
                 }}
               >
                 Admin Niloofar
@@ -180,9 +180,9 @@ const AdminProfile = () => {
                 style={{
                   fontSize: 16,
                   fontWeight: 500,
-                  color: isEdit ? "#BB6D42" : "#818181",
+                  color: isEdit ? "#2E7A8A" : "#818181",
                   cursor: "pointer",
-                  borderBottom: isEdit ? "3px solid #BB6D42" : "none",
+                  borderBottom: isEdit ? "3px solid #2E7A8A" : "none",
                   padding: "6px 0px",
                 }}
               >
@@ -193,9 +193,9 @@ const AdminProfile = () => {
                 style={{
                   fontSize: 16,
                   fontWeight: 500,
-                  color: isEdit ? "#818181" : "#BB6D42",
+                  color: isEdit ? "#818181" : "#2E7A8A",
                   cursor: "pointer",
-                  borderBottom: isEdit ? "none" : "3px solid #BB6D42",
+                  borderBottom: isEdit ? "none" : "3px solid #2E7A8A",
                   padding: "6px 0px",
                 }}
               >
@@ -203,344 +203,348 @@ const AdminProfile = () => {
               </p>
             </div>
           </div>
-          {isEdit ? (
-            <div className="flex justify-center items-center">
-              <div
-                className=" bg-[#F9F9F9] w-[75%]"
-                style={{
-                  padding: "40px",
-                  borderRadius: "10px",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 500,
-                    color: "#333333",
-                    textAlign: "center",
-                  }}
-                >
-                  Edit Your Profile
-                </p>
-                <div className=" flex justify-center items-center">
-                  <div
-                    style={{
-                      marginTop: 25,
-                      width: "65%",
-                    }}
-                  >
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        User Name
-                      </label>
-                      <Input
-                        placeholder="Admin Marie"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Email
-                      </label>
-                      <Input
-                        placeholder="Camille@gmail.com"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Contact no
-                      </label>
-                      <Input
-                        placeholder="+99007007007"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Address
-                      </label>
-                      <Input
-                        placeholder="79/A Joker Vila, Gotham City"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
 
+          <ConfigProvider>
+            {isEdit ? (
+              <div className="flex justify-center items-center">
                 <div
+                  className=" bg-action w-[75%]"
                   style={{
-                    marginTop: 24,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    padding: "40px",
+                    borderRadius: "10px",
                   }}
-                >
-                  <Button
-                    style={{
-                      height: 44,
-                      width: 150,
-                      backgroundColor: "#BB6D42",
-                      color: "white",
-                      borderRadius: "8px",
-                      fontWeight: 500,
-                      fontSize: 14,
-                    }}
-                  >
-                    Save Changes
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className=" flex justify-center items-center">
-              <div
-                className=" bg-[#F9F9F9] w-[75%] p-[40px] rounded-lg"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Form
-                  name="normal_login"
-                  className="login-form"
-                  initialValues={{
-                    remember: true,
-                  }}
-                  style={{ width: "65%", height: "fit-content" }}
-                  onFinish={handleChangePassword}
                 >
                   <p
                     style={{
                       fontSize: 24,
                       fontWeight: 500,
-                      color: "#333333",
+                      color: "#FDFDFD",
                       textAlign: "center",
-                      marginBottom: "20px",
                     }}
                   >
-                    Change Password
+                    Edit Your Profile
                   </p>
-                  <div style={{ marginBottom: "30px" }}>
-                    <label
+                  <div className=" flex justify-center items-center">
+                    <div
                       style={{
-                        margin: "0px 0px",
-                        color: "#636363",
-                        fontSize: 14,
-                        fontWeight: 500,
+                        marginTop: 25,
+                        width: "65%",
                       }}
                     >
-                      Current Password
-                    </label>
-                    <Form.Item
-                      style={{ marginBottom: 0 }}
-                      name="current_password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your current password!",
-                        },
-                      ]}
-                    >
-                      <Input.Password
-                        placeholder="Enter Password"
-                        type="password"
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "52px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                          margin: "8px 0px 0px 0px",
-                        }}
-                      />
-                    </Form.Item>
-                    {curPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {curPassError}
-                      </label>
-                    )}
-                  </div>
-
-                  <div style={{ marginBottom: "20px" }}>
-                    <label
-                      style={{
-                        margin: "0px 0px",
-                        color: "#636363",
-                        fontSize: 14,
-                        fontWeight: 500,
-                      }}
-                      htmlFor=""
-                    >
-                      New Password
-                    </label>
-                    <Form.Item
-                      name="new_password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your new Password!",
-                        },
-                      ]}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <Input.Password
-                        placeholder="Enter Password"
-                        type="password"
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "52px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                          margin: "8px 0px 0px 0px",
-                        }}
-                      />
-                    </Form.Item>
-                    {newPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {newPassError}
-                      </label>
-                    )}
-                  </div>
-
-                  <div style={{ marginBottom: "40px" }}>
-                    <label
-                      style={{
-                        margin: "0px 0px",
-                        color: "#636363",
-                        fontSize: 14,
-                        fontWeight: 500,
-                      }}
-                      htmlFor="email"
-                    >
-                      Re-Type Password
-                    </label>
-                    <Form.Item
-                      style={{ marginBottom: 0 }}
-                      name="confirm_password"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Re-type Password!",
-                        },
-                      ]}
-                    >
-                      <Input.Password
-                        placeholder="Enter Password"
-                        type="password"
-                        style={{
-                          border: "1px solid #E0E4EC",
-                          height: "52px",
-                          background: "white",
-                          borderRadius: "8px",
-                          outline: "none",
-                          margin: "8px 0px 0px 0px",
-                        }}
-                      />
-                    </Form.Item>
-                    {conPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {conPassError}
-                      </label>
-                    )}
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#FDFDFD",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          User Name
+                        </label>
+                        <Input
+                          placeholder="Admin Marie"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#FDFDFD",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          Email
+                        </label>
+                        <Input
+                          // disabled
+                          placeholder="Camille@gmail.com"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#FDFDFD",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          Contact no
+                        </label>
+                        <Input
+                          placeholder="+99007007007"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#FDFDFD",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          Address
+                        </label>
+                        <Input
+                          placeholder="79/A Joker Vila, Gotham City"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div
                     style={{
-                      width: "100%",
+                      marginTop: 24,
                       display: "flex",
-                      gap: "16px",
+                      justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                    <div style={{ width: "100%" }}>
-                      <div
+                    <Button
+                      style={{
+                        height: 44,
+                        width: 150,
+                        backgroundColor: "#2E7A8A",
+                        color: "white",
+                        borderRadius: "8px",
+                        fontWeight: 500,
+                        fontSize: 14,
+                      }}
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className=" flex justify-center items-center">
+                <div
+                  className=" bg-action w-[75%] p-[40px] rounded-lg"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Form
+                    name="normal_login"
+                    className="login-form"
+                    initialValues={{
+                      remember: true,
+                    }}
+                    style={{ width: "65%", height: "fit-content" }}
+                    onFinish={handleChangePassword}
+                  >
+                    <p
+                      style={{
+                        fontSize: 24,
+                        fontWeight: 500,
+                        color: "#FDFDFD",
+                        textAlign: "center",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      Change Password
+                    </p>
+                    <div style={{ marginBottom: "30px" }}>
+                      <label
                         style={{
-                          marginTop: 24,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          margin: "0px 0px",
+                          color: "#FDFDFD",
+                          fontSize: 14,
+                          fontWeight: 500,
                         }}
                       >
-                        <Button
+                        Current Password
+                      </label>
+                      <Form.Item
+                        style={{ marginBottom: 0 }}
+                        name="current_password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your current password!",
+                          },
+                        ]}
+                      >
+                        <Input.Password
+                          placeholder="Enter Password"
+                          type="password"
                           style={{
-                            height: 44,
-                            width: 150,
-                            backgroundColor: "#BB6D42",
-                            color: "white",
+                            border: "1px solid #E0E4EC",
+                            height: "52px",
+                            background: "white",
                             borderRadius: "8px",
-                            fontWeight: 500,
-                            fontSize: 14,
+                            outline: "none",
+                            margin: "8px 0px 0px 0px",
+                          }}
+                        />
+                      </Form.Item>
+                      {curPassError && (
+                        <label
+                          style={{ display: "block", color: "red" }}
+                          htmlFor="error"
+                        >
+                          {curPassError}
+                        </label>
+                      )}
+                    </div>
+
+                    <div style={{ marginBottom: "20px" }}>
+                      <label
+                        style={{
+                          margin: "0px 0px",
+                          color: "#FDFDFD",
+                          fontSize: 14,
+                          fontWeight: 500,
+                        }}
+                        htmlFor=""
+                      >
+                        New Password
+                      </label>
+                      <Form.Item
+                        name="new_password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your new Password!",
+                          },
+                        ]}
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Input.Password
+                          placeholder="Enter Password"
+                          type="password"
+                          style={{
+                            border: "1px solid #E0E4EC",
+                            height: "52px",
+                            background: "white",
+                            borderRadius: "8px",
+                            outline: "none",
+                            margin: "8px 0px 0px 0px",
+                          }}
+                        />
+                      </Form.Item>
+                      {newPassError && (
+                        <label
+                          style={{ display: "block", color: "red" }}
+                          htmlFor="error"
+                        >
+                          {newPassError}
+                        </label>
+                      )}
+                    </div>
+
+                    <div style={{ marginBottom: "40px" }}>
+                      <label
+                        style={{
+                          margin: "0px 0px",
+                          color: "#FDFDFD",
+                          fontSize: 14,
+                          fontWeight: 500,
+                        }}
+                        htmlFor="email"
+                      >
+                        Re-Type Password
+                      </label>
+                      <Form.Item
+                        style={{ marginBottom: 0 }}
+                        name="confirm_password"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Re-type Password!",
+                          },
+                        ]}
+                      >
+                        <Input.Password
+                          placeholder="Enter Password"
+                          type="password"
+                          style={{
+                            border: "1px solid #E0E4EC",
+                            height: "52px",
+                            background: "white",
+                            borderRadius: "8px",
+                            outline: "none",
+                            margin: "8px 0px 0px 0px",
+                          }}
+                        />
+                      </Form.Item>
+                      {conPassError && (
+                        <label
+                          style={{ display: "block", color: "red" }}
+                          htmlFor="error"
+                        >
+                          {conPassError}
+                        </label>
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        gap: "16px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div style={{ width: "100%" }}>
+                        <div
+                          style={{
+                            marginTop: 24,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
                           }}
                         >
-                          Save Changes
-                        </Button>
+                          <Button
+                            style={{
+                              height: 44,
+                              width: 150,
+                              backgroundColor: "#2E7A8A",
+                              color: "white",
+                              borderRadius: "8px",
+                              fontWeight: 500,
+                              fontSize: 14,
+                            }}
+                          >
+                            Save Changes
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Form>
+                  </Form>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </ConfigProvider>
         </div>
       </div>
     </div>

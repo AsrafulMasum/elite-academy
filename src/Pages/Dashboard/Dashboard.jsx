@@ -10,6 +10,7 @@ import { TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiBookmark } from "react-icons/ci";
 import { IoFootballOutline } from "react-icons/io5";
+import { RiAdminLine } from "react-icons/ri";
 
 const { Header, Sider, Content } = Layout;
 
@@ -121,6 +122,17 @@ const Dashboard = () => {
       path: "/coach",
       icon: (pathname) => (
         <TbPlayFootball
+          className={`text-xl ${
+            pathname === "/coach" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Manage Admin",
+      path: "/manage-admin",
+      icon: (pathname) => (
+        <RiAdminLine
           className={`text-xl ${
             pathname === "/coach" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
@@ -325,6 +337,15 @@ const Dashboard = () => {
                 />
               )}
               {item.title === "Interested User" && (
+                <hr
+                  style={{
+                    border: "none",
+                    borderTop: "1px solid #19434C",
+                    margin: "8px 0",
+                  }}
+                />
+              )}
+              {item.title === "Manage Admin" && (
                 <hr
                   style={{
                     border: "none",

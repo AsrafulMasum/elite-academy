@@ -29,6 +29,7 @@ import InterestedUser from "./Pages/Dashboard/InterestedUser";
 import Products from "./Pages/Dashboard/Products";
 import CoachLists from "./Pages/Dashboard/CoachList";
 import Subscription from "./Pages/Dashboard/Subscription";
+import ManageAdmin from "./Pages/Dashboard/ManageAdmin";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
             <Route path="/interestedUser" element={<InterestedUser />} />
             <Route path="/products" element={<Products />} />
             <Route path="/coach" element={<CoachLists />} />
+            <Route path="/manage-admin" element={<ManageAdmin />} />
             <Route path="/subscription" element={<Subscription />} />
 
             <Route path="/add-category" element={<Category />} />
