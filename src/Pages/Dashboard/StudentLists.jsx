@@ -1,280 +1,40 @@
 import { useState } from "react";
-import { ConfigProvider, Input, Table } from "antd";
+import { ConfigProvider, Input, Modal, Table } from "antd";
 import Logo from "../../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
-import { CiUnlock } from "react-icons/ci";
+import { CiLock, CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
-
-const data = [
-  {
-    key: "#1239",
-
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mr101@mail.ru",
-    contact: "(+33)7 00 55 59 27",
-    location: "Corona, Michigan",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1238",
-
-    user: {
-      name: "Lily",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "xterris@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Great Falls, Maryland ",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1237",
-
-    user: {
-      name: "Kathry",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1236",
-
-    user: {
-      name: "Priscilla",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "codence@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Lafayette, California",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1235",
-
-    user: {
-      name: "Claire",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "quasiah@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Pasadena, Oklahoma",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1234",
-
-    user: {
-      name: "Irmar",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "xeno@yandex.ru",
-    contact: "(+33)7 00 55 59 27",
-    location: "Lansing, Illinois",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1233",
-
-    user: {
-      name: "Gloria",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1233",
-
-    user: {
-      name: "Gloria",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1233",
-
-    user: {
-      name: "Gloria",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#1233",
-
-    user: {
-      name: "Gloria",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "redaniel@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Coppell, Virginia",
-    courses: "Under 20 summer 25",
-  },
-
-  {
-    key: "#4",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "jusef@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#5",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "asad@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#6",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "fahim@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#7",
-    name: "Nadir",
-    user: {
-      name: "Ashutosh",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "nadir@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#8",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "tushar@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#9",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "rahman@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#10",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} />,
-    },
-    email: "rafsan@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Active",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-  {
-    key: "#11",
-
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={46} width={46} className="rounded-full" />,
-    },
-    email: "jusef@gmail.com",
-    date: "18 Jul, 2023  4:30pm",
-    location: "Banasree",
-    status: "Inactive",
-    selling: "500",
-    balance: "600",
-    courses: "Under 20 summer 25",
-  },
-];
+import { imageUrl } from "../../redux/api/baseApi";
+import {
+  useGetStudentsQuery,
+  useLockUserMutation,
+} from "../../redux/features/usersApi";
 
 const itemsPerPage = 10;
 const total = 50;
 
 const StudentLists = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
-
-  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [lock, setLock] = useState("");
+  const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const { data: userData } = useGetStudentsQuery(searchText);
+  const [lockUser] = useLockUserMutation();
 
   const columns = [
     {
       title: "Student Id",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "studentId",
+      key: "studentId",
       render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
       title: "Student Name",
       dataIndex: "user",
       key: "user",
-      render: (user) => {
+      render: (_, record) => {
         return (
           <div
             style={{
@@ -283,7 +43,16 @@ const StudentLists = () => {
               gap: 12,
             }}
           >
-            <p>{user?.img} </p>
+            <img
+              src={
+                record?.image && record?.image.startsWith("http")
+                  ? record?.image
+                  : record?.image
+                  ? `${imageUrl}${record?.image}`
+                  : "/default-avatar.png"
+              }
+              className="w-10 h-10 object-cover rounded-full"
+            />
 
             <p
               style={{
@@ -293,7 +62,7 @@ const StudentLists = () => {
                 color: "#FDFDFD",
               }}
             >
-              {user?.name}
+              {record?.name}
             </p>
           </div>
         );
@@ -306,9 +75,9 @@ const StudentLists = () => {
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
-      title: "Courses",
-      dataIndex: "courses",
-      key: "courses",
+      title: "Contact No.",
+      dataIndex: "contact",
+      key: "contact",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
@@ -327,7 +96,7 @@ const StudentLists = () => {
         >
           <button
             className="flex justify-center items-center rounded-md"
-            onClick={() => setOpen(true)}
+            onClick={() => setValue(record)}
             style={{
               cursor: "pointer",
               border: "none",
@@ -343,7 +112,7 @@ const StudentLists = () => {
           <div>
             <button
               className="flex justify-center items-center rounded-md"
-              onClick={() => setOpen(true)}
+              onClick={() => setLock(record?._id)}
               style={{
                 cursor: "pointer",
                 border: "none",
@@ -353,7 +122,11 @@ const StudentLists = () => {
                 height: "32px",
               }}
             >
-              <CiUnlock size={26} className="text-secondary" />
+              {record?.status === "active" ? (
+                <CiUnlock size={26} className="text-secondary" />
+              ) : (
+                <CiLock size={26} className="text-[#FF0000]" />
+              )}
             </button>
           </div>
         </div>
@@ -361,20 +134,25 @@ const StudentLists = () => {
     },
   ];
 
-  const pageSize = 10;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
-
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const res = await lockUser({ id });
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="w-full bg-[#13333A]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
-          height: "100%",
         }}
       >
         <div
@@ -444,7 +222,8 @@ const StudentLists = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={userData?.data}
+              rowKey="_id"
               pagination={{
                 total: total,
                 current: page,
@@ -455,7 +234,29 @@ const StudentLists = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
+      <UserDetailsModal value={value} setValue={setValue} />
+      <Modal
+        centered
+        open={lock}
+        onCancel={() => setLock(null)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ConfigProvider, Input, Select, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
 import { CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
+import { useGetUsersQuery } from "../../redux/features/usersApi";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const data = [
   {
@@ -213,15 +215,13 @@ const itemsPerPage = 10;
 const total = 20;
 
 const UserLists = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
+  const [page, setPage] = useState(1);
 
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [userType, setUserType] = useState("User Type");
-
+  const { data: userData } = useGetUsersQuery({ srcText: searchText, page });
+  console.log(userData);
   const UserType = [
     { value: "Normal User", label: "Normal User" },
     { value: "Subscribed User", label: "Subscribed User" },
@@ -229,7 +229,7 @@ const UserLists = () => {
 
   const columns = [
     {
-      title: "User Id",
+      title: "Serial No.",
       dataIndex: "key",
       key: "key",
       render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
@@ -238,7 +238,7 @@ const UserLists = () => {
       title: "User Name",
       dataIndex: "user",
       key: "user",
-      render: (user) => {
+      render: (_, record) => {
         return (
           <div
             style={{
@@ -247,7 +247,16 @@ const UserLists = () => {
               gap: 12,
             }}
           >
-            <p>{user?.img} </p>
+            <img
+              src={
+                record?.image && record?.image.startsWith("http")
+                  ? record?.image
+                  : record?.image
+                  ? `${imageUrl}${record?.image}`
+                  : "/default-avatar.png"
+              }
+              className="w-10 h-10 object-cover rounded-full"
+            />
 
             <p
               style={{
@@ -257,7 +266,7 @@ const UserLists = () => {
                 color: "#FDFDFD",
               }}
             >
-              {user?.name}
+              {record?.name}
             </p>
           </div>
         );
@@ -450,7 +459,8 @@ const UserLists = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
+              rowKey="_id"
+              dataSource={userData?.data}
               pagination={{
                 total: total,
                 current: page,

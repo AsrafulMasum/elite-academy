@@ -32,6 +32,7 @@ import Subscription from "./Pages/Dashboard/Subscription";
 import ManageAdmin from "./Pages/Dashboard/ManageAdmin";
 import Courses from "./Pages/Dashboard/Courses";
 import Tutorials from "./Pages/Dashboard/Tutorials";
+import ClassSchedule from "./Pages/Dashboard/ClassSchedule";
 
 function App() {
   return (
@@ -63,7 +64,7 @@ function App() {
             <Route path="/addCategory" element={<Category />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/tutorials" element={<Tutorials />} />
-            <Route path="/classSchedule" element={<Tutorials />} />
+            <Route path="/classSchedule" element={<ClassSchedule />} />
             <Route path="/settings/about-us" element={<AboutUs />} />
             <Route path="/make-admin" element={<MakeAdmin />} />
             <Route path="/admin-profile" element={<AdminProfile />} />
