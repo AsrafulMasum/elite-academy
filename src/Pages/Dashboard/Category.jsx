@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Modal, Pagination, Table } from "antd";
-import { LeftOutlined, PlusOutlined, RightOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Form, Input, Modal, Table } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
-import edit from "../../assets/edit.png";
-import deleteicon from "../../assets/delete.png";
+import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { IoMdAdd } from "react-icons/io";
 
 const data = [
   {
@@ -141,14 +142,21 @@ const Category = () => {
       key: "serial",
       align: "left",
       width: "100px",
-      render: (text) => <span style={{ color: "#636363" }}>#{text}</span>,
+      render: (text) => <span style={{ color: "#FDFDFD" }}>#{text}</span>,
     },
     {
       title: "Category Name",
       dataIndex: "category",
       key: "category",
       align: "left",
-      render: (text) => <span style={{ color: "#636363" }}>{text}</span>,
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
+      title: "Sub-Category Name",
+      dataIndex: "category",
+      key: "category",
+      align: "left",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
       title: "Action",
@@ -170,9 +178,19 @@ const Category = () => {
               setOpenEditModal(true);
               seteditID(record?._id);
             }}
-            className="bg-[#F9F9F9] w-10 h-8 flex justify-center items-center rounded-md"
+            className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
-            <img src={edit} alt="" />
+            <IoMdAdd size={20} className="text-secondary" />
+          </button>
+
+          <button
+            onClick={() => {
+              setOpenEditModal(true);
+              seteditID(record?._id);
+            }}
+            className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
+          >
+            <FiEdit size={20} className="text-secondary" />
           </button>
 
           <button
@@ -180,9 +198,9 @@ const Category = () => {
               setShowDelete(true);
               setDeleteId(record?._id);
             }}
-            className="bg-[#F9F9F9] w-10 h-8 flex justify-center items-center rounded-md"
+            className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
-            <img src={deleteicon} alt="" />
+            <RiDeleteBin6Line size={20} className="text-secondary" />
           </button>
         </div>
       ),
@@ -197,6 +215,7 @@ const Category = () => {
   };
 
   const pageSize = 12;
+  const total = 20;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   return (
@@ -213,12 +232,12 @@ const Category = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            margin: "24px 16px",
+            padding: "16px 16px",
           }}
         >
           <h3
             style={{
-              color: "#333333",
+              color: "#FDFDFD",
               fontSize: 18,
               fontWeight: "500",
               lineHeight: "24px",
@@ -234,22 +253,14 @@ const Category = () => {
                 width: "151px",
                 height: "40px",
                 boxShadow: "0px 2px 4px 0px #0000001A",
-                backgroundColor: "#C1EEBD",
+                backgroundColor: "#2E7A8A",
                 border: "none",
                 transition: "none",
-                color: "#767676",
+                color: "#FDFDFD",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "8px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#C1EEBD";
-                e.currentTarget.style.color = "#767676";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#C1EEBD";
-                e.currentTarget.style.color = "#767676";
               }}
             >
               <PlusOutlined />
@@ -257,48 +268,37 @@ const Category = () => {
             </Button>
           </div>
         </div>
-        <div className="relative h-full">
-          <Table
-            size="small"
-            columns={columns}
-            dataSource={paginatedData}
-            pagination={false}
-          />
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
-            <Pagination
-              current={page}
-              pageSize={pageSize}
-              total={data.length}
-              onChange={handlePageChange}
-              showSizeChanger={false}
+        <div className="relative">
+          <ConfigProvider
+            theme={{
+              components: {
+                Pagination: {
+                  itemActiveBg: "#FFC107",
+                  borderRadius: "100%",
+                  colorText: "white",
+                  colorTextDisabled: "#6C6C6C",
+                },
+                Table: {
+                  rowHoverBg: "#13333A",
+                },
+              },
+              token: {
+                colorPrimary: "#13333A",
+              },
+            }}
+          >
+            <Table
               size="small"
-              itemRender={(pageNum, type, originalElement) => {
-                if (type === "prev") {
-                  return (
-                    <a
-                      className="hover:text-[#333333]"
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
-                      <LeftOutlined />
-                      <span className="mr-2">Previous</span>
-                    </a>
-                  );
-                }
-                if (type === "next") {
-                  return (
-                    <a
-                      className="hover:text-[#333333]"
-                      style={{ display: "flex", alignItems: "center", gap: 4 }}
-                    >
-                      <span className="ml-2">Next</span>
-                      <RightOutlined />
-                    </a>
-                  );
-                }
-                return originalElement;
+              columns={columns}
+              dataSource={paginatedData}
+              pagination={{
+                total: total,
+                current: page,
+                pageSize: pageSize,
+                onChange: (page) => setPage(page),
               }}
             />
-          </div>
+          </ConfigProvider>
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
@@ -342,7 +342,7 @@ const Category = () => {
             <div className="text-center mt-6">
               <button
                 onClick={handleAddCategory}
-                className="bg-[#BB6D42] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
+                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
               >
                 Add Category
               </button>

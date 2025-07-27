@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import "./style.css";
 const Otp = () => {
   const navigate = useNavigate();
   const [otp, setOtp] = useState("284");
@@ -19,7 +18,7 @@ const Otp = () => {
       showDenyButton: false,
       showCancelButton: false,
       confirmButtonText: "Confirm",
-      confirmButtonColor: "#F27405",
+      confirmButtonColor: "#2E7A8A",
     }).then((result) => {
       if (result.isConfirmed) {
         navigate("/update-password");
@@ -29,6 +28,7 @@ const Otp = () => {
 
   return (
     <div
+      className="bg-[#000000]"
       style={{
         width: "100%",
         height: "100vh",
@@ -37,11 +37,10 @@ const Otp = () => {
         justifyContent: "center",
       }}
     >
-      <div className="login-form bg-[#FEFEFECC] border rounded-2xl px-[40px] py-[100px] w-[686px] shadow-soft">
+      <div className="login-form bg-green rounded-2xl px-[40px] py-[100px] w-[700px] shadow-soft">
         <div
-          className=" backdrop-blur-lg bg-white/70"
           style={{
-            width: "630px",
+            width: "620px",
 
             borderRadius: "12px",
             padding: "90px 57px",
@@ -49,7 +48,7 @@ const Otp = () => {
         >
           <p
             style={{
-              color: "#818181",
+              color: "#FDFDFD",
               textAlign: "center",
               lineHeight: "24px",
             }}
@@ -96,7 +95,7 @@ const Otp = () => {
                 width: "93px",
                 fontWeight: "500",
                 fontSize: "14px",
-                background: "#BB6D42",
+                background: "#2E7A8A",
                 borderRadius: "8px",
                 marginBottom: "47px",
               }}
@@ -111,14 +110,14 @@ const Otp = () => {
               alignItems: "center",
               justifyContent: "center",
               gap: "6px",
-              color: "#818181",
+              color: "#757575",
             }}
           >
             Didn’t receive code?
             <p
               onClick={handleResendEmail}
               style={{
-                color: "#BB6D42",
+                color: "#2E7A8A",
                 cursor: "pointer",
               }}
             >

@@ -9,81 +9,166 @@ const data = [
   {
     _id: "1",
     serial: 1,
-    category: "Dental care",
+    courseName: "Beginner Football Skills",
+    courseId: "FTB101",
+    startTime: "2025-08-01T08:00:00",
+    endTime: "2025-08-01T09:30:00",
   },
   {
     _id: "2",
     serial: 2,
-    category: "Dental care",
+    courseName: "Intermediate Dribbling Techniques",
+    courseId: "FTB102",
+    startTime: "2025-08-02T10:00:00",
+    endTime: "2025-08-02T11:30:00",
   },
   {
     _id: "3",
     serial: 3,
-    category: "Dental care",
+    courseName: "Advanced Striker Training",
+    courseId: "FTB103",
+    startTime: "2025-08-03T12:00:00",
+    endTime: "2025-08-03T13:30:00",
   },
   {
     _id: "4",
     serial: 4,
-    category: "Dental care",
+    courseName: "Goalkeeper Masterclass",
+    courseId: "FTB104",
+    startTime: "2025-08-04T14:00:00",
+    endTime: "2025-08-04T15:30:00",
   },
   {
     _id: "5",
     serial: 5,
-    category: "Dental care",
+    courseName: "Defensive Tactics & Positioning",
+    courseId: "FTB105",
+    startTime: "2025-08-05T16:00:00",
+    endTime: "2025-08-05T17:30:00",
   },
   {
     _id: "6",
     serial: 6,
-    category: "Dental care",
+    courseName: "Passing and Ball Control",
+    courseId: "FTB106",
+    startTime: "2025-08-06T09:00:00",
+    endTime: "2025-08-06T10:30:00",
   },
   {
     _id: "7",
     serial: 7,
-    category: "Dental care",
+    courseName: "Speed and Agility Training",
+    courseId: "FTB107",
+    startTime: "2025-08-07T06:00:00",
+    endTime: "2025-08-07T07:30:00",
   },
   {
     _id: "8",
     serial: 8,
-    category: "Dental care",
+    courseName: "Tactical Awareness for Midfielders",
+    courseId: "FTB108",
+    startTime: "2025-08-08T11:00:00",
+    endTime: "2025-08-08T12:30:00",
   },
   {
     _id: "9",
     serial: 9,
-    category: "Dental care",
+    courseName: "Teamwork and Communication",
+    courseId: "FTB109",
+    startTime: "2025-08-09T13:00:00",
+    endTime: "2025-08-09T14:30:00",
   },
   {
     _id: "10",
     serial: 10,
-    category: "Dental care",
+    courseName: "Football Fitness Bootcamp",
+    courseId: "FTB110",
+    startTime: "2025-08-10T15:00:00",
+    endTime: "2025-08-10T16:30:00",
   },
   {
     _id: "11",
     serial: 11,
-    category: "Dental care",
+    courseName: "Set Piece Mastery",
+    courseId: "FTB111",
+    startTime: "2025-08-11T17:00:00",
+    endTime: "2025-08-11T18:30:00",
   },
   {
     _id: "12",
     serial: 12,
-    category: "Dental care",
+    courseName: "Crossing and Finishing",
+    courseId: "FTB112",
+    startTime: "2025-08-12T08:00:00",
+    endTime: "2025-08-12T09:30:00",
   },
   {
     _id: "13",
     serial: 13,
-    category: "Dental care",
+    courseName: "One-on-One Defense",
+    courseId: "FTB113",
+    startTime: "2025-08-13T10:00:00",
+    endTime: "2025-08-13T11:30:00",
   },
   {
     _id: "14",
     serial: 14,
-    category: "Dental care",
+    courseName: "Vision and Game Intelligence",
+    courseId: "FTB114",
+    startTime: "2025-08-14T12:00:00",
+    endTime: "2025-08-14T13:30:00",
   },
   {
     _id: "15",
-    serial: 1,
-    category: "Dental care",
+    serial: 15,
+    courseName: "Strength & Conditioning for Football",
+    courseId: "FTB115",
+    startTime: "2025-08-15T14:00:00",
+    endTime: "2025-08-15T15:30:00",
+  },
+  {
+    _id: "16",
+    serial: 16,
+    courseName: "Youth Football Academy",
+    courseId: "FTB116",
+    startTime: "2025-08-16T16:00:00",
+    endTime: "2025-08-16T17:30:00",
+  },
+  {
+    _id: "17",
+    serial: 17,
+    courseName: "Pro Level Tryout Prep",
+    courseId: "FTB117",
+    startTime: "2025-08-17T18:00:00",
+    endTime: "2025-08-17T19:30:00",
+  },
+  {
+    _id: "18",
+    serial: 18,
+    courseName: "Elite Footwork Techniques",
+    courseId: "FTB118",
+    startTime: "2025-08-18T09:00:00",
+    endTime: "2025-08-18T10:30:00",
+  },
+  {
+    _id: "19",
+    serial: 19,
+    courseName: "Off-the-Ball Movement",
+    courseId: "FTB119",
+    startTime: "2025-08-19T11:00:00",
+    endTime: "2025-08-19T12:30:00",
+  },
+  {
+    _id: "20",
+    serial: 20,
+    courseName: "Leadership for Team Captains",
+    courseId: "FTB120",
+    startTime: "2025-08-20T13:00:00",
+    endTime: "2025-08-20T14:30:00",
   },
 ];
 
-const SubCategory = () => {
+const Courses = () => {
   const [page, setPage] = useState(() => {
     const urlPage = new URLSearchParams(window.location.search).get("page");
     return urlPage ? parseInt(urlPage, 10) : 1;
@@ -144,9 +229,30 @@ const SubCategory = () => {
       render: (text) => <span style={{ color: "#FDFDFD" }}>#{text}</span>,
     },
     {
-      title: "Sub Category Name",
-      dataIndex: "category",
-      key: "category",
+      title: "Course Name",
+      dataIndex: "courseName",
+      key: "courseName",
+      align: "left",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
+      title: "Course Id",
+      dataIndex: "courseId",
+      key: "courseId",
+      align: "left",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
+      title: "Start Time",
+      dataIndex: "startTime",
+      key: "startTime",
+      align: "left",
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+    },
+    {
+      title: "End Time",
+      dataIndex: "endTime",
+      key: "endTime",
       align: "left",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
@@ -225,14 +331,14 @@ const SubCategory = () => {
               lineHeight: "24px",
             }}
           >
-            Add Sub Category
+            Add Course
           </h3>
 
           <div>
             <Button
               onClick={() => setOpenAddModel(true)}
               style={{
-                width: "200px",
+                width: "151px",
                 height: "40px",
                 boxShadow: "0px 2px 4px 0px #0000001A",
                 backgroundColor: "#2E7A8A",
@@ -246,7 +352,7 @@ const SubCategory = () => {
               }}
             >
               <PlusOutlined />
-              <span style={{ margin: 0 }}>Add Sub Category</span>
+              <span style={{ margin: 0 }}>Add Course</span>
             </Button>
           </div>
         </div>
@@ -324,7 +430,7 @@ const SubCategory = () => {
             <div className="text-center mt-6">
               <button
                 onClick={handleAddCategory}
-                className="bg-[#BB6D42] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
+                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
               >
                 Add Category
               </button>
@@ -407,4 +513,4 @@ const SubCategory = () => {
   );
 };
 
-export default SubCategory;
+export default Courses;

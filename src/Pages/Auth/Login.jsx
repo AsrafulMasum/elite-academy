@@ -2,21 +2,40 @@ import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
 import { useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
+import { useLoginMutation } from "../../redux/features/authApi";
+import toast from "react-hot-toast";
 
-import "./style.css";
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const [login] = useLoginMutation();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await login({
+        email: values.email,
+        password: values.password,
+      }).unwrap();
+
+      if (res?.success) {
+        localStorage.setItem("token", JSON.stringify(res?.data?.accessToken));
+        toast.success("Login successful!");
+        navigate("/");
+      } else {
+        toast.error("Login failed.", res?.message || "Please try again.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("Login failed. Check your credentials.");
+    }
   };
 
   const navigate = useNavigate();
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen">
+    <div className="flex justify-center items-center w-screen h-screen bg-[#000000]">
       <div>
         <Form
           name="normal_login"
-          className="login-form bg-[#FEFEFECC] border rounded-2xl px-[150px] py-[100px] w-[686px] shadow-soft"
+          className="login-form bg-green rounded-2xl px-[150px] py-[100px] w-[686px] shadow-soft"
           initialValues={{
             remember: false,
           }}
@@ -29,7 +48,7 @@ const Login = () => {
               alt="logo of the website"
             />
           </div>
-          <h3 className="text-2xl text-[#333333] font-semibold leading-8 text-center pt-10 pb-6">
+          <h3 className="text-2xl text-[#FDFDFD] font-semibold leading-8 text-center pt-10 pb-6">
             Log in to your account
           </h3>
 
@@ -107,14 +126,14 @@ const Login = () => {
             }}
           >
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox style={{ color: "#818181", fontSize: "16px" }}>
+              <Checkbox style={{ color: "#757575", fontSize: "16px" }}>
                 Remember me
               </Checkbox>
             </Form.Item>
             <a
               className="login-form-forgot"
               style={{
-                color: "#D93D04",
+                color: "#FFC107",
                 fontWeight: "500",
                 fontSize: "16px",
                 lineHeight: "24px",
@@ -128,7 +147,6 @@ const Login = () => {
           <div className="flex justify-center">
             <Form.Item style={{ marginBottom: 0 }}>
               <Button
-                onClick={() => navigate("/")}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
@@ -138,7 +156,7 @@ const Login = () => {
                   width: "99px",
                   fontWeight: "500",
                   fontSize: "14px",
-                  background: "#BB6D42",
+                  background: "#2E7A8A",
                   marginTop: "40px",
                   borderRadius: "8px",
                 }}

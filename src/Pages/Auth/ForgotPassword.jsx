@@ -2,11 +2,11 @@ import { Button, Form, Input, Typography } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import "./style.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
+    console.log("first")
     localStorage.setItem("email", JSON.stringify(values.email));
     console.log("Received values of form: ", values.email);
     Swal.fire({
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
   };
   return (
     <div
-      className="   "
+      className="bg-[#000000]"
       style={{
         display: "flex",
         alignItems: "center",
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
       <div>
         <Form
           name="normal_login"
-          className="login-form bg-[#FEFEFECC] border rounded-2xl px-[259px] py-[100px] w-[686px] shadow-soft"
+          className="login-form bg-green rounded-2xl px-[259px] py-[100px] w-[686px] shadow-soft"
           initialValues={{
             remember: true,
           }}
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
           <h1
             style={{
               fontSize: "24px",
-              color: "#333333",
+              color: "#FDFDFD",
               textAlign: "center",
               fontWeight: 600,
               lineHeight: "32px",
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
             style={{
               fontSize: "16px",
               lineHeight: "21px",
-              color: "#5C5C5C",
+              color: "#757575",
               textAlign: "center",
               marginTop: "24px",
               marginBottom: "40px",
@@ -107,7 +107,6 @@ const ForgotPassword = () => {
           <div className="flex justify-center">
             <Form.Item style={{ marginBottom: 0 }}>
               <Button
-                onClick={() => navigate("/")}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
@@ -117,7 +116,7 @@ const ForgotPassword = () => {
                   width: "124px",
                   fontWeight: "500",
                   fontSize: "14px",
-                  background: "#BB6D42",
+                  background: "#2E7A8A",
                   marginTop: "24px",
                   borderRadius: "4px",
                 }}

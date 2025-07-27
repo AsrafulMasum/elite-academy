@@ -2,7 +2,7 @@ import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import "./style.css";
+
 const UpdatePassword = () => {
   const navigate = useNavigate();
   const [newPassError, setNewPassError] = useState("");
@@ -25,7 +25,7 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div
+    <div className="bg-[#000000]"
       style={{
         width: "100%",
         height: "100vh",
@@ -37,7 +37,7 @@ const UpdatePassword = () => {
       <div>
         <Form
           name="normal_login"
-          className="login-form bg-[#FEFEFECC] border rounded-2xl px-[100px] py-[170px] w-[710px] shadow-soft"
+          className="login-form bg-green rounded-2xl px-[100px] py-[170px] w-[710px] shadow-soft"
           initialValues={{
             remember: true,
           }}
@@ -49,7 +49,7 @@ const UpdatePassword = () => {
           <h1
             style={{
               fontSize: "24px",
-              color: "#333333",
+              color: "#FDFDFD",
               textAlign: "center",
               lineHeight: "32px",
               marginBottom: "24px",
@@ -60,7 +60,7 @@ const UpdatePassword = () => {
           </h1>
           <p
             style={{
-              color: "#5C5C5C",
+              color: "#757575",
               fontSize: "16px",
               fontWeight: 400,
               textAlign: "center",
@@ -160,7 +160,7 @@ const UpdatePassword = () => {
                   width: "166px",
                   fontWeight: "500",
                   fontSize: "14px",
-                  background: "#BB6D42",
+                  background: "#2E7A8A",
                   borderRadius: "8px",
                 }}
               >

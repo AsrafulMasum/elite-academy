@@ -13,14 +13,13 @@ import {
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiBookmark, CiLogout, CiSettings } from "react-icons/ci";
 import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
-import { RiAdminLine } from "react-icons/ri";
-import { PiInfoThin } from "react-icons/pi";
+import { RiAdminLine, RiUser2Line } from "react-icons/ri";
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { GoQuestion } from "react-icons/go";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { BsExclamationCircle } from "react-icons/bs";
-import { MdOutlineCategory } from "react-icons/md";
+import { MdOutlineCategory, MdOutlineWatchLater } from "react-icons/md";
+import { PiVideo } from "react-icons/pi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -94,17 +93,17 @@ const Dashboard = () => {
         />
       ),
     },
-    {
-      title: "Wishlist",
-      path: "/wishlist",
-      icon: (pathname) => (
-        <CiBookmark
-          className={`text-xl ${
-            pathname === "/wishlist" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
-          }`}
-        />
-      ),
-    },
+    // {
+    //   title: "Wishlist",
+    //   path: "/wishlist",
+    //   icon: (pathname) => (
+    //     <CiBookmark
+    //       className={`text-xl ${
+    //         pathname === "/wishlist" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+    //       }`}
+    //     />
+    //   ),
+    // },
     {
       title: "Interested User",
       path: "/interestedUser",
@@ -139,10 +138,44 @@ const Dashboard = () => {
       ),
     },
     {
+      title: "Courses",
+      path: "/courses",
+      icon: (pathname) => (
+        <TbPlayFootball
+          className={`text-xl ${
+            pathname === "/courses" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Tutorials",
+      path: "/tutorials",
+      icon: (pathname) => (
+        <PiVideo
+          className={`text-xl ${
+            pathname === "/tutorials" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Class Schedule",
+      path: "/classSchedule",
+      icon: (pathname) => (
+        <MdOutlineWatchLater
+          className={`text-xl ${
+            pathname === "/classSchedule" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+
+    {
       title: "Coach",
       path: "/coach",
       icon: (pathname) => (
-        <TbPlayFootball
+        <RiUser2Line
           className={`text-xl ${
             pathname === "/coach" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
@@ -273,7 +306,6 @@ const Dashboard = () => {
             display: "flex",
             alignItems: "center",
             flexDirection: "column",
-            gap: "0px",
             height: "90%",
             marginTop: 16,
           }}
@@ -324,7 +356,7 @@ const Dashboard = () => {
                     gap: "8px",
                     background: item.path === pathname ? "#2E7A8A" : "none",
                     width: "100%",
-                    padding: "12px 8px 12px 35px",
+                    padding: "10px 8px 10px 35px",
                   }}
                 >
                   <div style={{ height: "24px" }}>{item.icon(pathname)}</div>
@@ -380,6 +412,15 @@ const Dashboard = () => {
                 />
               )}
               {item.title === "Manage Admin" && (
+                <hr
+                  style={{
+                    border: "none",
+                    borderTop: "1px solid #19434C",
+                    margin: "8px 0",
+                  }}
+                />
+              )}
+              {item.title === "Class Schedule" && (
                 <hr
                   style={{
                     border: "none",
