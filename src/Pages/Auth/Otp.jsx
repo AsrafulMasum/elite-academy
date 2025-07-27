@@ -1,29 +1,43 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import {
+  useOtpVerifyMutation,
+  useResendOTPMutation,
+} from "../../redux/features/authApi";
 const Otp = () => {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState("284");
-  const [err, setErr] = useState("");
+  const [otp, setOtp] = useState("");
+  const email = new URLSearchParams(location.search).get("email");
+  const [otpVerify] = useOtpVerifyMutation();
+  const [resendOTP] = useResendOTPMutation();
 
-  const handleResendEmail = () => {
-    const email = JSON.parse(localStorage.getItem("email"));
-  };
-  const handleVerifyOtp = () => {
-    Swal.fire({
-      title: "Password Reset",
-      text: "Your password has been successfully reset. click confirm to set a new password",
-      showDenyButton: false,
-      showCancelButton: false,
-      confirmButtonText: "Confirm",
-      confirmButtonColor: "#2E7A8A",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/update-password");
+  const onFinish = async () => {
+    const data = {
+      email: email,
+      oneTimeCode: otp,
+    };
+
+    try {
+      const res = await otpVerify(data).unwrap();
+      if (res?.success) {
+        navigate(`/update-password?token=${res?.data}`);
       }
-    });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleResendEmail = async () => {
+    try {
+      const res = await resendOTP({ email }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -53,7 +67,7 @@ const Otp = () => {
               lineHeight: "24px",
             }}
           >
-            Enter the 6-digit code sent to your email.
+            Enter the 4-digit code sent to your email.
           </p>
 
           <div
@@ -68,7 +82,7 @@ const Otp = () => {
             <OTPInput
               value={otp}
               onChange={setOtp}
-              numInputs={6}
+              numInputs={4}
               inputStyle={{
                 height: "50px",
                 width: "55px",
@@ -85,7 +99,7 @@ const Otp = () => {
 
           <div className="flex justify-center">
             <Button
-              onClick={handleVerifyOtp}
+              onClick={onFinish}
               type="primary"
               htmlType="submit"
               className="login-form-button"

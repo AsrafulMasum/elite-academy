@@ -11,7 +11,7 @@ import {
   TbUsersGroup,
 } from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
-import { CiBookmark, CiLogout, CiSettings } from "react-icons/ci";
+import { CiLogout, CiSettings } from "react-icons/ci";
 import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
 import { RiAdminLine, RiUser2Line } from "react-icons/ri";
 import { useState } from "react";
@@ -20,6 +20,9 @@ import { GoQuestion } from "react-icons/go";
 import { BsExclamationCircle } from "react-icons/bs";
 import { MdOutlineCategory, MdOutlineWatchLater } from "react-icons/md";
 import { PiVideo } from "react-icons/pi";
+import logo from "../../assets/logo.png";
+import { useProfileQuery } from "../../redux/features/authApi";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,11 +30,20 @@ const Dashboard = () => {
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { data } = useProfileQuery();
+  const user = data?.data;
 
-  const handleLogOut = () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
     navigate("/login");
-    window.location.reload();
   };
+
+  const src =
+    user?.image && user?.image.startsWith("http")
+      ? user?.image
+      : user?.image
+      ? `${imageUrl}${user?.image}`
+      : "/default-avatar.png";
 
   const linkItems = [
     {
@@ -270,17 +282,11 @@ const Dashboard = () => {
       ],
     },
 
-    {
-      title: "Log out",
-      path: "/login",
-      icon: (pathname) => (
-        <CiLogout
-          className={`text-xl ${
-            pathname === "/subscription" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
-          }`}
-        />
-      ),
-    },
+    // {
+    //   title: "Log out",
+    //   path: "/login",
+    //   icon: (pathname) => <CiLogout className={`text-xl`} />,
+    // },
   ];
 
   return (
@@ -431,6 +437,13 @@ const Dashboard = () => {
               )}
             </li>
           ))}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 pl-8 py-3 w-full rounded-xl text-red-500 pb-10"
+          >
+            <CiLogout className="text-xl" />
+            <span className="text-sm">Log Out</span>
+          </button>
         </ul>
       </Sider>
 
@@ -451,11 +464,7 @@ const Dashboard = () => {
           }}
         >
           <div className="flex justify-center items-center">
-            {/* <img
-              src={logo}
-              alt="logo"
-              className="w-16"
-            /> */}
+            <img src={logo} alt="logo" className="w-16" />
           </div>
           <div
             style={{
@@ -514,7 +523,7 @@ const Dashboard = () => {
               }}
             >
               <img
-                src={adminImg}
+                src={src}
                 style={{
                   width: "40px",
                   height: "40px",
@@ -531,7 +540,7 @@ const Dashboard = () => {
                   lineHeight: "24px",
                 }}
               >
-                Admin Niloofar
+                {user?.name}
               </h2>
             </Link>
           </div>

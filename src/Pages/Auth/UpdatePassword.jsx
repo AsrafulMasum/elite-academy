@@ -1,31 +1,49 @@
 import { Button, Form, Input } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useResetPasswordMutation } from "../../redux/features/authApi";
+import toast from "react-hot-toast";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();
   const [newPassError, setNewPassError] = useState("");
   const [conPassError, setConPassError] = useState("");
-  const [err, setErr] = useState("");
-  const onFinish = (values) => {
-    const { password, confirmPassword } = values;
-    Swal.fire({
-      title: "Successfully",
-      text: "Your password has been updated, please change your password regularly to avoid this happening",
-      showDenyButton: false,
-      showCancelButton: false,
-      confirmButtonText: "Confirm",
-      confirmButtonColor: "#BB6D42",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/");
+  const [resetPassword] = useResetPasswordMutation();
+
+  const onFinish = async (values) => {
+    if (values) {
+      const token = new URLSearchParams(window.location.search).get("token");
+      if (!token) {
+        console.error("Reset token is missing!");
+        return;
       }
-    });
+
+      const data = {
+        newPassword: values?.newPassword,
+        confirmPassword: values?.confirmPassword,
+      };
+      console.log(data)
+
+      try {
+        const res = await resetPassword({
+          payload: data,
+          token,
+        }).unwrap();
+
+        if (res?.success) {
+          navigate("/login");
+          toast.success(res?.message);
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error(error?.data?.message);
+      }
+    }
   };
 
   return (
-    <div className="bg-[#000000]"
+    <div
+      className="bg-[#000000]"
       style={{
         width: "100%",
         height: "100vh",
@@ -79,7 +97,7 @@ const UpdatePassword = () => {
               New Password
             </label>
             <Form.Item
-              name="new_password"
+              name="newPassword"
               rules={[
                 {
                   required: true,
@@ -120,7 +138,7 @@ const UpdatePassword = () => {
             </label>
             <Form.Item
               style={{ marginBottom: 0 }}
-              name="confirm_password"
+              name="confirmPassword"
               rules={[
                 {
                   required: true,
@@ -150,7 +168,6 @@ const UpdatePassword = () => {
           <div className="flex justify-center">
             <Form.Item style={{ marginBottom: 0 }}>
               <Button
-                onClick={() => navigate("/")}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"

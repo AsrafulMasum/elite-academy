@@ -1,46 +1,58 @@
 import { useState } from "react";
 import { Button, ConfigProvider, Form, Input } from "antd";
-import Swal from "sweetalert2";
 import { CiEdit } from "react-icons/ci";
-import adminImg from "../../assets/admin.jpg";
+import {
+  useChangePasswordMutation,
+  useProfileQuery,
+  useUpdateProfileMutation,
+} from "../../redux/features/authApi";
+import { imageUrl } from "../../redux/api/baseApi";
+import toast from "react-hot-toast";
 const AdminProfile = () => {
   const [isEdit, setIsEdit] = useState(true);
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
+  const { data, refetch } = useProfileQuery();
+  const user = data?.data;
+  const [updateProfile] = useUpdateProfileMutation();
+  const [changePassword] = useChangePasswordMutation();
 
   const [newPassError, setNewPassError] = useState("");
   const [conPassError, setConPassError] = useState("");
   const [curPassError, setCurPassError] = useState("");
 
   const [imgPick, setImagePick] = useState(null);
+  const [image, setImage] = useState(null);
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setImagePick(URL.createObjectURL(event.target.files[0]));
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imgUrl = URL.createObjectURL(file);
+      setImagePick(imgUrl);
+      setImage(file);
     }
   };
 
-  const handleChangePassword = (values) => {
+  const handleSubmit = async (values) => {
     console.log(values);
+    const formData = new FormData();
+    if (image) {
+      formData.append("image", image);
+    }
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+    try {
+      const data = await updateProfile(formData).unwrap();
+      if (data?.success) {
+        toast.success(data?.message);
+        refetch();
+        setProfileEdit(false);
+      }
+    } catch (err) {
+      toast.error(err?.message || "Update failed");
+    }
+  };
+
+  const handleChangePassword = async (values) => {
     if (values?.current_password === values.new_password) {
       setNewPassError("The New password is semilar with old Password");
     } else {
@@ -52,11 +64,28 @@ const AdminProfile = () => {
     } else {
       setConPassError("");
     }
+    const payload = {
+      currentPassword: values?.current_password,
+      newPassword: values?.new_password,
+      confirmPassword: values?.confirm_password,
+    };
+    console.log(payload);
+    try {
+      const res = await changePassword(payload).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  const src =
+    user?.image && user?.image.startsWith("http")
+      ? user?.image
+      : user?.image
+      ? `${imageUrl}${user?.image}`
+      : "/default-avatar.png";
 
   return (
     <div>
@@ -111,7 +140,7 @@ const AdminProfile = () => {
                 }}
               >
                 <img
-                  src={imgPick ? imgPick : adminImg}
+                  src={imgPick ? imgPick : src}
                   alt=""
                   style={{
                     height: 114,
@@ -147,7 +176,7 @@ const AdminProfile = () => {
                   color: "#FDFDFD",
                 }}
               >
-                Admin Niloofar
+                {user?.name}
               </p>
             </div>
           </div>
@@ -206,7 +235,10 @@ const AdminProfile = () => {
 
           <ConfigProvider>
             {isEdit ? (
-              <div className="flex justify-center items-center">
+              <Form
+                onFinish={handleSubmit}
+                className="flex justify-center items-center"
+              >
                 <div
                   className=" bg-action w-[75%]"
                   style={{
@@ -231,7 +263,7 @@ const AdminProfile = () => {
                         width: "65%",
                       }}
                     >
-                      <div className=" mb-3">
+                      <div className="mb-3">
                         <label
                           style={{
                             color: "#FDFDFD",
@@ -239,20 +271,28 @@ const AdminProfile = () => {
                             fontWeight: 500,
                           }}
                         >
-                          User Name
+                          Name
                         </label>
-                        <Input
-                          placeholder="Admin Marie"
-                          style={{
-                            padding: "10px",
-                            color: "#818181",
-                            fontSize: 14,
-                            fontWeight: 400,
-                            margin: "8px 0px",
-                          }}
-                        />
+                        <Form.Item
+                          name={"name"}
+                          className="col-span-12"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <Input
+                            placeholder={user?.name}
+                            style={{
+                              width: "100%",
+                              height: "48px",
+                              border: "none",
+                              backgroundColor: "#E7F0EF75",
+                              color: "#757575",
+                              paddingLeft: "20px",
+                            }}
+                          />
+                        </Form.Item>
                       </div>
-                      <div className=" mb-3">
+
+                      <div className="mb-3">
                         <label
                           style={{
                             color: "#FDFDFD",
@@ -262,19 +302,27 @@ const AdminProfile = () => {
                         >
                           Email
                         </label>
-                        <Input
-                          // disabled
-                          placeholder="Camille@gmail.com"
-                          style={{
-                            padding: "10px",
-                            color: "#818181",
-                            fontSize: 14,
-                            fontWeight: 400,
-                            margin: "8px 0px",
-                          }}
-                        />
+                        <Form.Item
+                          name={"email"}
+                          className="col-span-12"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <Input
+                            disabled
+                            placeholder={user?.email}
+                            style={{
+                              width: "100%",
+                              height: "48px",
+                              border: "none",
+                              backgroundColor: "#E7F0EF75",
+                              color: "#757575",
+                              paddingLeft: "20px",
+                            }}
+                          />
+                        </Form.Item>
                       </div>
-                      <div className=" mb-3">
+
+                      <div className="mb-3">
                         <label
                           style={{
                             color: "#FDFDFD",
@@ -284,18 +332,26 @@ const AdminProfile = () => {
                         >
                           Contact no
                         </label>
-                        <Input
-                          placeholder="+99007007007"
-                          style={{
-                            padding: "10px",
-                            color: "#818181",
-                            fontSize: 14,
-                            fontWeight: 400,
-                            margin: "8px 0px",
-                          }}
-                        />
+                        <Form.Item
+                          name={"contact"}
+                          className="col-span-12"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <Input
+                            placeholder={user?.contact}
+                            style={{
+                              width: "100%",
+                              height: "48px",
+                              border: "none",
+                              backgroundColor: "#E7F0EF75",
+                              color: "#757575",
+                              paddingLeft: "20px",
+                            }}
+                          />
+                        </Form.Item>
                       </div>
-                      <div className=" mb-3">
+
+                      <div className="mb-3">
                         <label
                           style={{
                             color: "#FDFDFD",
@@ -305,16 +361,23 @@ const AdminProfile = () => {
                         >
                           Address
                         </label>
-                        <Input
-                          placeholder="79/A Joker Vila, Gotham City"
-                          style={{
-                            padding: "10px",
-                            color: "#818181",
-                            fontSize: 14,
-                            fontWeight: 400,
-                            margin: "8px 0px",
-                          }}
-                        />
+                        <Form.Item
+                          name={"address"}
+                          className="col-span-12"
+                          style={{ marginBottom: 0 }}
+                        >
+                          <Input
+                            placeholder={user?.address}
+                            style={{
+                              width: "100%",
+                              height: "48px",
+                              border: "none",
+                              backgroundColor: "#E7F0EF75",
+                              color: "#757575",
+                              paddingLeft: "20px",
+                            }}
+                          />
+                        </Form.Item>
                       </div>
                     </div>
                   </div>
@@ -328,6 +391,7 @@ const AdminProfile = () => {
                     }}
                   >
                     <Button
+                      htmlType="submit"
                       style={{
                         height: 44,
                         width: 150,
@@ -342,7 +406,7 @@ const AdminProfile = () => {
                     </Button>
                   </div>
                 </div>
-              </div>
+              </Form>
             ) : (
               <div className=" flex justify-center items-center">
                 <div
@@ -398,12 +462,12 @@ const AdminProfile = () => {
                           placeholder="Enter Password"
                           type="password"
                           style={{
-                            border: "1px solid #E0E4EC",
-                            height: "52px",
-                            background: "white",
-                            borderRadius: "8px",
-                            outline: "none",
-                            margin: "8px 0px 0px 0px",
+                            width: "100%",
+                            height: "48px",
+                            border: "none",
+                            backgroundColor: "#E7F0EF75",
+                            color: "#757575",
+                            paddingLeft: "20px",
                           }}
                         />
                       </Form.Item>
@@ -443,12 +507,12 @@ const AdminProfile = () => {
                           placeholder="Enter Password"
                           type="password"
                           style={{
-                            border: "1px solid #E0E4EC",
-                            height: "52px",
-                            background: "white",
-                            borderRadius: "8px",
-                            outline: "none",
-                            margin: "8px 0px 0px 0px",
+                            width: "100%",
+                            height: "48px",
+                            border: "none",
+                            backgroundColor: "#E7F0EF75",
+                            color: "#757575",
+                            paddingLeft: "20px",
                           }}
                         />
                       </Form.Item>
@@ -488,12 +552,12 @@ const AdminProfile = () => {
                           placeholder="Enter Password"
                           type="password"
                           style={{
-                            border: "1px solid #E0E4EC",
-                            height: "52px",
-                            background: "white",
-                            borderRadius: "8px",
-                            outline: "none",
-                            margin: "8px 0px 0px 0px",
+                            width: "100%",
+                            height: "48px",
+                            border: "none",
+                            backgroundColor: "#E7F0EF75",
+                            color: "#757575",
+                            paddingLeft: "20px",
                           }}
                         />
                       </Form.Item>
@@ -525,6 +589,7 @@ const AdminProfile = () => {
                           }}
                         >
                           <Button
+                            htmlType="submit"
                             style={{
                               height: 44,
                               width: 150,

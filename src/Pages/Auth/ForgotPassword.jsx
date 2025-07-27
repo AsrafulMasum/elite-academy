@@ -1,23 +1,24 @@
-import { Button, Form, Input, Typography } from "antd";
-import React from "react";
+import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { useForgotPasswordMutation } from "../../redux/features/authApi";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log("first")
-    localStorage.setItem("email", JSON.stringify(values.email));
-    console.log("Received values of form: ", values.email);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Send OTP ",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
-      navigate("/otp");
-    });
+  const [forgotPassword] = useForgotPasswordMutation();
+
+  const onFinish = async (values) => {
+    try {
+      const res = await forgotPassword({
+        email: values?.email,
+      }).unwrap();
+      if (res?.success) {
+        navigate(`/otp?email=${values?.email}`);
+      } else {
+        console.error("Failed to send OTP");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
   return (
     <div
