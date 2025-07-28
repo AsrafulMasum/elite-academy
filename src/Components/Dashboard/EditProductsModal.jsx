@@ -1,35 +1,45 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import { CiImageOn } from "react-icons/ci";
+import { imageUrl } from "../../redux/api/baseApi";
+import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
+import ChipsInput from "./ChipsInput";
+import { useUpdateProductMutation } from "../../redux/features/productApi";
 
-const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
+const EditProductsModal = ({
+  openEditModel,
+  setOpenEditModel,
+  product,
+  refetch,
+}) => {
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
+  const { data: subCategoryData, isLoading: categoryLoading } =
+    useGetSubCategoriesQuery();
+  const [updateProduct, { isLoading }] = useUpdateProductMutation();
 
+  const [tags, setTags] = useState([]);
   const [form, setForm] = useState({
-    productName: "",
-    image: [],
+    title: "",
     price: "",
     quantity: "",
-    subCategory: "",
-    productSize: "",
+    subcategory: "",
     description: "",
   });
 
   useEffect(() => {
     if (product) {
       setForm({
-        productName: product.productsName || "",
+        title: product.title || "",
         price: product.price || "",
-        quantity: product.stock || "",
-        subCategory: product.category || "",
-        productSize: product.productSize || "",
+        quantity: product.quantity || "",
+        subcategory: product.subcategory || "",
+        productSize: [],
         description: product.description || "",
-        image: [],
       });
 
-      if (product.imageUrls && Array.isArray(product.imageUrls)) {
-        setImgURLs(product.imageUrls);
+      if (product.sizes && Array.isArray(product.sizes)) {
+        setTags(product.sizes);
       }
     }
   }, [product]);
@@ -52,8 +62,35 @@ const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
     e.preventDefault();
 
     // Submit logic here
-    console.log("Editing product:", form, imageFiles);
+    const formData = new FormData();
 
+    formData.append("title", form.title);
+    formData.append("price", form.price);
+    formData.append("quantity", form.quantity);
+    formData.append("subcategory", form.subcategory);
+    formData.append("description", form.description);
+
+    if (imageFiles && imageFiles.length > 0) {
+      imageFiles.forEach((file) => {
+        formData.append("image", file);
+      });
+    }
+
+    formData.append("sizes", JSON.stringify(tags));
+    const res = await updateProduct({ id: product?._id, formData });
+
+    if (res?.success) {
+      setForm({
+        title: "",
+        image: [],
+        price: "",
+        quantity: "",
+        subcategory: "",
+        description: "",
+      });
+      setTags([]);
+      refetch();
+    }
     // Reset and close
     setOpenEditModel(false);
   };
@@ -79,17 +116,32 @@ const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center items-center gap-10 mb-10">
             <div className="h-32 w-full flex items-center justify-center bg-gray-300 rounded-lg relative">
-              {imgURLs.length > 0 ? (
+              {imgURLs.length || product?.images?.length > 0 ? (
                 <div className="w-full max-h-32 overflow-x-auto overflow-y-hidden p-2">
                   <div className="flex gap-2 w-max">
-                    {imgURLs.map((url, index) => (
-                      <img
-                        key={index}
-                        src={url}
-                        alt={`preview-${index}`}
-                        className="h-28 w-28 object-cover rounded-md flex-shrink-0"
-                      />
-                    ))}
+                    {imgURLs?.length > 0
+                      ? imgURLs?.map((url, index) => (
+                          <img
+                            key={index}
+                            src={url}
+                            alt={`preview-${index}`}
+                            className="h-full w-20 rounded-lg object-cover z-[99]"
+                          />
+                        ))
+                      : product?.images?.map((url, index) => (
+                          <img
+                            key={index}
+                            src={
+                              url?.startsWith("http")
+                                ? url
+                                : url
+                                ? `${imageUrl}${url}`
+                                : "/default-avatar.png"
+                            }
+                            alt={`preview-${index}`}
+                            className="h-full w-20 rounded-lg object-cover z-[99]"
+                          />
+                        ))}                  
                   </div>
                 </div>
               ) : (
@@ -107,15 +159,9 @@ const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
           </div>
 
           {[
-            { label: "Product Name", name: "productName", type: "text" },
+            { label: "Product Name", name: "title", type: "text" },
             { label: "Price", name: "price", type: "number" },
             { label: "Quantity", name: "quantity", type: "number" },
-            {
-              label: "Product Size",
-              name: "productSize",
-              type: "text",
-              placeholder: "Enter sizes separated by commas",
-            },
           ].map((input) => (
             <div style={{ marginBottom: "16px" }} key={input.name}>
               <label
@@ -154,8 +200,8 @@ const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
               Sub Category
             </label>
             <select
-              name="subCategory"
-              value={form.subCategory}
+              name="subcategory"
+              value={form.subcategory}
               onChange={handleChange}
               style={{
                 border: "1px solid #E0E4EC",
@@ -167,14 +213,14 @@ const EditProductsModal = ({ openEditModel, setOpenEditModel, product }) => {
                 width: "100%",
               }}
             >
-              <option value="">Select a Sub Category</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home_appliance">Home Appliance</option>
-              <option value="beauty">Beauty</option>
-              <option value="sports">Sports</option>
+              {subCategoryData &&
+                subCategoryData?.data.map((sCategory) => (
+                  <option value={sCategory?._id}>{sCategory?.name}</option>
+                ))}
             </select>
           </div>
+
+          <ChipsInput tags={tags} setTags={setTags} />
 
           {/* Description */}
           <div style={{ marginBottom: "16px" }}>

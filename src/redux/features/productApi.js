@@ -1,0 +1,38 @@
+import { baseApi } from "../api/baseApi";
+
+const productApi = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    getProducts: builder.query({
+      query: () => {
+        return {
+          method: "GET",
+          url: "/product",
+        };
+      },
+    }),
+    addProduct: builder.mutation({
+      query: (data) => ({
+        url: "/product",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    updateProduct: builder.mutation({
+      query: (data) => {
+        console.log("update d", data);
+        
+        return {
+          url: `/product/${data?.id}`,
+          method: "PATCH",
+          body: data?.formData,
+        };
+      },
+    }),
+  }),
+});
+
+export const {
+  useGetProductsQuery,
+  useAddProductMutation,
+  useUpdateProductMutation,
+} = productApi;

@@ -1,8 +1,8 @@
 import { Tag } from "antd";
 import { useState } from "react";
 
-const ChipsInput = ({ separator = "," }) => {
-  const [tags, setTags] = useState([]);
+const ChipsInput = ({ separator = ",", tags, setTags }) => {
+  // const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e) => {
