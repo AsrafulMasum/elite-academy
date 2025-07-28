@@ -1,20 +1,26 @@
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { CiImageOn } from "react-icons/ci";
+import { ImSpinner2 } from "react-icons/im";
 import ChipsInput from "./ChipsInput";
+import { useAddProductMutation } from "../../redux/features/productApi";
+import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
 
-const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
+const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
-
+  const [tags, setTags] = useState([]);
   const [form, setForm] = useState({
-    productName: "",
-    image: "",
-    startDate: "",
-    endDate: "",
+    title: "",
     price: "",
     quantity: "",
+    description: "",
+    image: [],
   });
+
+  const [addProduct, { isLoading, isError }] = useAddProductMutation();
+  const { data: subCategoryData, isLoading: categoryLoading } =
+    useGetSubCategoriesQuery();
 
   const handleAdd = (e) => {
     const { name, value, files } = e.target;
@@ -32,34 +38,41 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("name", form.productName);
-    //   formData.append("price", form.price);
-    //   formData.append("startDate", form.startDate);
-    //   formData.append("endDate", form.endDate);
-    //   if (imageFile) {
-    //     formData.append("image", imageFile);
-    //   }
-    //   const res = await createOffer(formData).unwrap();
-    //   if (res?.success) {
-    //     setOpenAddModel(false);
-    //     setForm({
-    //       productName: "",
-    //       imageUrl: "",
-    //       price: "",
-    //       startDate: "",
-    //       endDate: "",
-    //     });
-    //     setImgURL("");
-    //     setImageFile(null);
-    //     refetch();
-    //     toast.success("Offer added successfully");
-    //   }
-    // } catch (err) {
-    //   console.error("Add offer failed", err);
-    //   toast.error("Add offer failed");
-    // }
+    try {
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("price", form.price);
+      formData.append("quantity", form.quantity);
+      formData.append("subcategory", form.subcategory);
+      formData.append("description", form.description);
+
+      if (imageFiles && imageFiles.length > 0) {
+        imageFiles.forEach((file) => {
+          formData.append("image", file);
+        });
+      }
+
+      formData.append("sizes", JSON.stringify(tags));
+      const res = await addProduct(formData).unwrap();
+      if (res?.success) {
+        setOpenAddModel(false);
+        setForm({
+          title: "",
+          image: "",
+          price: "",
+          quantity: "",
+          description: "",
+          // image: [],
+        });
+        // setImgURLs([]);
+        // setImageFiles([]);
+        refetch();
+        toast.success("Offer added successfully");
+      }
+    } catch (err) {
+      console.error("Add offer failed", err);
+      toast.error("Add offer failed");
+    }
   };
 
   useEffect(() => {
@@ -120,7 +133,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
               value={form.productName}
               onChange={handleAdd}
               type="text"
-              name="productName"
+              name="title"
               placeholder="Enter Product Name"
               style={{
                 border: "1px solid #E0E4EC",
@@ -198,30 +211,33 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
             >
               Sub Category
             </label>
-            <select
-              name="subCategory"
-              value={form.subCategory}
-              onChange={handleAdd}
-              style={{
-                border: "1px solid #E0E4EC",
-                padding: "10px",
-                height: "52px",
-                background: "white",
-                borderRadius: "8px",
-                outline: "none",
-                width: "100%",
-              }}
-            >
-              <option value="">Select a Sub Category</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home_appliance">Home Appliance</option>
-              <option value="beauty">Beauty</option>
-              <option value="sports">Sports</option>
-            </select>
+            {categoryLoading ? (
+              <Spin />
+            ) : (
+              <select
+                name="subcategory"
+                value={form.subcategory}
+                onChange={handleAdd}
+                placeholder="Select Sub Category"
+                style={{
+                  border: "1px solid #E0E4EC",
+                  padding: "10px",
+                  height: "52px",
+                  background: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  width: "100%",
+                }}
+              >
+                {subCategoryData?.data &&
+                  subCategoryData?.data.map((sCategory) => (
+                    <option value={sCategory?._id}>{sCategory?.name}</option>
+                  ))}
+              </select>
+            )}
           </div>
 
-          <ChipsInput />
+          <ChipsInput tags={tags} setTags={setTags} />
 
           <div style={{ marginBottom: "16px" }}>
             <label
@@ -260,7 +276,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel }) => {
               outline: "none",
               padding: "10px 20px",
             }}
-            value="Submit"
+            value={isLoading ? "Submiting" : "Submit"}
             type="submit"
           />
         </form>

@@ -7,6 +7,9 @@ import { PlusOutlined } from "@ant-design/icons";
 import { FiEdit } from "react-icons/fi";
 import AddProductsModal from "../../Components/Dashboard/AddProductsModal";
 import EditProductsModal from "../../Components/Dashboard/EditProductsModal";
+import { useGetProductsQuery } from "../../redux/features/productApi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const data = [
   {
@@ -201,6 +204,10 @@ const Products = () => {
   });
   const [openAddModal, setOpenAddModel] = useState(false);
   const [openEditModel, setOpenEditModel] = useState(false);
+  const { data: productData, isLoading, refetch } = useGetProductsQuery(null);
+
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
 
   const [value, setValue] = useState(null);
 
@@ -214,15 +221,14 @@ const Products = () => {
   const columns = [
     {
       title: "Serial No.",
-      dataIndex: "key",
-      key: "key",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      key: "serial",
+     render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
     },
     {
       title: "Product Name",
-      dataIndex: "productsName",
-      key: "productsName",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      dataIndex: "title",
+      key: "title",
+      render: (title) => <span className="text-[#FDFDFD]">{title}</span>,
     },
     {
       title: "Product Images",
@@ -232,15 +238,15 @@ const Products = () => {
         return (
           <img
             key={record?._id}
-            src={record?.product?.image}
-            // src={
-            //   item?.product?.image &&
-            //   item?.product?.image.startsWith("http")
-            //     ? item?.product?.image
-            //     : item?.product?.image
-            //     ? `${imageUrl}${item?.product?.image}`
-            //     : "/default-avatar.png"
-            // }
+            // src={`http://10.10.7.6:5000/${record?.images[0]}`}
+            src={
+              record?.images &&
+              record?.images[0]?.startsWith("http")
+                ? record?.images[0]
+                : record?.images[0]
+                ? `${imageUrl}${record?.images[0]}`
+                : "/default-avatar.png"
+            }
             alt={`Product ${record?._id}`}
             className="w-11 h-11 object-cover rounded border border-[#3F857B]"
           />
@@ -251,13 +257,15 @@ const Products = () => {
       title: "Product Id",
       dataIndex: "productId",
       key: "productId",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      render: (_,record) => <span className="text-[#FDFDFD]">{record?._id}</span>,
     },
     {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (category) => (
+        <span style={{ color: "#FDFDFD" }}>{category?.title}</span>
+      ),
     },
     {
       title: "Price",
@@ -267,8 +275,8 @@ const Products = () => {
     },
     {
       title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
+      dataIndex: "quantity",
+      key: "quantity",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
@@ -333,17 +341,26 @@ const Products = () => {
           >
             <FiEdit size={16} className="text-secondary" />
           </button>
+          <button
+            onClick={() => {
+              setShowDelete(true);
+              setDeleteId(record?._id);
+            }}
+            className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
+          >
+            <RiDeleteBin6Line size={20} className="text-secondary" />
+          </button>
         </div>
       ),
     },
   ];
 
   return (
-    <div className="w-full bg-[#13333A]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
-          height: "100%",
+          // height: "100%",
         }}
       >
         <div
@@ -392,48 +409,54 @@ const Products = () => {
           </div>
         </div>
 
-        <div className="relative h-full">
-          <ConfigProvider
-            theme={{
-              components: {
-                Pagination: {
-                  itemActiveBg: "#FFC107",
-                  borderRadius: "100%",
-                  colorText: "white",
-                  colorTextDisabled: "#6C6C6C",
+        {isLoading ? (
+          <p>Loading</p>
+        ) : (
+          <div className="relative h-full">
+            <ConfigProvider
+              theme={{
+                components: {
+                  Pagination: {
+                    itemActiveBg: "#FFC107",
+                    borderRadius: "100%",
+                    colorText: "white",
+                    colorTextDisabled: "#6C6C6C",
+                  },
+                  Table: {
+                    rowHoverBg: "#13333A",
+                  },
                 },
-                Table: {
-                  rowHoverBg: "#13333A",
+                token: {
+                  colorPrimary: "#13333A",
                 },
-              },
-              token: {
-                colorPrimary: "#13333A",
-              },
-            }}
-          >
-            <Table
-              size="small"
-              columns={columns}
-              dataSource={paginatedData}
-              pagination={{
-                total: total,
-                current: page,
-                pageSize: itemsPerPage,
-                onChange: (page) => setPage(page),
               }}
-            />
-          </ConfigProvider>
-        </div>
+            >
+              <Table
+                size="small"
+                columns={columns}
+                dataSource={productData?.data}
+                pagination={{
+                  total: total,
+                  current: page,
+                  pageSize: itemsPerPage,
+                  onChange: (page) => setPage(page),
+                }}
+              />
+            </ConfigProvider>
+          </div>
+        )}
       </div>
       <AddProductsModal
         openAddModel={openAddModal}
         setOpenAddModel={setOpenAddModel}
+        refetch={refetch}
       />
 
       <EditProductsModal
         openEditModel={openEditModel}
         setOpenEditModel={setOpenEditModel}
         product={value}
+        refetch={refetch}
       />
     </div>
   );
