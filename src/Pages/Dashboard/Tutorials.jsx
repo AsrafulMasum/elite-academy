@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { ConfigProvider, Table } from "antd";
+import { Button, ConfigProvider, Table } from "antd";
 import { FiEdit } from "react-icons/fi";
+import ChunkedVideoUpload from "../../Components/Dashboard/ChunkedVideoUpload";
+import { useGetTutorialsQuery } from "../../redux/features/courseApi";
+import { PlusOutlined } from "@ant-design/icons";
+import AddTutorialsModal from "../../Components/Dashboard/AddTutorialsModal";
 
 const data = [
   {
@@ -193,6 +197,10 @@ const Tutorials = () => {
     const urlPage = new URLSearchParams(window.location.search).get("page");
     return urlPage ? parseInt(urlPage, 10) : 1;
   });
+  const [openAddModal, setOpenAddModal] = useState(false);
+
+  const { data: tutorialsData } = useGetTutorialsQuery();
+  console.log(tutorialsData);
 
   const columns = [
     {
@@ -213,6 +221,12 @@ const Tutorials = () => {
       key: "videoUrl",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
+    // {
+    //   title: "Upload Video",
+    //   dataIndex: "uploadVideo",
+    //   key: "uploadVideo",
+    //   render: () => <ChunkedVideoUpload />,
+    // },
     {
       title: "Action",
       dataIndex: "action",
@@ -278,8 +292,31 @@ const Tutorials = () => {
                 lineHeight: "24px",
               }}
             >
-              Wishlist
+              Tutorials
             </h3>
+          </div>
+          <div>
+            <Button
+              onClick={() => {
+                setOpenAddModal(true);
+              }}
+              style={{
+                width: "177px",
+                height: "40px",
+                boxShadow: "0px 2px 4px 0px #0000001A",
+                backgroundColor: "#2E7A8A",
+                border: "none",
+                transition: "none",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              <PlusOutlined />
+              <span style={{ margin: 0 }}>Add Tutorial</span>
+            </Button>
           </div>
         </div>
 
@@ -316,6 +353,7 @@ const Tutorials = () => {
           </ConfigProvider>
         </div>
       </div>
+      <AddTutorialsModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
     </div>
   );
 };

@@ -8,211 +8,6 @@ import { GoArrowUpRight } from "react-icons/go";
 import { useGetUsersQuery } from "../../redux/features/usersApi";
 import { imageUrl } from "../../redux/api/baseApi";
 
-const data = [
-  {
-    key: "U1001",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud1@example.com",
-    type: "Subscribed User",
-    createdAt: "2024-12-01",
-  },
-  {
-    key: "U1002",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud2@example.com",
-    type: "Normal User",
-    createdAt: "2025-01-05",
-  },
-  {
-    key: "U1003",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud3@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-01-12",
-  },
-  {
-    key: "U1004",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud4@example.com",
-    type: "Normal User",
-    createdAt: "2025-02-01",
-  },
-  {
-    key: "U1005",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud5@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-02-14",
-  },
-  {
-    key: "U1006",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud6@example.com",
-    type: "Normal User",
-    createdAt: "2025-02-20",
-  },
-  {
-    key: "U1007",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud7@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-03-01",
-  },
-  {
-    key: "U1008",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud8@example.com",
-    type: "Normal User",
-    createdAt: "2025-03-15",
-  },
-  {
-    key: "U1009",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud9@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-03-22",
-  },
-  {
-    key: "U1010",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud10@example.com",
-    type: "Normal User",
-    createdAt: "2025-03-29",
-  },
-  {
-    key: "U1011",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud11@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-04-05",
-  },
-  {
-    key: "U1012",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud12@example.com",
-    type: "Normal User",
-    createdAt: "2025-04-11",
-  },
-  {
-    key: "U1013",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud13@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-04-17",
-  },
-  {
-    key: "U1014",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud14@example.com",
-    type: "Normal User",
-    createdAt: "2025-04-23",
-  },
-  {
-    key: "U1015",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud15@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-04-30",
-  },
-  {
-    key: "U1016",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud16@example.com",
-    type: "Normal User",
-    createdAt: "2025-05-08",
-  },
-  {
-    key: "U1017",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud17@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-05-15",
-  },
-  {
-    key: "U1018",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud18@example.com",
-    type: "Normal User",
-    createdAt: "2025-05-22",
-  },
-  {
-    key: "U1019",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud19@example.com",
-    type: "Subscribed User",
-    createdAt: "2025-05-28",
-  },
-  {
-    key: "U1020",
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud20@example.com",
-    type: "Normal User",
-    createdAt: "2025-06-03",
-  },
-];
-
-const itemsPerPage = 10;
-const total = 20;
 
 const UserLists = () => {
   const [page, setPage] = useState(1);
@@ -340,9 +135,6 @@ const UserLists = () => {
     },
   ];
 
-  const pageSize = 10;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
-
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
@@ -353,11 +145,10 @@ const UserLists = () => {
   };
 
   return (
-    <div className="w-full  bg-[#13333A]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
-          height: "100%",
         }}
       >
         <div
@@ -462,9 +253,9 @@ const UserLists = () => {
               rowKey="_id"
               dataSource={userData?.data}
               pagination={{
-                total: total,
+                total: userData?.pagination?.total,
                 current: page,
-                pageSize: itemsPerPage,
+                pageSize: 10,
                 onChange: (page) => setPage(page),
               }}
             />
