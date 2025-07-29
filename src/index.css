@@ -22,13 +22,13 @@
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #2E7A8A;
+  background: #2e7a8a;
   border-radius: 16px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFC107;
+  background: #ffc107;
 }
 
 .ant-table-thead .ant-table-cell {
@@ -170,4 +170,8 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
 .ant-table-wrapper .ant-table-thead > tr > th.action-column {
   padding-right: 80px !important;
+}
+
+.ant-pagination-options {
+  display: none;
 }

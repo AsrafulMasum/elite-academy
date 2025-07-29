@@ -3,9 +3,10 @@ import { baseApi } from "../api/baseApi";
 const courseApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTutorials: builder.query({
-      query: () => {
+      query: ({ page, limit }) => {
+        console.log(page, limit);
         return {
-          url: "/tutorial",
+          url: `/tutorial?page=${page}&limit=${limit}`,
           method: "GET",
         };
       },
@@ -19,7 +20,17 @@ const courseApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getTopics: builder.query({
+      query: () => {
+        return {
+          url: "/topic",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetTutorialsQuery, useGetCoursesQuery } = courseApi;
+export const { useGetTutorialsQuery, useGetCoursesQuery, useGetTopicsQuery } =
+  courseApi;
