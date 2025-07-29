@@ -10,7 +10,16 @@ const courseApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getCourses: builder.query({
+      query: () => {
+        return {
+          url: "/course",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetTutorialsQuery } = courseApi;
+export const { useGetTutorialsQuery, useGetCoursesQuery } = courseApi;

@@ -3,11 +3,18 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CiImageOn } from "react-icons/ci";
 import ChunkedVideoUpload from "./ChunkedVideoUpload";
+import { useGetCoursesQuery } from "../../redux/features/courseApi";
 
 const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
+  const { data } = useGetCoursesQuery();
+  const courseOptions = data?.data?.map((course) => ({
+    name: course.name,
+    id: course._id,
+  }));
+  console.log(courseOptions);
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
-  const [videoFile, setVideoFile] = useState(null); // State for video file
+  const [videoFile, setVideoFile] = useState(null);
 
   const [form, setForm] = useState({
     productName: "",
@@ -16,6 +23,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
     endDate: "",
     price: "",
     quantity: "",
+    course: "",
   });
 
   const handleAdd = (e) => {
@@ -58,13 +66,15 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
         formData.append("fileId", fileId);
         formData.append("fileName", fileName);
         formData.append("title", form.productName);
-        formData.append("description", "Some tutorial description");
-        formData.append("course", "687b6848fab635d5eecdf47a"); // Replace with real course ID
+        formData.append("course", form.course);
 
-        const res = await fetch("http://10.10.7.6:5000/api/v1/tutorial/upload", {
-          method: "POST",
-          body: formData,
-        });
+        const res = await fetch(
+          "http://10.10.7.6:5000/api/v1/tutorial/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (!res.ok) {
           toast.error(`Upload failed at chunk ${i}`);
@@ -106,7 +116,9 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
       footer={false}
     >
       <div className="p-6 bg-action rounded-lg">
-        <h1 className="text-[20px] font-medium mb-3 text-white">Add Tutorials</h1>
+        <h1 className="text-[20px] font-medium mb-3 text-white">
+          Add Tutorials
+        </h1>
 
         <form onSubmit={handleSubmit}>
           <div className="flex justify-center items-center gap-10 mb-10">
@@ -133,7 +145,9 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
           </div>
 
           <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", marginBottom: "5px", color: "white" }}>
+            <label
+              style={{ display: "block", marginBottom: "5px", color: "white" }}
+            >
               Tutorial Video
             </label>
             <div className="flex justify-center items-center h-36">
@@ -142,7 +156,9 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
           </div>
 
           <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", marginBottom: "5px", color: "white" }}>
+            <label
+              style={{ display: "block", marginBottom: "5px", color: "white" }}
+            >
               Tutorial Name
             </label>
             <input
@@ -164,15 +180,16 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
           </div>
 
           <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", marginBottom: "5px", color: "white" }}>
-              Course Name
+            <label
+              style={{ display: "block", marginBottom: "5px", color: "white" }}
+            >
+              Course
             </label>
-            <input
-              value={form.courseName}
+
+            <select
+              name="course"
+              value={form.course}
               onChange={handleAdd}
-              type="text"
-              name="courseName"
-              placeholder="Enter Course Name"
               style={{
                 border: "1px solid #E0E4EC",
                 padding: "10px",
@@ -182,7 +199,14 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
                 outline: "none",
                 width: "100%",
               }}
-            />
+            >
+              <option value="">Select Course</option>
+              {courseOptions?.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <input

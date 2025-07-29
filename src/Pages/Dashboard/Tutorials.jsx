@@ -5,6 +5,7 @@ import ChunkedVideoUpload from "../../Components/Dashboard/ChunkedVideoUpload";
 import { useGetTutorialsQuery } from "../../redux/features/courseApi";
 import { PlusOutlined } from "@ant-design/icons";
 import AddTutorialsModal from "../../Components/Dashboard/AddTutorialsModal";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const data = [
   {
@@ -205,28 +206,28 @@ const Tutorials = () => {
   const columns = [
     {
       title: "Tutorials Name",
-      dataIndex: "tutorialsName",
-      key: "tutorialsName",
+      dataIndex: "title",
+      key: "title",
       render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
       title: "Course Name",
       dataIndex: "courseName",
       key: "courseName",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      render: (_, record) => <span className="text-[#FDFDFD]">{record?.course?.name}</span>,
     },
     {
       title: "Video Url",
       dataIndex: "videoUrl",
       key: "videoUrl",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (_, record) => (
+        <video
+          className="h-30 w-60"
+          controls
+          src={`${imageUrl}/video/${record?.video}`}
+        />
+      ),
     },
-    // {
-    //   title: "Upload Video",
-    //   dataIndex: "uploadVideo",
-    //   key: "uploadVideo",
-    //   render: () => <ChunkedVideoUpload />,
-    // },
     {
       title: "Action",
       dataIndex: "action",
@@ -342,7 +343,7 @@ const Tutorials = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={tutorialsData?.data}
               pagination={{
                 total: total,
                 current: page,
@@ -353,7 +354,10 @@ const Tutorials = () => {
           </ConfigProvider>
         </div>
       </div>
-      <AddTutorialsModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
+      <AddTutorialsModal
+        openAddModal={openAddModal}
+        setOpenAddModal={setOpenAddModal}
+      />
     </div>
   );
 };
