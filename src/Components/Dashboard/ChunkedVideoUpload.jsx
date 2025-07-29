@@ -11,7 +11,7 @@ const ChunkedVideoUpload = ({ onFileSelect }) => {
     const file = e.target.files?.[0];
     if (file) {
       setPreviewUrl(URL.createObjectURL(file));
-      onFileSelect(file); // Pass selected file to parent
+      onFileSelect(file);
     } else {
       setPreviewUrl(null);
       onFileSelect(null);

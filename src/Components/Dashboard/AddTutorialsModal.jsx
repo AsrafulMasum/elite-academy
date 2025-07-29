@@ -7,7 +7,7 @@ import {
   useGetTopicsQuery,
 } from "../../redux/features/courseApi";
 
-const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
+const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const { data } = useGetCoursesQuery();
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
@@ -96,6 +96,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
       }
 
       toast.success("✅ Tutorial uploaded successfully!");
+      refetch();
       setOpenAddModal(false);
       setVideoFile(null);
       setImgURLs([]);

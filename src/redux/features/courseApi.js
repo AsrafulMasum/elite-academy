@@ -29,8 +29,22 @@ const courseApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    deleteTutorial: builder.mutation({
+      query: ({ id }) => {
+        console.log(id)
+        return {
+          url: `/tutorial/${id}`,
+          method: "DELETE",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetTutorialsQuery, useGetCoursesQuery, useGetTopicsQuery } =
-  courseApi;
+export const {
+  useGetTutorialsQuery,
+  useGetCoursesQuery,
+  useGetTopicsQuery,
+  useDeleteTutorialMutation,
+} = courseApi;

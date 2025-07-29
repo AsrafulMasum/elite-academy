@@ -1,22 +1,45 @@
 import { useState } from "react";
-import { Button, ConfigProvider, Table } from "antd";
+import { Button, ConfigProvider, Modal, Table } from "antd";
 import { FiEdit } from "react-icons/fi";
-import { useGetTutorialsQuery } from "../../redux/features/courseApi";
+import {
+  useDeleteTutorialMutation,
+  useGetTutorialsQuery,
+} from "../../redux/features/courseApi";
 import { PlusOutlined } from "@ant-design/icons";
 import AddTutorialsModal from "../../Components/Dashboard/AddTutorialsModal";
 import { imageUrl } from "../../redux/api/baseApi";
+import EditTutorialModal from "../../Components/Dashboard/EditTutorialModal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 const itemsPerPage = 4;
 
 const Tutorials = () => {
   const [page, setPage] = useState(1);
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [selectedTutorial, setSelectedTutorial] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { data: tutorialsData } = useGetTutorialsQuery({
+  const { data: tutorialsData, refetch } = useGetTutorialsQuery({
     page,
     limit: itemsPerPage,
   });
-  console.log(tutorialsData);
+  const [deleteTutorial] = useDeleteTutorialMutation();
+
+  const handleDelete = async () => {
+    try {
+      const res = await deleteTutorial({ id: deleteId }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+        refetch();
+        setOpenDeleteModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns = [
     {
@@ -31,6 +54,14 @@ const Tutorials = () => {
       key: "courseName",
       render: (_, record) => (
         <span className="text-[#FDFDFD]">{record?.course?.name}</span>
+      ),
+    },
+    {
+      title: "Topic Name",
+      dataIndex: "topicName",
+      key: "topicName",
+      render: (_, record) => (
+        <span className="text-[#FDFDFD]">{record?.topic?.title}</span>
       ),
     },
     // {
@@ -56,7 +87,7 @@ const Tutorials = () => {
       key: "video",
       render: (_, record) => (
         <video
-          className="h-30 w-60"
+          className="h-30 w-60 object-cover"
           controls
           src={`${imageUrl}/video/${record?.video}`}
         />
@@ -79,8 +110,8 @@ const Tutorials = () => {
           <button
             className="flex justify-center items-center rounded-md"
             onClick={() => {
-              setValue(record);
-              setOpenEditModel(true);
+              setSelectedTutorial(record);
+              setOpenEditModal(true);
             }}
             style={{
               cursor: "pointer",
@@ -92,6 +123,25 @@ const Tutorials = () => {
             }}
           >
             <FiEdit size={16} className="text-secondary" />
+          </button>
+          <button
+            className="flex justify-center items-center rounded-md"
+            onClick={() => {
+              {
+                setDeleteId(record?._id);
+                setOpenDeleteModal(true);
+              }
+            }}
+            style={{
+              cursor: "pointer",
+              border: "none",
+              outline: "none",
+              backgroundColor: "#121212",
+              width: "40px",
+              height: "32px",
+            }}
+          >
+            <RiDeleteBin6Line size={16} className="text-secondary" />
           </button>
         </div>
       ),
@@ -188,7 +238,38 @@ const Tutorials = () => {
       <AddTutorialsModal
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
+        refetch={refetch}
       />
+      <EditTutorialModal
+        openEditModal={openEditModal}
+        setOpenEditModal={setOpenEditModal}
+        tutorialData={selectedTutorial}
+        refetch={refetch}
+      />
+
+      {/* delete modal */}
+      <Modal
+        centered
+        open={openDeleteModal}
+        onCancel={() => setOpenDeleteModal(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this Tutorial?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
