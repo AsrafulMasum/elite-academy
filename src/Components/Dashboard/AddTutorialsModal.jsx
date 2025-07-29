@@ -1,17 +1,25 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { CiImageOn } from "react-icons/ci";
 import ChunkedVideoUpload from "./ChunkedVideoUpload";
-import { useGetCoursesQuery } from "../../redux/features/courseApi";
+import {
+  useGetCoursesQuery,
+  useGetTopicsQuery,
+} from "../../redux/features/courseApi";
 
-const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
+const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const { data } = useGetCoursesQuery();
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
     id: course._id,
   }));
-  console.log(courseOptions);
+
+  const { data: topicsData } = useGetTopicsQuery();
+  const topicOptions = topicsData?.data?.map((topic) => ({
+    name: topic?.title,
+    id: topic?._id,
+  }));
+
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
@@ -24,6 +32,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
     price: "",
     quantity: "",
     course: "",
+    topic: "",
   });
 
   const handleAdd = (e) => {
@@ -67,6 +76,10 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
         formData.append("fileName", fileName);
         formData.append("title", form.productName);
         formData.append("course", form.course);
+        formData.append("topic", form.topic);
+        // if (imageFiles.length > 0) {
+        //   formData.append("image", imageFiles[0]);
+        // }
 
         const res = await fetch(
           "http://10.10.7.6:5000/api/v1/tutorial/upload",
@@ -83,6 +96,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
       }
 
       toast.success("✅ Tutorial uploaded successfully!");
+      refetch();
       setOpenAddModal(false);
       setVideoFile(null);
       setImgURLs([]);
@@ -94,6 +108,8 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
         endDate: "",
         price: "",
         quantity: "",
+        course: "",
+        topic: "",
       });
     } catch (err) {
       console.error("Upload failed", err);
@@ -121,7 +137,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
         </h1>
 
         <form onSubmit={handleSubmit}>
-          <div className="flex justify-center items-center gap-10 mb-10">
+          {/* <div className="flex justify-center items-center gap-10 mb-10">
             <div className="h-32 w-full flex items-center justify-center bg-gray-300 rounded-lg relative">
               {imgURLs.length > 0 ? (
                 <img
@@ -142,7 +158,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
                 className="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
               />
             </div>
-          </div>
+          </div> */}
 
           <div style={{ marginBottom: "16px" }}>
             <label
@@ -202,6 +218,36 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal }) => {
             >
               <option value="">Select Course</option>
               {courseOptions?.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            <label
+              style={{ display: "block", marginBottom: "5px", color: "white" }}
+            >
+              Topic
+            </label>
+
+            <select
+              name="topic"
+              value={form.topic}
+              onChange={handleAdd}
+              style={{
+                border: "1px solid #E0E4EC",
+                padding: "10px",
+                height: "52px",
+                background: "white",
+                borderRadius: "8px",
+                outline: "none",
+                width: "100%",
+              }}
+            >
+              <option value="">Select Topic</option>
+              {topicOptions?.map((option) => (
                 <option key={option.id} value={option.id}>
                   {option.name}
                 </option>
