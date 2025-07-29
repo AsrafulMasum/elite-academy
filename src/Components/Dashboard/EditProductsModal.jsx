@@ -79,7 +79,7 @@ const EditProductsModal = ({
     formData.append("sizes", JSON.stringify(tags));
     const res = await updateProduct({ id: product?._id, formData });
 
-    if (res?.success) {
+    if (res?.data?.success) {
       setForm({
         title: "",
         image: [],
@@ -88,12 +88,16 @@ const EditProductsModal = ({
         subcategory: "",
         description: "",
       });
+
       setTags([]);
       refetch();
+      setImgURLs([]);
+      setImageFiles([]);
     }
     // Reset and close
     setOpenEditModel(false);
   };
+
 
   useEffect(() => {
     return () => {
@@ -105,7 +109,9 @@ const EditProductsModal = ({
     <Modal
       centered
       open={openEditModel}
-      onCancel={() => setOpenEditModel(false)}
+      onCancel={() => {        
+        setOpenEditModel(false);
+      }}
       width={700}
       footer={false}
     >
@@ -141,7 +147,7 @@ const EditProductsModal = ({
                             alt={`preview-${index}`}
                             className="h-full w-20 rounded-lg object-cover z-[99]"
                           />
-                        ))}                  
+                        ))}
                   </div>
                 </div>
               ) : (

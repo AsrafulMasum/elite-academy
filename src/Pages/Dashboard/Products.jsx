@@ -1,223 +1,48 @@
-import { useEffect, useRef, useState } from "react";
-import { Button, ConfigProvider, Table } from "antd";
-import provider from "../../assets/serviceProvider.png";
-import { GoArrowUpRight } from "react-icons/go";
-import SellingsDetailsModal from "../../Components/Dashboard/SellingsDetailsModal";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Modal, Table } from "antd";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import AddProductsModal from "../../Components/Dashboard/AddProductsModal";
 import EditProductsModal from "../../Components/Dashboard/EditProductsModal";
-import { useGetProductsQuery } from "../../redux/features/productApi";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { imageUrl } from "../../redux/api/baseApi";
-
-const data = [
-  {
-    key: 1,
-    productsName: "Nike Phantom GT",
-    productImage: "https://i.imgur.com/xXZxW0M.jpg",
-    productId: "PROD001",
-    category: "Football Boots",
-    stock: 25,
-    status: "In Stock",
-  },
-  {
-    key: 2,
-    productsName: "Adidas Predator Accuracy",
-    productImage: "https://i.imgur.com/GyFxfvw.jpg",
-    productId: "PROD002",
-    category: "Football Boots",
-    stock: 0,
-    status: "Stock Out",
-  },
-  {
-    key: 3,
-    productsName: "Puma Ultra Ultimate",
-    productImage: "https://i.imgur.com/sZz8gPQ.jpg",
-    productId: "PROD003",
-    category: "Football Boots",
-    stock: 6,
-    status: "Short Stock",
-  },
-  {
-    key: 4,
-    productsName: "Nike Flight Ball",
-    productImage: "https://i.imgur.com/Q6GeXtA.jpg",
-    productId: "PROD004",
-    category: "Football",
-    stock: 12,
-    status: "In Stock",
-  },
-  {
-    key: 5,
-    productsName: "Adidas Al Rihla Ball",
-    productImage: "https://i.imgur.com/XSGcHee.jpg",
-    productId: "PROD005",
-    category: "Football",
-    stock: 1,
-    status: "Short Stock",
-  },
-  {
-    key: 6,
-    productsName: "Puma Orbita Ball",
-    productImage: "https://i.imgur.com/hH0BTmk.jpg",
-    productId: "PROD006",
-    category: "Football",
-    stock: 0,
-    status: "Stock Out",
-  },
-  {
-    key: 7,
-    productsName: "Nike Guard Lock",
-    productImage: "https://i.imgur.com/6oZH9OG.jpg",
-    productId: "PROD007",
-    category: "Shin Guards",
-    stock: 18,
-    status: "In Stock",
-  },
-  {
-    key: 8,
-    productsName: "Adidas Tiro Club Shin Guard",
-    productImage: "https://i.imgur.com/Y6yKqvV.jpg",
-    productId: "PROD008",
-    category: "Shin Guards",
-    stock: 4,
-    status: "Short Stock",
-  },
-  {
-    key: 9,
-    productsName: "Puma Ultra Flex Shin Guard",
-    productImage: "https://i.imgur.com/0Em5lAy.jpg",
-    productId: "PROD009",
-    category: "Shin Guards",
-    stock: 9,
-    status: "In Stock",
-  },
-  {
-    key: 10,
-    productsName: "Nike Strike Training Jersey",
-    productImage: "https://i.imgur.com/lpJep4n.jpg",
-    productId: "PROD010",
-    category: "Jersey",
-    stock: 16,
-    status: "In Stock",
-  },
-  {
-    key: 11,
-    productsName: "Adidas Entrada Jersey",
-    productImage: "https://i.imgur.com/Cqgl9LF.jpg",
-    productId: "PROD011",
-    category: "Jersey",
-    stock: 2,
-    status: "Short Stock",
-  },
-  {
-    key: 12,
-    productsName: "Puma Team Final Jersey",
-    productImage: "https://i.imgur.com/ZZBbR4M.jpg",
-    productId: "PROD012",
-    category: "Jersey",
-    stock: 0,
-    status: "Stock Out",
-  },
-  {
-    key: 13,
-    productsName: "Nike Goalkeeper Gloves",
-    productImage: "https://i.imgur.com/kzjpiZh.jpg",
-    productId: "PROD013",
-    category: "Gloves",
-    stock: 22,
-    status: "In Stock",
-  },
-  {
-    key: 14,
-    productsName: "Adidas Predator Gloves",
-    productImage: "https://i.imgur.com/WqGpFyA.jpg",
-    productId: "PROD014",
-    category: "Gloves",
-    stock: 8,
-    status: "In Stock",
-  },
-  {
-    key: 15,
-    productsName: "Puma Future Grip Gloves",
-    productImage: "https://i.imgur.com/N73OMv5.jpg",
-    productId: "PROD015",
-    category: "Gloves",
-    stock: 0,
-    status: "Stock Out",
-  },
-  {
-    key: 16,
-    productsName: "Nike Dri-FIT Shorts",
-    productImage: "https://i.imgur.com/HmsvvO7.jpg",
-    productId: "PROD016",
-    category: "Shorts",
-    stock: 13,
-    status: "In Stock",
-  },
-  {
-    key: 17,
-    productsName: "Adidas Squadra Shorts",
-    productImage: "https://i.imgur.com/yPymQhW.jpg",
-    productId: "PROD017",
-    category: "Shorts",
-    stock: 3,
-    status: "Short Stock",
-  },
-  {
-    key: 18,
-    productsName: "Puma Liga Shorts",
-    productImage: "https://i.imgur.com/lRAAloS.jpg",
-    productId: "PROD018",
-    category: "Shorts",
-    stock: 0,
-    status: "Stock Out",
-  },
-  {
-    key: 19,
-    productsName: "Nike Academy Socks",
-    productImage: "https://i.imgur.com/kPbHftR.jpg",
-    productId: "PROD019",
-    category: "Socks",
-    stock: 7,
-    status: "In Stock",
-  },
-  {
-    key: 20,
-    productsName: "Adidas Milano Socks",
-    productImage: "https://i.imgur.com/lvqp2so.jpg",
-    productId: "PROD020",
-    category: "Socks",
-    stock: 19,
-    status: "In Stock",
-  },
-];
-
-const itemsPerPage = 10;
-const total = 10;
+import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/features/productApi";
 
 const Products = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
+
+  // ----------------- Hooks ------------------------
+  const [page, setPage] = useState(1);
   const [openAddModal, setOpenAddModel] = useState(false);
   const [openEditModel, setOpenEditModel] = useState(false);
   const { data: productData, isLoading, refetch } = useGetProductsQuery(null);
+  const [deleteProduct] = useDeleteProductMutation()
 
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
 
   const [value, setValue] = useState(null);
 
-  const pageSize = 10;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
-  const handleModalClose = () => {
-    setValue(null);
+  // ----------------------- Action ------------------------
+
+
+    const handleDelete = async (id) => {      
+    try {
+      const res = await deleteProduct(id);      
+      if(res?.data?.success){
+        toast.success("Deleted Product Successfully");
+        refetch();
+        setShowDelete(!showDelete);
+        setDeleteId("");
+
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  // ---------------- Table Column -------------------
   const columns = [
     {
       title: "Serial No.",
@@ -359,8 +184,7 @@ const Products = () => {
     <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
-          borderRadius: "8px",
-          // height: "100%",
+          borderRadius: "8px",          
         }}
       >
         <div
@@ -409,9 +233,6 @@ const Products = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <p>Loading</p>
-        ) : (
           <div className="relative h-full">
             <ConfigProvider
               theme={{
@@ -435,16 +256,16 @@ const Products = () => {
                 size="small"
                 columns={columns}
                 dataSource={productData?.data}
+                loading={isLoading}
                 pagination={{
-                  total: total,
+                  total: productData?.pagination?.total,
                   current: page,
-                  pageSize: itemsPerPage,
+                  pageSize: productData?.pagination?.limit,
                   onChange: (page) => setPage(page),
                 }}
               />
             </ConfigProvider>
-          </div>
-        )}
+          </div>        
       </div>
       <AddProductsModal
         openAddModel={openAddModal}
@@ -458,6 +279,29 @@ const Products = () => {
         product={value}
         refetch={refetch}
       />
+
+      <Modal
+        centered
+        open={showDelete}
+        onCancel={() => setShowDelete(!showDelete)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this product?
+          </p>
+          <button
+            onClick={()=>handleDelete(deleteId)}
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
