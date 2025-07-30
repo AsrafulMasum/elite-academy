@@ -1,9 +1,8 @@
-import React from 'react'
 
 const Loader = () => {
   return (
     <div>
-      <ImSpinner2 />
+      <ImSpinner2 size={30} className="animate-spin"/>
     </div>
   )
 }

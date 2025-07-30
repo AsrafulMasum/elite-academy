@@ -1,121 +1,39 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Form, Modal, Table } from "antd";
+import { Button, ConfigProvider, Modal, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { PiTrashLight } from "react-icons/pi";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import AddCategoryModal from "../../Components/Dashboard/AddCategoryModal";
 import AddSubCategoryModal from "../../Components/Dashboard/AddSubcategoryModal";
+import SubCategoryView from "../../Components/Dashboard/SubCategoryView";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { imageUrl } from "../../redux/api/baseApi";
 import {
   useDeleteCategoryMutation,
-  useDeleteSubCategoryMutation,
   useGetCategoriesQuery
 } from "../../redux/features/categoriesApi";
-
-const data = [
-  {
-    _id: "1",
-    serial: 1,
-    category: "Dental care",
-  },
-  {
-    _id: "2",
-    serial: 2,
-    category: "Dental care",
-  },
-  {
-    _id: "3",
-    serial: 3,
-    category: "Dental care",
-  },
-  {
-    _id: "4",
-    serial: 4,
-    category: "Dental care",
-  },
-  {
-    _id: "5",
-    serial: 5,
-    category: "Dental care",
-  },
-  {
-    _id: "6",
-    serial: 6,
-    category: "Dental care",
-  },
-  {
-    _id: "7",
-    serial: 7,
-    category: "Dental care",
-  },
-  {
-    _id: "8",
-    serial: 8,
-    category: "Dental care",
-  },
-  {
-    _id: "9",
-    serial: 9,
-    category: "Dental care",
-  },
-  {
-    _id: "10",
-    serial: 10,
-    category: "Dental care",
-  },
-  {
-    _id: "11",
-    serial: 11,
-    category: "Dental care",
-  },
-  {
-    _id: "12",
-    serial: 12,
-    category: "Dental care",
-  },
-  {
-    _id: "13",
-    serial: 13,
-    category: "Dental care",
-  },
-  {
-    _id: "14",
-    serial: 14,
-    category: "Dental care",
-  },
-  {
-    _id: "15",
-    serial: 1,
-    category: "Dental care",
-  },
-];
 
 const Category = () => {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  
   const [deleteId, setDeleteId] = useState("");
   const [editData, setEditData] = useState(null);
 
   const [showSubModal, setShowSubModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const [openSubCategory, setOpenSubCategory] = useState(false);
 
-  const [openSubCategory, setOpenSubCategory] = useState(false);  
+  const dropdownRef = useRef();  
 
-  const dropdownRef = useRef();
-  const [form] = Form.useForm();
-
-  const {data:categoryData, isLoading, refetch} = useGetCategoriesQuery(page);
+  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery(page);
   const [deleteCategory] = useDeleteCategoryMutation();
-  const [deleteSubCategory] = useDeleteSubCategoryMutation()
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -129,24 +47,12 @@ const Category = () => {
     };
   }, []);
 
-  // -------------------- Action -----------------------
-
-  const handleUpdate = async () => {
-    try {
-      const values = await form.validateFields();
-      console.log(values);
-      setOpenEditModal(false);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
-  };
-
   const handleDelete = async () => {
     try {
       const res = await deleteCategory(deleteId);
-            
-      if(res?.data) {
-        toast.success(res?.data?.message);        
+
+      if (res?.data) {
+        toast.success(res?.data?.message);
         refetch();
         setShowDelete(false);
       }
@@ -155,20 +61,6 @@ const Category = () => {
     }
   };
 
-  const handleDeleteSubCategory = async (id) =>{
-    try {
-      const res = await deleteSubCategory(id)
-      if(res?.data){
-        refetch()
-        toast.success("Delete Sub Category");
-        setEditData(null);
-        setShowSubModal(false)
-      }
-    } catch (error) {
-      
-    }
-  }
-  
   // ------------------------- Table Column  --------------------
   const columns = [
     {
@@ -202,21 +94,25 @@ const Category = () => {
       key: "Sub category",
       align: "left",
       render: (_, record) => (
-        <>          
+        <>
           {record?.subcategories?.slice(0, 5).map((sCategory) => (
             <span style={{ color: "#FDFDFD" }}>{sCategory?.name}, </span>
           ))}
 
-          {record?.subcategories?.length > 0  && <span
-            onClick={() => {
-              setSelectedCategory(record);
-              setShowSubModal(true);
-            }}
-            className="ml-2 capitalize text-yellow-500 font-semibold cursor-pointer text-xs"
-          >
-            see more...
-          </span>}
-          {record?.subcategories?.length < 1 && <span className="text-white text-center ml-16">-</span>}
+          {record?.subcategories?.length > 0 && (
+            <span
+              onClick={() => {
+                setSelectedCategory(record);
+                setShowSubModal(true);
+              }}
+              className="ml-2 capitalize text-yellow-500 font-semibold cursor-pointer text-xs"
+            >
+              see more...
+            </span>
+          )}
+          {record?.subcategories?.length < 1 && (
+            <span className="text-white text-center ml-16">-</span>
+          )}
         </>
       ),
     },
@@ -238,7 +134,7 @@ const Category = () => {
           <button
             onClick={() => {
               setOpenSubCategory(true);
-              setEditData(record);              
+              setEditData(record);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
@@ -247,7 +143,7 @@ const Category = () => {
 
           <button
             onClick={() => {
-              setOpenAddModel(true);              
+              setOpenAddModel(true);
               setEditData(record);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
@@ -268,7 +164,6 @@ const Category = () => {
       ),
     },
   ];
-  
 
   return (
     <div className="h-full">
@@ -364,12 +259,12 @@ const Category = () => {
         refetch={refetch}
       />
 
-      <AddSubCategoryModal 
-      openSubCategory={openSubCategory}
-      setOpenSubCategory={setOpenSubCategory}
-      category={editData?._id}
-      setEditData={setEditData}
-      refetch={refetch}
+      <AddSubCategoryModal
+        openSubCategory={openSubCategory}
+        setOpenSubCategory={setOpenSubCategory}
+        category={editData?._id}
+        setEditData={setEditData}
+        refetch={refetch}
       />
 
       {/* <Modal
@@ -444,46 +339,11 @@ const Category = () => {
       </Modal>
 
       {/* ------------------------ Sub Category View Modal ------------- */}
-      <Modal
-        centered
-        open={showSubModal}
-        onCancel={() => setShowSubModal(false)}
-        footer={null}
-        width={500}
-        className="subcategory-modal"
-      >
-        <div className="p-6 rounded-lg bg-white shadow-lg">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
-            {selectedCategory?.title}
-          </h2>
-          <p className="text-center text-gray-500 mb-6">
-            Subcategories under this category
-          </p>
-
-          <div className="max-h-60 overflow-y-auto px-4">
-            <ul className="grid grid-cols-1 gap-3">
-              {selectedCategory?.subcategories?.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="py-2 px-4 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium transition flex items-center justify-between"
-                >
-                  <span>{idx + 1}. {item?.name}</span> 
-                  <PiTrashLight onClick={()=>handleDeleteSubCategory(item?._id)} size={20} className="hover:text-red-600 cursor-pointer" />
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="text-center mt-6">
-            <button
-              onClick={() => setShowSubModal(false)}
-              className="bg-[#2E7A8A] hover:bg-[#225e6a] text-white px-6 py-2 rounded-md font-semibold transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </Modal>
+      <SubCategoryView
+        selectedCategory={selectedCategory}
+        showSubModal={showSubModal}
+        setShowSubModal={setShowSubModal}
+      />
     </div>
   );
 };
