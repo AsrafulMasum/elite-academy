@@ -4,184 +4,24 @@ import { PlusOutlined } from "@ant-design/icons";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
-const data = [
-  {
-    _id: "1",
-    serial: 1,
-    courseName: "Beginner Football Skills",
-    courseId: "FTB101",
-    startTime: "2025-08-01T08:00:00",
-    endTime: "2025-08-01T09:30:00",
-  },
-  {
-    _id: "2",
-    serial: 2,
-    courseName: "Intermediate Dribbling Techniques",
-    courseId: "FTB102",
-    startTime: "2025-08-02T10:00:00",
-    endTime: "2025-08-02T11:30:00",
-  },
-  {
-    _id: "3",
-    serial: 3,
-    courseName: "Advanced Striker Training",
-    courseId: "FTB103",
-    startTime: "2025-08-03T12:00:00",
-    endTime: "2025-08-03T13:30:00",
-  },
-  {
-    _id: "4",
-    serial: 4,
-    courseName: "Goalkeeper Masterclass",
-    courseId: "FTB104",
-    startTime: "2025-08-04T14:00:00",
-    endTime: "2025-08-04T15:30:00",
-  },
-  {
-    _id: "5",
-    serial: 5,
-    courseName: "Defensive Tactics & Positioning",
-    courseId: "FTB105",
-    startTime: "2025-08-05T16:00:00",
-    endTime: "2025-08-05T17:30:00",
-  },
-  {
-    _id: "6",
-    serial: 6,
-    courseName: "Passing and Ball Control",
-    courseId: "FTB106",
-    startTime: "2025-08-06T09:00:00",
-    endTime: "2025-08-06T10:30:00",
-  },
-  {
-    _id: "7",
-    serial: 7,
-    courseName: "Speed and Agility Training",
-    courseId: "FTB107",
-    startTime: "2025-08-07T06:00:00",
-    endTime: "2025-08-07T07:30:00",
-  },
-  {
-    _id: "8",
-    serial: 8,
-    courseName: "Tactical Awareness for Midfielders",
-    courseId: "FTB108",
-    startTime: "2025-08-08T11:00:00",
-    endTime: "2025-08-08T12:30:00",
-  },
-  {
-    _id: "9",
-    serial: 9,
-    courseName: "Teamwork and Communication",
-    courseId: "FTB109",
-    startTime: "2025-08-09T13:00:00",
-    endTime: "2025-08-09T14:30:00",
-  },
-  {
-    _id: "10",
-    serial: 10,
-    courseName: "Football Fitness Bootcamp",
-    courseId: "FTB110",
-    startTime: "2025-08-10T15:00:00",
-    endTime: "2025-08-10T16:30:00",
-  },
-  {
-    _id: "11",
-    serial: 11,
-    courseName: "Set Piece Mastery",
-    courseId: "FTB111",
-    startTime: "2025-08-11T17:00:00",
-    endTime: "2025-08-11T18:30:00",
-  },
-  {
-    _id: "12",
-    serial: 12,
-    courseName: "Crossing and Finishing",
-    courseId: "FTB112",
-    startTime: "2025-08-12T08:00:00",
-    endTime: "2025-08-12T09:30:00",
-  },
-  {
-    _id: "13",
-    serial: 13,
-    courseName: "One-on-One Defense",
-    courseId: "FTB113",
-    startTime: "2025-08-13T10:00:00",
-    endTime: "2025-08-13T11:30:00",
-  },
-  {
-    _id: "14",
-    serial: 14,
-    courseName: "Vision and Game Intelligence",
-    courseId: "FTB114",
-    startTime: "2025-08-14T12:00:00",
-    endTime: "2025-08-14T13:30:00",
-  },
-  {
-    _id: "15",
-    serial: 15,
-    courseName: "Strength & Conditioning for Football",
-    courseId: "FTB115",
-    startTime: "2025-08-15T14:00:00",
-    endTime: "2025-08-15T15:30:00",
-  },
-  {
-    _id: "16",
-    serial: 16,
-    courseName: "Youth Football Academy",
-    courseId: "FTB116",
-    startTime: "2025-08-16T16:00:00",
-    endTime: "2025-08-16T17:30:00",
-  },
-  {
-    _id: "17",
-    serial: 17,
-    courseName: "Pro Level Tryout Prep",
-    courseId: "FTB117",
-    startTime: "2025-08-17T18:00:00",
-    endTime: "2025-08-17T19:30:00",
-  },
-  {
-    _id: "18",
-    serial: 18,
-    courseName: "Elite Footwork Techniques",
-    courseId: "FTB118",
-    startTime: "2025-08-18T09:00:00",
-    endTime: "2025-08-18T10:30:00",
-  },
-  {
-    _id: "19",
-    serial: 19,
-    courseName: "Off-the-Ball Movement",
-    courseId: "FTB119",
-    startTime: "2025-08-19T11:00:00",
-    endTime: "2025-08-19T12:30:00",
-  },
-  {
-    _id: "20",
-    serial: 20,
-    courseName: "Leadership for Team Captains",
-    courseId: "FTB120",
-    startTime: "2025-08-20T13:00:00",
-    endTime: "2025-08-20T14:30:00",
-  },
-];
+import { useGetCoursesQuery } from "../../redux/features/courseApi";
+import moment from "moment";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const Courses = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
+  const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [editID, seteditID] = useState("");
+  const { data: courseData, isLoading } = useGetCoursesQuery();
 
   const dropdownRef = useRef();
   const [form] = Form.useForm();
+
+  // ----------------------- Action -------------------
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -219,6 +59,7 @@ const Courses = () => {
     setShowDelete(false);
   };
 
+  // --------------------------- Table  Column -----------------------------
   const columns = [
     {
       title: "Sl. No",
@@ -230,31 +71,57 @@ const Courses = () => {
     },
     {
       title: "Course Name",
-      dataIndex: "courseName",
-      key: "courseName",
+      // dataIndex: "name",
+      key: "name",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (record) => (
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12">
+            <img
+              src={`${imageUrl}${record?.image}`}
+              alt=""
+              className="w-full h-full object-cover rounded-md"
+            />
+          </div>
+          <span style={{ color: "#FDFDFD" }}>{record?.name}</span>
+        </div>
+      ),
     },
     {
-      title: "Course Id",
-      dataIndex: "courseId",
-      key: "courseId",
+      title: "Couch",
+      dataIndex: "_id",
+      key: "_id",
       align: "left",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
       title: "Start Time",
-      dataIndex: "startTime",
-      key: "startTime",
+      dataIndex: "startDate",
+      key: "startDate",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (text) => (
+        <span style={{ color: "#FDFDFD" }}>{moment(text).format("L")}</span>
+      ),
     },
     {
       title: "End Time",
-      dataIndex: "endTime",
-      key: "endTime",
+      dataIndex: "endDate",
+      key: "endDate",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (text) => (
+        <span style={{ color: "#FDFDFD" }}>{moment(text).format("L")}</span>
+      ),
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      align: "left",
+      render: (text) => (
+        <span style={{ color: "#FDFDFD" }}>
+          {text.length > 60 ? `${text.slice(0, 60)}...` : text}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -295,16 +162,7 @@ const Courses = () => {
     },
   ];
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
-  const pageSize = 12;
-  const total = 20;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
+  console.log("courseData", courseData);
 
   return (
     <div className="h-full">
@@ -378,13 +236,14 @@ const Courses = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
-              pagination={{
-                total: total,
-                current: page,
-                pageSize: pageSize,
-                onChange: (page) => setPage(page),
-              }}
+              dataSource={courseData?.data}
+              loading={isLoading}
+              // pagination={{
+              //   total: total,
+              //   current: page,
+              //   pageSize: pageSize,
+              //   onChange: (page) => setPage(page),
+              // }}
             />
           </ConfigProvider>
         </div>

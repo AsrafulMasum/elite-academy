@@ -5,6 +5,7 @@ import { ImSpinner2 } from "react-icons/im";
 import ChipsInput from "./ChipsInput";
 import { useAddProductMutation } from "../../redux/features/productApi";
 import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
+import toast from "react-hot-toast";
 
 const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
   const [imgURLs, setImgURLs] = useState([]);
@@ -15,6 +16,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
     price: "",
     quantity: "",
     description: "",
+    subcategory: "",
     image: [],
   });
 
@@ -54,18 +56,20 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
 
       formData.append("sizes", JSON.stringify(tags));
       const res = await addProduct(formData).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         setOpenAddModel(false);
         setForm({
           title: "",
           image: "",
           price: "",
           quantity: "",
+          subcategory: "",
           description: "",
-          // image: [],
+          image: [],
         });
-        // setImgURLs([]);
-        // setImageFiles([]);
+        setImgURLs([]);
+        setImageFiles([]);
+        setTags([])
         refetch();
         toast.success("Offer added successfully");
       }
@@ -130,7 +134,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
               Product Name
             </label>
             <input
-              value={form.productName}
+              value={form.title}
               onChange={handleAdd}
               type="text"
               name="title"

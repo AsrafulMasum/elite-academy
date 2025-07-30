@@ -1,103 +1,39 @@
-import { useEffect, useRef, useState } from "react";
-import { Button, ConfigProvider, Form, Input, Modal, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
+import { Button, ConfigProvider, Modal, Table } from "antd";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
 
-const data = [
-  {
-    _id: "1",
-    serial: 1,
-    category: "Dental care",
-  },
-  {
-    _id: "2",
-    serial: 2,
-    category: "Dental care",
-  },
-  {
-    _id: "3",
-    serial: 3,
-    category: "Dental care",
-  },
-  {
-    _id: "4",
-    serial: 4,
-    category: "Dental care",
-  },
-  {
-    _id: "5",
-    serial: 5,
-    category: "Dental care",
-  },
-  {
-    _id: "6",
-    serial: 6,
-    category: "Dental care",
-  },
-  {
-    _id: "7",
-    serial: 7,
-    category: "Dental care",
-  },
-  {
-    _id: "8",
-    serial: 8,
-    category: "Dental care",
-  },
-  {
-    _id: "9",
-    serial: 9,
-    category: "Dental care",
-  },
-  {
-    _id: "10",
-    serial: 10,
-    category: "Dental care",
-  },
-  {
-    _id: "11",
-    serial: 11,
-    category: "Dental care",
-  },
-  {
-    _id: "12",
-    serial: 12,
-    category: "Dental care",
-  },
-  {
-    _id: "13",
-    serial: 13,
-    category: "Dental care",
-  },
-  {
-    _id: "14",
-    serial: 14,
-    category: "Dental care",
-  },
-  {
-    _id: "15",
-    serial: 1,
-    category: "Dental care",
-  },
-];
+import { RiDeleteBin6Line } from "react-icons/ri";
+import AddCategoryModal from "../../Components/Dashboard/AddCategoryModal";
+import AddSubCategoryModal from "../../Components/Dashboard/AddSubcategoryModal";
+import SubCategoryView from "../../Components/Dashboard/SubCategoryView";
+import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
+import { imageUrl } from "../../redux/api/baseApi";
+import {
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery
+} from "../../redux/features/categoriesApi";
 
 const Category = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
+  const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  
   const [deleteId, setDeleteId] = useState("");
-  const [editID, seteditID] = useState("");
+  const [editData, setEditData] = useState(null);
 
-  const dropdownRef = useRef();
-  const [form] = Form.useForm();
+  const [showSubModal, setShowSubModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const [openSubCategory, setOpenSubCategory] = useState(false);
+
+  const dropdownRef = useRef();  
+
+  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery(page);
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -111,30 +47,21 @@ const Category = () => {
     };
   }, []);
 
-  const handleAddCategory = async () => {
+  const handleDelete = async () => {
     try {
-      const values = await form.validateFields();
-      console.log(values);
+      const res = await deleteCategory(deleteId);
+
+      if (res?.data) {
+        toast.success(res?.data?.message);
+        refetch();
+        setShowDelete(false);
+      }
     } catch (error) {
-      console.log("Validation Failed:", error);
+      setShowDelete(false);
     }
   };
 
-  const handleUpdate = async () => {
-    try {
-      const values = await form.validateFields();
-      console.log(values);
-      setOpenEditModal(false);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
-  };
-
-  const handleDelete = () => {
-    console.log(deleteId);
-    setShowDelete(false);
-  };
-
+  // ------------------------- Table Column  --------------------
   const columns = [
     {
       title: "Sl. No",
@@ -146,17 +73,48 @@ const Category = () => {
     },
     {
       title: "Category Name",
-      dataIndex: "category",
-      key: "category",
+      // dataIndex: "title",
+      key: "title",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (record) => (
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12">
+            <img
+              src={`${imageUrl}${record?.image}`}
+              alt=""
+              className="w-full h-full object-cover rounded-md"
+            />
+          </div>
+          <span style={{ color: "#FDFDFD" }}>{record?.title}</span>
+        </div>
+      ),
     },
     {
       title: "Sub-Category Name",
-      dataIndex: "category",
-      key: "category",
+      key: "Sub category",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (_, record) => (
+        <>
+          {record?.subcategories?.slice(0, 5).map((sCategory) => (
+            <span style={{ color: "#FDFDFD" }}>{sCategory?.name}, </span>
+          ))}
+
+          {record?.subcategories?.length > 0 && (
+            <span
+              onClick={() => {
+                setSelectedCategory(record);
+                setShowSubModal(true);
+              }}
+              className="ml-2 capitalize text-yellow-500 font-semibold cursor-pointer text-xs"
+            >
+              see more...
+            </span>
+          )}
+          {record?.subcategories?.length < 1 && (
+            <span className="text-white text-center ml-16">-</span>
+          )}
+        </>
+      ),
     },
     {
       title: "Action",
@@ -175,8 +133,8 @@ const Category = () => {
         >
           <button
             onClick={() => {
-              setOpenEditModal(true);
-              seteditID(record?._id);
+              setOpenSubCategory(true);
+              setEditData(record);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
@@ -185,8 +143,8 @@ const Category = () => {
 
           <button
             onClick={() => {
-              setOpenEditModal(true);
-              seteditID(record?._id);
+              setOpenAddModel(true);
+              setEditData(record);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
@@ -206,17 +164,6 @@ const Category = () => {
       ),
     },
   ];
-
-  const handlePageChange = (page) => {
-    setPage(page);
-    const params = new URLSearchParams(window.location.search);
-    params.set("page", page);
-    window.history.replaceState(null, "", `?${params.toString()}`);
-  };
-
-  const pageSize = 12;
-  const total = 20;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   return (
     <div className="h-full">
@@ -290,11 +237,12 @@ const Category = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={categoryData?.data}
+              loading={isLoading}
               pagination={{
-                total: total,
+                total: categoryData?.pagination?.total,
                 current: page,
-                pageSize: pageSize,
+                pageSize: categoryData?.pagination?.limit,
                 onChange: (page) => setPage(page),
               }}
             />
@@ -303,55 +251,23 @@ const Category = () => {
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
 
-      <Modal
-        centered
-        open={openAddModel}
-        onCancel={() => {
-          setOpenAddModel(false);
-        }}
-        width={500}
-        footer={false}
-      >
-        <div className="p-6 ">
-          <h1
-            className="font-semibold text-black text-xl"
-            style={{ marginBottom: "12px" }}
-          >
-            {`Add Category`}
-          </h1>
+      <AddCategoryModal
+        openAddModel={openAddModel}
+        setOpenAddModel={setOpenAddModel}
+        editData={editData}
+        setEditData={setEditData}
+        refetch={refetch}
+      />
 
-          <Form form={form}>
-            <div>
-              <p className="text-[#6D6D6D] py-1">Category Name</p>
-              <Form.Item
-                name="categoryName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Package Name",
-                  },
-                ]}
-              >
-                <Input
-                  className="w-[100%] border outline-none px-3 py-[10px]"
-                  type="text"
-                />
-              </Form.Item>
-            </div>
+      <AddSubCategoryModal
+        openSubCategory={openSubCategory}
+        setOpenSubCategory={setOpenSubCategory}
+        category={editData?._id}
+        setEditData={setEditData}
+        refetch={refetch}
+      />
 
-            <div className="text-center mt-6">
-              <button
-                onClick={handleAddCategory}
-                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
-              >
-                Add Category
-              </button>
-            </div>
-          </Form>
-        </div>
-      </Modal>
-
-      <Modal
+      {/* <Modal
         centered
         open={openEditModal}
         onCancel={() => {
@@ -397,7 +313,7 @@ const Category = () => {
             </div>
           </Form>
         </div>
-      </Modal>
+      </Modal> */}
 
       <Modal
         centered
@@ -421,6 +337,13 @@ const Category = () => {
           </button>
         </div>
       </Modal>
+
+      {/* ------------------------ Sub Category View Modal ------------- */}
+      <SubCategoryView
+        selectedCategory={selectedCategory}
+        showSubModal={showSubModal}
+        setShowSubModal={setShowSubModal}
+      />
     </div>
   );
 };
