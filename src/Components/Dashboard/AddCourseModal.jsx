@@ -31,7 +31,7 @@ const AddCourseModal = ({
   const { data: coachData, isLoading: coachLoading } = useGetCoachQuery();
 
   useEffect(() => {
-    if (editData) {
+    if(editData) {
       setForm({
         name: editData?.name,
         description: editData?.description,
@@ -55,9 +55,9 @@ const AddCourseModal = ({
     e.preventDefault();
 
     try {
-      if (editData) {
+      if(editData) {
         const res = await updateCourse({ ...form, id: editData?._id }).unwrap();
-        if (res?.success) {
+        if(res?.success) {
           toast.success("Course Update successfully");
           setForm({
             name: "",
@@ -72,7 +72,7 @@ const AddCourseModal = ({
         }
       } else {
         const res = await addCourse(form).unwrap();
-        if (res?.success) {
+        if(res?.success) {
           toast.success("Course added successfully");
           setForm({
             name: "",

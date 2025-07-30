@@ -3,6 +3,8 @@ import { Button, ConfigProvider, Form, Input, Modal, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { FiEdit } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
+
 import { RiDeleteBin6Line } from "react-icons/ri";
 import {
   useDeleteCourseMutation,
@@ -12,25 +14,46 @@ import moment from "moment";
 import { imageUrl } from "../../redux/api/baseApi";
 import AddCourseModal from "../../Components/Dashboard/AddCourseModal.Jsx";
 import toast from "react-hot-toast";
+import { useSearchParams } from "react-router-dom";
 
 const Courses = () => {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);  
+  const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [editData, setEditData] = useState("");
 
-  const { data: courseData, isLoading, refetch } = useGetCoursesQuery();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get("searchTerm") || "";
+
+  const { data: courseData, isLoading, refetch } = useGetCoursesQuery(searchTerm);
   const [deleteCourse, { isLoading: deleting }] = useDeleteCourseMutation();
 
   const dropdownRef = useRef();
 
   // ----------------------- Action -------------------
+   useEffect(() => {
+    refetch();
+  },[searchParams]);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const newValue = e.target.value;
+
+    const newParams = new URLSearchParams(searchParams);
+    if(newValue) {
+      newParams.set("searchTerm", newValue);
+    } else {
+      newParams.delete("searchTerm");
+    }
+    setSearchParams(newParams);
+  };
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
@@ -40,20 +63,18 @@ const Courses = () => {
     };
   }, []);
 
-
   const handleDeleteCategory = async () => {
-
     try {
       const res = await deleteCourse(deleteId).unwrap();
-      
-      if(res?.data) {
+
+      if (res?.data) {
         toast.success("Course Delete successfully");
-        setDeleteId("")
+        setDeleteId("");
         setShowDelete(false);
         refetch();
       }
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
     }
   };
 
@@ -62,7 +83,9 @@ const Courses = () => {
     {
       title: "Sl. No",
       dataIndex: "serial",
-      render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
+      render: (_, __, index) => (
+        <span className="text-[#FDFDFD]">{index + 1}</span>
+      ),
     },
     {
       title: "Course Name",
@@ -119,7 +142,7 @@ const Courses = () => {
       align: "left",
       render: (text) => (
         <span style={{ color: "#FDFDFD" }}>
-          {text.length > 60 ? `${text.slice(0, 60)}...` : text}
+          {text.length > 60 ? `${text.slice(0, 30)}...` : text}
         </span>
       ),
     },
@@ -190,7 +213,37 @@ const Courses = () => {
             Add Course
           </h3>
 
-          <div>
+          <div className="flex items-center gap-3">
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div
+                style={{
+                  width: "350px",
+                  height: "40px",
+                  borderRadius: "8px",
+                }}
+              >
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorPrimary: "#13333A",
+                    },
+                  }}
+                >
+                  <Input
+                    placeholder="Search..."
+                    onChange={handleSearchChange}
+                    prefix={<FiSearch size={14} color="#868FA0" />}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      fontSize: "14px",
+                      backgroundColor: "#FAFAFA",
+                    }}
+                    size="middle"
+                  />
+                </ConfigProvider>
+              </div>
+            </div>
             <Button
               onClick={() => setOpenAddModel(true)}
               style={{

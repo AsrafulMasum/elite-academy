@@ -29,7 +29,7 @@ const ClassSchedule = () => {
   const handleDelete = async () => {
     try {
       const res = await deleteSession({ id: deleteId }).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         toast.success(res?.message);
         refetch();
         setOpenDeleteModal(false);

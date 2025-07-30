@@ -51,8 +51,7 @@ const usersApi = baseApi.injectEndpoints({
       }
     }),
     lockUser: builder.mutation({
-      query: ({ id }) => {
-        console.log(id);
+      query: ({ id }) => {        
         return {
           url: `/user/${id}`,
           method: "PATCH",

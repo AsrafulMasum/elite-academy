@@ -31,7 +31,7 @@ const EditSessionModal = ({
   }));
 
   useEffect(() => {
-    if (sessionData) {
+    if(sessionData) {
       setForm({
         title: sessionData.title || "",
         course: sessionData.course?._id || "",
@@ -83,7 +83,7 @@ const EditSessionModal = ({
         body: payload,
       }).unwrap();
 
-      if (res?.success) {
+      if(res?.success) {
         toast.success("Session updated successfully!");
         setOpenEditModal(false);
         refetch();

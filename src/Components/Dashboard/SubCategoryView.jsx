@@ -1,6 +1,7 @@
 import { Modal } from "antd";
 import { useDeleteSubCategoryMutation } from "../../redux/features/categoriesApi";
 import { PiTrashLight } from "react-icons/pi";
+import toast from "react-hot-toast";
 
 
 const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal, refetch }) => {
@@ -8,13 +9,17 @@ const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal, refe
 
   const handleDeleteSubCategory = async (id) => {
     try {
-      const res = await deleteSubCategory(id);      
-      if(res?.data?.data) {
+      const res = await deleteSubCategory(id);  
+
+      console.log("res", res?.data?.success);
+      if(res?.data?.success) {        
         refetch();
         toast.success(res?.data?.message);        
-        setShowSubModal(false);
+        setShowSubModal(false)
       }
-    } catch (error) {}
+    } catch (error) {
+        console.error("Add offer failed", error);
+    }
   };
 
   
@@ -53,16 +58,7 @@ const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal, refe
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="text-center mt-6">
-          <button
-            onClick={() => setShowSubModal(false)}
-            className="bg-[#2E7A8A] hover:bg-[#225e6a] text-white px-6 py-2 rounded-md font-semibold transition"
-          >
-            Close
-          </button>
-        </div>
+        </div>        
       </div>
       
     </Modal>

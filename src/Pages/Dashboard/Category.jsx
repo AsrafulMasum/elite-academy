@@ -1,9 +1,11 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Modal, Table } from "antd";
+import { Button, ConfigProvider, Input, Modal, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
+
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import AddCategoryModal from "../../Components/Dashboard/AddCategoryModal";
@@ -15,6 +17,7 @@ import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery
 } from "../../redux/features/categoriesApi";
+import { useSearchParams } from "react-router-dom";
 
 const Category = () => {
   const [page, setPage] = useState(1);
@@ -29,11 +32,34 @@ const Category = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const [openSubCategory, setOpenSubCategory] = useState(false);
-
   const dropdownRef = useRef();  
 
-  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery(page);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchTerm = searchParams.get("searchTerm") || "";
+
+  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery(searchTerm);
   const [deleteCategory] = useDeleteCategoryMutation();
+
+
+  // ------------------- Action -----------------------
+
+     useEffect(() => {
+      refetch();
+    }, [searchParams]);
+  
+    // Handle search input change
+    const handleSearchChange = (e) => {
+      const newValue = e.target.value;
+  
+      const newParams = new URLSearchParams(searchParams);
+      if(newValue) {
+        newParams.set("searchTerm", newValue);
+      } else {
+        newParams.delete("searchTerm");
+      }
+      setSearchParams(newParams);
+    };
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -193,7 +219,37 @@ const Category = () => {
             Add Category
           </h3>
 
-          <div>
+          <div className="flex items-center gap-3">
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div
+                style={{
+                  width: "350px",
+                  height: "40px",
+                  borderRadius: "8px",
+                }}
+              >
+                <ConfigProvider
+                  theme={{
+                    token: {
+                      colorPrimary: "#13333A",
+                    },
+                  }}
+                >
+                  <Input
+                    placeholder="Search..."
+                    onChange={handleSearchChange}
+                    prefix={<FiSearch size={14} color="#868FA0" />}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      fontSize: "14px",
+                      backgroundColor: "#FAFAFA",
+                    }}
+                    size="middle"
+                  />
+                </ConfigProvider>
+              </div>
+            </div>
             <Button
               onClick={() => setOpenAddModel(true)}
               style={{
