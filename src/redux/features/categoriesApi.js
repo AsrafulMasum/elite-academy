@@ -26,8 +26,8 @@ const categoriesApi = baseApi.injectEndpoints({
       }
     }),
     getCategories: builders.query({
-      query: () => ({
-        url: "/category",
+      query: (searchTerm = "") => ({
+        url: `/category/?searchTerm=${searchTerm}`,
         method: "GET",
       }),
     }),

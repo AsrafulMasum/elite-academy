@@ -1,31 +1,31 @@
-import { Button, ConfigProvider, Input, Select, Table } from "antd";
+import { Button, ConfigProvider, Input, Modal, Select, Table } from "antd";
 import { useEffect, useState } from "react";
 import { CiLock, CiUnlock } from "react-icons/ci";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
-import { useGetCoachQuery } from "../../redux/features/usersApi";
+import {
+  useGetCoachQuery,
+  useLockUserMutation,
+} from "../../redux/features/usersApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { useSearchParams } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 import AddCoachModal from "../../Components/Dashboard/AddCoachModal";
+import toast from "react-hot-toast";
 
 const CoachLists = () => {
   const [page, setPage] = useState(1);
 
   const [open, setOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [userType, setUserType] = useState("User Type");
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("searchTerm") || "";
-  const [editData, setEditData] = useState(null);
   const [openAddModel, setOpenAddModel] = useState(false);
 
-  const { data: coachData, isLoading, refetch } = useGetCoachQuery(searchTerm);
+  const [showActive, setShowActive] = useState(false);
+  const [selectCoach, setSelectCoach] = useState("");
 
-  const UserType = [
-    { value: "Normal User", label: "Normal User" },
-    { value: "Subscribed User", label: "Subscribed User" },
-  ];
+  const { data: coachData, isLoading, refetch } = useGetCoachQuery(searchTerm);
+  const [lockUser, { isLoading: updating }] = useLockUserMutation();
 
   // ----------------- Action --------------------
 
@@ -38,12 +38,26 @@ const CoachLists = () => {
     const newValue = e.target.value;
 
     const newParams = new URLSearchParams(searchParams);
-    if (newValue) {
+    if(newValue) {
       newParams.set("searchTerm", newValue);
     } else {
       newParams.delete("searchTerm");
     }
     setSearchParams(newParams);
+  };
+
+  const handleLockCoach = async () => {
+    try {
+      const res = await lockUser({ id: selectCoach });
+
+      if(res?.data) {
+        toast.success(res?.data?.message);
+        refetch();
+        setShowActive(false);
+      }
+    } catch (error) {
+      setShowActive(false);
+    }
   };
 
   // -------------- Table Column ---------------
@@ -83,14 +97,8 @@ const CoachLists = () => {
     },
     {
       title: "Coach Id",
-      dataIndex: "coachId",
-      key: "coachId",
-      render: (text) => <span className="text-[#FDFDFD]">{text ?? "N/A"}</span>,
-    },
-    {
-      title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
+      dataIndex: "employeeId",
+      key: "employeeId",
       render: (text) => <span className="text-[#FDFDFD]">{text ?? "N/A"}</span>,
     },
     {
@@ -109,9 +117,8 @@ const CoachLists = () => {
     },
     {
       title: "Action",
-      dataIndex: "status",
       key: "action",
-      render: (text) => (
+      render: (record) => (
         <div
           style={{
             display: "flex",
@@ -121,23 +128,8 @@ const CoachLists = () => {
             paddingRight: 10,
           }}
         >
-          {/* <button
-            className="flex justify-center items-center rounded-md"
-            onClick={() => setOpen(true)}
-            style={{
-              cursor: "pointer",
-              border: "none",
-              outline: "none",
-              backgroundColor: "#121212",
-              width: "40px",
-              height: "32px",
-            }}
-          >
-            <GoArrowUpRight size={26} className="text-secondary" />
-          </button> */}
-
           <div>
-            {text === "active" ? (
+            {record?.text === "active" ? (
               <button
                 className="flex justify-center items-center rounded-md"
                 onClick={() => setOpen(true)}
@@ -155,7 +147,10 @@ const CoachLists = () => {
             ) : (
               <button
                 className="flex justify-center items-center rounded-md"
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                  setSelectCoach(record?._id);
+                  setShowActive(true);
+                }}
                 style={{
                   cursor: "pointer",
                   border: "none",
@@ -165,7 +160,11 @@ const CoachLists = () => {
                   height: "32px",
                 }}
               >
-                <CiLock size={26} className="text-red-400" />
+                {record?.status === "active" ? (
+                  <CiUnlock size={26} className="text-secondary" />
+                ) : (
+                  <CiLock size={26} className="text-[#FF0000]" />
+                )}
               </button>
             )}
           </div>
@@ -202,26 +201,6 @@ const CoachLists = () => {
           </h3>
 
           <div className="flex items-center gap-3">
-            <Button
-              onClick={() => setOpenAddModel(true)}
-              style={{
-                width: "151px",
-                height: "40px",
-                boxShadow: "0px 2px 4px 0px #0000001A",
-                backgroundColor: "#2E7A8A",
-                border: "none",
-                transition: "none",
-                color: "#FDFDFD",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-              }}
-            >
-              <PlusOutlined />
-              <span style={{ margin: 0 }}>Add Coach</span>
-            </Button>
-
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <div
                 style={{
@@ -252,6 +231,25 @@ const CoachLists = () => {
                 </ConfigProvider>
               </div>
             </div>
+            <Button
+              onClick={() => setOpenAddModel(true)}
+              style={{
+                width: "151px",
+                height: "40px",
+                boxShadow: "0px 2px 4px 0px #0000001A",
+                backgroundColor: "#2E7A8A",
+                border: "none",
+                transition: "none",
+                color: "#FDFDFD",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              <PlusOutlined />
+              <span style={{ margin: 0 }}>Add Coach</span>
+            </Button>
           </div>
         </div>
 
@@ -277,8 +275,9 @@ const CoachLists = () => {
             <Table
               size="small"
               columns={columns}
+              rowKey="_id"
               dataSource={coachData?.data}
-              loading={isLoading}
+              loading={isLoading || updating}
               pagination={{
                 total: coachData?.pagination?.total,
                 current: page,
@@ -292,9 +291,32 @@ const CoachLists = () => {
       <UserDetailsModal open={open} setOpen={setOpen} />
       <AddCoachModal
         openAddModel={openAddModel}
-        setOpenAddModel={setOpenAddModel}   
+        setOpenAddModel={setOpenAddModel}
         refetch={refetch}
       />
+
+      <Modal
+        centered
+        open={showActive}
+        onCancel={() => setShowActive(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure !
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content ?
+          </p>
+          <button
+            onClick={handleLockCoach}
+            className="bg-action py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

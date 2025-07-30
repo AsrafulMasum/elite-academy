@@ -58,7 +58,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
     try {
       const res = await createSession(payload).unwrap();
 
-      if (res?.success) {
+      if(res?.success) {
         toast.success("Session added successfully!");
         setForm({
           title: "",
