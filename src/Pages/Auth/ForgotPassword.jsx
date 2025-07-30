@@ -11,7 +11,7 @@ const ForgotPassword = () => {
       const res = await forgotPassword({
         email: values?.email,
       }).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         navigate(`/otp?email=${values?.email}`);
       } else {
         console.error("Failed to send OTP");

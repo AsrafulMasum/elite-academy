@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { ConfigProvider, Layout } from "antd";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import adminImg from "../../assets/admin.jpg";
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
@@ -544,22 +544,21 @@ const Dashboard = () => {
               </h2>
             </Link>
           </div>
-        </Header>
-
-        <Content
-          style={{
-            marginTop: "88px",
-            marginBottom: "16px",
-            marginLeft: "265px",
-            marginRight: "16px",
-            borderRadius: "8px",
-            overflow: "auto",
-            // backgroundColor: "#13333A",
-            overflowX: "hidden",
-          }}
-        >
-          <Outlet />
-        </Content>
+        </Header>        
+          <Content
+            style={{
+              marginTop: "88px",
+              marginBottom: "16px",
+              marginLeft: "265px",
+              marginRight: "16px",
+              borderRadius: "8px",
+              overflow: "auto",
+              // backgroundColor: "#13333A",
+              overflowX: "hidden",
+            }}
+          >
+            <Outlet />
+          </Content>        
       </Layout>
     </Layout>
   );

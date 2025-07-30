@@ -71,7 +71,7 @@ const Subscription = () => {
   const handleDelete = async () => {
     // try {
     //   const res = await deleteSubscription(deleteId);
-    //   if (res?.data) {
+    //   if(res?.data) {
     //     toast.success("Subscription deleted successfully");
     //     setShowDelete(false);
     //     setDeleteId("");
@@ -86,7 +86,7 @@ const Subscription = () => {
   };
 
   // useEffect(() => {
-  //   if (Array.isArray(packageData)) {
+  //   if(Array.isArray(packageData)) {
   //     setPackages(packageData);
   //   } else {
   //     setPackages([]);

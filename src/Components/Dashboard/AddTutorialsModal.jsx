@@ -38,7 +38,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const handleAdd = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image" && files && files.length > 0) {
+    if(name === "image" && files && files.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);
       setImgURLs([url]);
@@ -52,7 +52,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!videoFile) {
+    if(!videoFile) {
       toast.error("Please select a video.");
       return;
     }
@@ -77,7 +77,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
         formData.append("title", form.productName);
         formData.append("course", form.course);
         formData.append("topic", form.topic);
-        // if (imageFiles.length > 0) {
+        // if(imageFiles.length > 0) {
         //   formData.append("image", imageFiles[0]);
         // }
 
@@ -89,7 +89,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
           }
         );
 
-        if (!res.ok) {
+        if(!res.ok) {
           toast.error(`Upload failed at chunk ${i}`);
           return;
         }

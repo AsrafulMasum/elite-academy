@@ -1,17 +1,18 @@
 import { Modal } from "antd";
 import { useDeleteSubCategoryMutation } from "../../redux/features/categoriesApi";
-import { PiTrashLight } from "react-icons/Pi";
+import { PiTrashLight } from "react-icons/pi";
+import toast from "react-hot-toast";
 
 
-const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal }) => {
+const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal, refetch }) => {
+  const [deleteSubCategory ] = useDeleteSubCategoryMutation()
 
   const handleDeleteSubCategory = async (id) => {
     try {
-      const res = await useDeleteSubCategoryMutation(id);
-      if (res?.data) {
+      const res = await deleteSubCategory(id);      
+      if(res?.data?.data) {
         refetch();
-        toast.success("Delete Sub Category");
-        setEditData(null);
+        toast.success(res?.data?.message);        
         setShowSubModal(false);
       }
     } catch (error) {}

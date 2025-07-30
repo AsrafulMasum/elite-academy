@@ -21,7 +21,7 @@ const Otp = () => {
 
     try {
       const res = await otpVerify(data).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         navigate(`/update-password?token=${res?.data}`);
       }
     } catch (error) {
@@ -32,7 +32,7 @@ const Otp = () => {
   const handleResendEmail = async () => {
     try {
       const res = await resendOTP({ email }).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         toast.success(res?.message);
       }
     } catch (error) {

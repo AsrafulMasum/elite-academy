@@ -27,7 +27,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
   const handleAdd = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image" && files && files.length > 0) {
+    if(name === "image" && files && files.length > 0) {
       const fileArray = Array.from(files);
       const urls = fileArray.map((file) => URL.createObjectURL(file));
       setImgURLs(urls);
@@ -48,7 +48,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       formData.append("subcategory", form.subcategory);
       formData.append("description", form.description);
 
-      if (imageFiles && imageFiles.length > 0) {
+      if(imageFiles && imageFiles.length > 0) {
         imageFiles.forEach((file) => {
           formData.append("image", file);
         });
@@ -59,8 +59,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       if(res?.success) {
         setOpenAddModel(false);
         setForm({
-          title: "",
-          image: "",
+          title: "",          
           price: "",
           quantity: "",
           subcategory: "",

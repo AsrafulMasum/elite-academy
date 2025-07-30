@@ -25,7 +25,7 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
     //     console.error("Failed to update package:", error);
     //     toast.error("Failed to update package. Please try again.");
     //   });
-    // if (res?.success) {
+    // if(res?.success) {
     //   refetch();
     //   setOpenEditModal(false);
     //   toast.success("Package updated successfully!");
@@ -88,7 +88,7 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
           rules={[
             {
               validator: async (_, packageDetails) => {
-                if (!packageDetails || packageDetails.length < 1) {
+                if(!packageDetails || packageDetails.length < 1) {
                   return Promise.reject(new Error("At least 1 field"));
                 }
               },

@@ -26,7 +26,7 @@ const EditTutorialModal = ({
   });
 
   useEffect(() => {
-    if (tutorialData) {
+    if(tutorialData) {
       setForm({
         productName: tutorialData?.title || "",
         course: tutorialData?.course?._id || "",
@@ -77,12 +77,12 @@ const EditTutorialModal = ({
 
       const updateData = await updateRes.json();
 
-      if (!updateRes.ok || !updateData.success) {
+      if(!updateRes.ok || !updateData.success) {
         throw new Error(updateData.message || "Failed to update tutorial data");
       }
 
       // Upload video in chunks if a new video is selected
-      if (videoFile) {
+      if(videoFile) {
         const chunkSize = 5 * 1024 * 1024; // 5MB
         const totalChunks = Math.ceil(videoFile.size / chunkSize);
 
@@ -106,7 +106,7 @@ const EditTutorialModal = ({
           );
 
           const chunkData = await chunkRes.json();
-          if (!chunkRes.ok || !chunkData.success) {
+          if(!chunkRes.ok || !chunkData.success) {
             throw new Error(chunkData?.message || "Chunk upload failed");
           }
         }

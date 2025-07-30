@@ -27,7 +27,7 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
     };
     // try {
     //   const res = await createSubscription(packageData).unwrap();
-    //   if (res?.success) {
+    //   if(res?.success) {
     //     refetch();
     //     setOpenAddModel(false);
     //     form.resetFields();
@@ -97,7 +97,7 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
           rules={[
             {
               validator: async (_, packageDetails) => {
-                if (!packageDetails || packageDetails.length < 1) {
+                if(!packageDetails || packageDetails.length < 1) {
                   return Promise.reject(new Error("At least 1 fields"));
                 }
               },

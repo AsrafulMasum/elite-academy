@@ -11,14 +11,14 @@ const ChipsInput = ({ separator = ",", tags, setTags }) => {
 
   const addTag = (value) => {
     const trimmed = value.trim();
-    if (trimmed && !tags.includes(trimmed)) {
+    if(trimmed && !tags.includes(trimmed)) {
       setTags([...tags, trimmed]);
     }
     setInputValue("");
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === separator) {
+    if(e.key === "Enter" || e.key === separator) {
       e.preventDefault();
       addTag(inputValue);
     }

@@ -24,7 +24,7 @@ const AdminProfile = () => {
 
   const onImageChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if(file) {
       const imgUrl = URL.createObjectURL(file);
       setImagePick(imgUrl);
       setImage(file);
@@ -34,7 +34,7 @@ const AdminProfile = () => {
   const handleSubmit = async (values) => {
     console.log(values);
     const formData = new FormData();
-    if (image) {
+    if(image) {
       formData.append("image", image);
     }
     Object.keys(values).forEach((key) => {
@@ -42,7 +42,7 @@ const AdminProfile = () => {
     });
     try {
       const data = await updateProfile(formData).unwrap();
-      if (data?.success) {
+      if(data?.success) {
         toast.success(data?.message);
         refetch();
         setProfileEdit(false);
@@ -53,13 +53,13 @@ const AdminProfile = () => {
   };
 
   const handleChangePassword = async (values) => {
-    if (values?.current_password === values.new_password) {
+    if(values?.current_password === values.new_password) {
       setNewPassError("The New password is semilar with old Password");
     } else {
       setNewPassError("");
     }
 
-    if (values?.new_password !== values.confirm_password) {
+    if(values?.new_password !== values.confirm_password) {
       setConPassError("New Password and Confirm Password Doesn't Matched");
     } else {
       setConPassError("");
@@ -72,7 +72,7 @@ const AdminProfile = () => {
     console.log(payload);
     try {
       const res = await changePassword(payload).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         toast.success(res?.message);
       }
     } catch (error) {

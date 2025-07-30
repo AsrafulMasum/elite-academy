@@ -37,7 +37,7 @@ const Category = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
@@ -51,7 +51,7 @@ const Category = () => {
     try {
       const res = await deleteCategory(deleteId);
 
-      if (res?.data) {
+      if(res?.data) {
         toast.success(res?.data?.message);
         refetch();
         setShowDelete(false);
@@ -105,7 +105,7 @@ const Category = () => {
                 setSelectedCategory(record);
                 setShowSubModal(true);
               }}
-              className="ml-2 capitalize text-yellow-500 font-semibold cursor-pointer text-xs"
+              className="ml-2 capitalize text-yellow-500 font-semibold cursor-pointer text-xs whitespace-nowrap"
             >
               see more...
             </span>
@@ -237,6 +237,7 @@ const Category = () => {
             <Table
               size="small"
               columns={columns}
+              rowKey="_id"
               dataSource={categoryData?.data}
               loading={isLoading}
               pagination={{
@@ -343,6 +344,7 @@ const Category = () => {
         selectedCategory={selectedCategory}
         showSubModal={showSubModal}
         setShowSubModal={setShowSubModal}
+        refetch={refetch}
       />
     </div>
   );

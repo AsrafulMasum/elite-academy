@@ -3,12 +3,11 @@ import { useForm } from "antd/es/form/Form";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CiImageOn } from "react-icons/ci";
-import {
-  useAddCategoryMutation,
-  useUpdateCategoryMutation,
-} from "../../redux/features/categoriesApi";
+
 import { ImSpinner9 } from "react-icons/im";
 import { imageUrl } from "../../redux/api/baseApi";
+import { useAddCategoryMutation, useUpdateCategoryMutation } from "../../redux/features/categoriesApi";
+
 
 const AddCategoryModal = ({
   openAddModel,
@@ -25,7 +24,7 @@ const AddCategoryModal = ({
   const [form] = useForm();
 
   useEffect(() => {
-    if (editData) {
+    if(editData) {
       form.setFieldsValue({ title: editData?.title });
     }
   }, [editData]);
@@ -35,16 +34,16 @@ const AddCategoryModal = ({
       const formData = new FormData();
 
       formData.append("title", values?.title);
-      if (imageFile && imageFile.length > 0) {
+      if(imageFile && imageFile.length > 0) {
         imageFile.forEach((file) => {
           formData.append("image", file);
         });
       }
       formData.append("image", imageFile);
 
-      if (editData) {
+      if(editData) {
         const res = await updateCategory({ id: editData?._id, formData })          
-        if (res?.data) {
+        if(res?.data) {
           refetch();
           form.resetFields();
           setImgURL(null);
@@ -55,7 +54,7 @@ const AddCategoryModal = ({
         }
       } else {
        const res = await addCategory(formData);
-       if (res?.data) {
+       if(res?.data) {
           refetch();
           form.resetFields();
           setImgURL(null);
@@ -136,7 +135,7 @@ const AddCategoryModal = ({
                   <input
                     onChange={(e) => {
                       const file = e.target.files[0];
-                      if (file) {
+                      if(file) {
                         setImgURL(URL.createObjectURL(file));
                         setImageFile(file);
                       }

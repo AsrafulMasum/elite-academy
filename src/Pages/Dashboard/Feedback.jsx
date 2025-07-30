@@ -326,7 +326,7 @@ const Feedback = () => {
               showSizeChanger={false}
               size="small"
               itemRender={(pageNum, type, originalElement) => {
-                if (type === "prev") {
+                if(type === "prev") {
                   return (
                     <a
                       className="hover:text-[#333333]"
@@ -337,7 +337,7 @@ const Feedback = () => {
                     </a>
                   );
                 }
-                if (type === "next") {
+                if(type === "next") {
                   return (
                     <a
                       className="hover:text-[#333333]"

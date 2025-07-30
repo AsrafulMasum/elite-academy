@@ -21,6 +21,32 @@ const courseApi = baseApi.injectEndpoints({
       },
     }),
 
+    addCourse: builder.mutation({
+      query: (data)=>{
+        return {
+          url: "/course",
+          method: "POST",
+          body: data
+        }
+      }
+    }),
+    updateCourse: builder.mutation({
+      query: ({id, ...data})=>{
+        return {
+          url: `/course/${id}`,
+          method: "PATCH",
+          body: data
+        }
+      }
+    }),
+    deleteCourse: builder.mutation({
+      query: (id)=>{
+        return {
+          url: `/course/${id}`,
+          method: "DELETE",          
+        }
+      }
+    }),
     getTopics: builder.query({
       query: () => {
         return {
@@ -44,7 +70,12 @@ const courseApi = baseApi.injectEndpoints({
 
 export const {
   useGetTutorialsQuery,
+
   useGetCoursesQuery,
+  useAddCourseMutation,
+  useUpdateCourseMutation,
+  useDeleteCourseMutation,
+  
   useGetTopicsQuery,
   useDeleteTutorialMutation,
 } = courseApi;

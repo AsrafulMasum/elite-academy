@@ -113,10 +113,10 @@ const Products = () => {
         let status = "";
         let statusClass = "";
 
-        if (record.stock === 0) {
+        if(record.stock === 0) {
           status = "Stock Out";
           statusClass = "bg-[#FC605726] text-[#FC6057]";
-        } else if (record.stock < 10) {
+        } else if(record.stock < 10) {
           status = "Short Stock";
           statusClass = "bg-yellow-100 text-yellow-700";
         } else {
@@ -255,6 +255,7 @@ const Products = () => {
               <Table
                 size="small"
                 columns={columns}
+                rowKey="_id"
                 dataSource={productData?.data}
                 loading={isLoading}
                 pagination={{

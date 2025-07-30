@@ -9,7 +9,7 @@ const ChunkedVideoUpload = ({ onFileSelect }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
-    if (file) {
+    if(file) {
       setPreviewUrl(URL.createObjectURL(file));
       onFileSelect(file);
     } else {
