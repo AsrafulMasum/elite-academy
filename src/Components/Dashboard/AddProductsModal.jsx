@@ -1,7 +1,6 @@
 import { Modal, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { CiImageOn } from "react-icons/ci";
-import { ImSpinner2 } from "react-icons/im";
 import ChipsInput from "./ChipsInput";
 import { useAddProductMutation } from "../../redux/features/productApi";
 import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
@@ -58,8 +57,8 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       const res = await addProduct(formData).unwrap();
       if(res?.success) {
         setOpenAddModel(false);
-        setForm({
-          title: "",          
+        setForm({          
+          title: "",
           price: "",
           quantity: "",
           subcategory: "",

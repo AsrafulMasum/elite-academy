@@ -37,11 +37,13 @@
 }
 .ant-pagination .ant-pagination-item-active a:hover {
   color: "white" !important;
+  background-color: #636363 !important;
 }
 
 .ant-pagination .ant-pagination-item a {
   border-radius: 8px !important;
-  color: white;
+  color: #000000;
+  margin-right: 4 !important;
 }
 
 .ant-pagination .ant-pagination-item-active {
@@ -109,6 +111,5 @@ input::placeholder {
 }
 
 .ant-layout-sider {
-  background: #f0f0f0 !important;
   width: 225px !important;
 }
