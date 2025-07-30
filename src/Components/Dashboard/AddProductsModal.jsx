@@ -1,7 +1,6 @@
 import { Modal, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { CiImageOn } from "react-icons/ci";
-import { ImSpinner2 } from "react-icons/im";
 import ChipsInput from "./ChipsInput";
 import { useAddProductMutation } from "../../redux/features/productApi";
 import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
@@ -60,7 +59,6 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
         setOpenAddModel(false);
         setForm({
           title: "",
-          image: "",
           price: "",
           quantity: "",
           subcategory: "",

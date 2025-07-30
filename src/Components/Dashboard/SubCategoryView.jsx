@@ -1,6 +1,6 @@
 import { Modal } from "antd";
 import { useDeleteSubCategoryMutation } from "../../redux/features/categoriesApi";
-import { PiTrashLight } from "react-icons/Pi";
+import { PiTrashLight } from "react-icons/pi";
 
 
 const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal }) => {

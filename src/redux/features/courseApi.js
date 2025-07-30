@@ -30,9 +30,18 @@ const courseApi = baseApi.injectEndpoints({
       },
     }),
 
+    getSessions: builder.query({
+      query: ({ page, limit }) => {
+        return {
+          url: `/session?page=${page}&limit=${limit}`,
+          method: "GET",
+        };
+      },
+    }),
+
     deleteTutorial: builder.mutation({
       query: ({ id }) => {
-        console.log(id)
+        console.log(id);
         return {
           url: `/tutorial/${id}`,
           method: "DELETE",
@@ -46,5 +55,6 @@ export const {
   useGetTutorialsQuery,
   useGetCoursesQuery,
   useGetTopicsQuery,
+  useGetSessionsQuery,
   useDeleteTutorialMutation,
 } = courseApi;

@@ -113,12 +113,17 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 .ant-slider .ant-slider-handle::after {
   box-shadow: 0 0 0 4px #6a6d7c !important;
 }
-:where(.css-dev-only-do-not-override-djtmh8).ant-modal .ant-modal-content {
+/* :where(.css-dev-only-do-not-override-djtmh8).ant-modal .ant-modal-content {
+  padding: 0 !important;
+} */
+
+:where(.css-dev-only-do-not-override-1vjf2v5).ant-modal .ant-modal-content{
+  background-color: #2E7A8A;
   padding: 0 !important;
 }
 
 :where(.css-dev-only-do-not-override-djtmh8).ant-layout {
-  background-color: #121212;
+  background-color: #121212 !important;
 }
 
 /* side layout bg color  */
@@ -174,4 +179,8 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
 
 .ant-pagination-options {
   display: none;
+}
+
+:where(.css-dev-only-do-not-override-1vjf2v5).ant-layout{
+  background: #000000 !important;
 }
