@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { ConfigProvider, Input, Modal, Table } from "antd";
-import Logo from "../../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
-import provider from "../../assets/serviceProvider.png";
 import { CiLock, CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
 import { imageUrl } from "../../redux/api/baseApi";
@@ -11,6 +9,7 @@ import {
   useGetStudentsQuery,
   useLockUserMutation,
 } from "../../redux/features/usersApi";
+import toast from "react-hot-toast";
 
 const itemsPerPage = 10;
 const total = 50;
@@ -20,7 +19,7 @@ const StudentLists = () => {
   const [lock, setLock] = useState("");
   const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const { data: userData } = useGetStudentsQuery(searchText);
+  const { data: userData, refetch } = useGetStudentsQuery({searchText, page});
   const [lockUser] = useLockUserMutation();
 
   const columns = [
@@ -139,10 +138,14 @@ const StudentLists = () => {
     setSearchText(e.target.value);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const res = await lockUser({ id });
-      console.log(res);
+      const res = await lockUser({ id: lock });
+      if (res?.data?.success) {
+        refetch();
+        setLock("");
+        toast.success(res?.data?.message);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -225,16 +228,18 @@ const StudentLists = () => {
               dataSource={userData?.data}
               rowKey="_id"
               pagination={{
-                total: total,
+                total: userData?.pagination?.total,
                 current: page,
-                pageSize: itemsPerPage,
+                pageSize: userData?.pagination?.limit,
                 onChange: (page) => setPage(page),
               }}
             />
           </ConfigProvider>
         </div>
       </div>
+
       <UserDetailsModal value={value} setValue={setValue} />
+
       <Modal
         centered
         open={lock}
