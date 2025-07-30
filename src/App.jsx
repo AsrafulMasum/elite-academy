@@ -12,9 +12,7 @@ import MakeAdmin from "./Pages/Dashboard/MakeAdmin";
 import ChangePassword from "./Pages/Dashboard/ChangePassword";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 import AdminProfile from "./Pages/Dashboard/AdminProfile";
-import Feedback from "./Pages/Dashboard/Feedback";
 import Category from "./Pages/Dashboard/Category";
-import SubCategory from "./Pages/Dashboard/SubCategory";
 import AboutUs from "./Pages/Dashboard/AboutUs";
 import FAQ from "./Pages/Dashboard/FAQ";
 import PrivacyPolicy from "./Pages/Dashboard/PrivacyPolicy";
@@ -80,8 +78,6 @@ function App() {
               element={<PrivacyPolicy />}
             />
             <Route path="/settings/terms-conditions" element={<Terms />} />
-
-            <Route path="/feedback" element={<Feedback />} />
           </Route>
 
           <Route path="/login" element={<Login />} />

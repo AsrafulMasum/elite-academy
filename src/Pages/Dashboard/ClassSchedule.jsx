@@ -241,8 +241,8 @@ const ClassSchedule = () => {
           <p className="text-[#D93D04] text-center font-semibold">
             Are you sure!
           </p>
-          <p className="pt-4 pb-12 text-center text-[#FDFDFD]">
-            Do you want to delete this Tutorial?
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this Session?
           </p>
           <button
             onClick={handleDelete}

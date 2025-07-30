@@ -3,10 +3,9 @@ import { baseApi } from "../api/baseApi";
 const usersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStudents: builder.query({
-      query: ({ srcText, page }) => {
-        console.log(srcText, page);
+      query: ({ searchText, page }) => {
         return {
-          url: `/user?role=MEMBER&searchTerm=${srcText}&page=${page}`,
+          url: `/user?role=MEMBER&searchTerm=${searchText}&page=${page}`,
           method: "GET",
         };
       },
@@ -21,7 +20,7 @@ const usersApi = baseApi.injectEndpoints({
         };
       },
     }),
-    // In your API slice
+
     getCoach: builder.query({
       query: (searchTerm = "") => {
         return {
@@ -50,9 +49,9 @@ const usersApi = baseApi.injectEndpoints({
         }
       }
     }),
+
     lockUser: builder.mutation({
       query: ({ id }) => {
-        console.log(id);
         return {
           url: `/user/${id}`,
           method: "PATCH",
@@ -65,7 +64,6 @@ export const {
   useGetStudentsQuery,
   useGetUsersQuery,
   useUpdateCoachMutation,
-
   useAddCoachMutation,  
   useLockUserMutation,
   useGetCoachQuery,
