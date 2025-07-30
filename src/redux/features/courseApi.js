@@ -33,15 +33,44 @@ const courseApi = baseApi.injectEndpoints({
     getSessions: builder.query({
       query: ({ page, limit }) => {
         return {
-          url: `/session?page=${page}&limit=${limit}`,
           method: "GET",
+          url: `/session?page=${page}&limit=${limit}`,
+        };
+      },
+    }),
+
+    createSession: builder.mutation({
+      query: (payload) => {
+        return {
+          method: "POST",
+          url: `/session`,
+          body: payload,
+        };
+      },
+    }),
+
+    updateSession: builder.mutation({
+      query: ({ id, body }) => {
+        console.log(body, "body");
+        return {
+          url: `/session/${id}`,
+          method: "PATCH",
+          body,
+        };
+      },
+    }),
+
+    deleteSession: builder.mutation({
+      query: ({ id }) => {
+        return {
+          url: `/session/${id}`,
+          method: "DELETE",
         };
       },
     }),
 
     deleteTutorial: builder.mutation({
       query: ({ id }) => {
-        console.log(id);
         return {
           url: `/tutorial/${id}`,
           method: "DELETE",
@@ -57,4 +86,7 @@ export const {
   useGetTopicsQuery,
   useGetSessionsQuery,
   useDeleteTutorialMutation,
+  useCreateSessionMutation,
+  useUpdateSessionMutation,
+  useDeleteSessionMutation,
 } = courseApi;

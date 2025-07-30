@@ -1,14 +1,19 @@
 import { DatePicker, Modal } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { ConfigProvider, TimePicker } from "antd/es";
 import toast from "react-hot-toast";
 import {
-  useCreateSessionMutation,
   useGetCoursesQuery,
+  useUpdateSessionMutation,
 } from "../../redux/features/courseApi";
 
-const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
+const EditSessionModal = ({
+  openEditModal,
+  setOpenEditModal,
+  sessionData,
+  refetch,
+}) => {
   const [form, setForm] = useState({
     title: "",
     course: "",
@@ -18,14 +23,30 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   });
 
   const { data } = useGetCoursesQuery();
+  const [updateSession] = useUpdateSessionMutation();
+
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
     id: course._id,
   }));
 
-  const [createSession] = useCreateSessionMutation();
+  useEffect(() => {
+    if (sessionData) {
+      setForm({
+        title: sessionData.title || "",
+        course: sessionData.course?._id || "",
+        date: dayjs(sessionData.date).format("YYYY-MM-DD") || "",
+        startTime: sessionData.startTime
+          ? dayjs(sessionData.startTime, "h:mm A").toISOString()
+          : "",
+        endTime: sessionData.endTime
+          ? dayjs(sessionData.endTime, "h:mm A").toISOString()
+          : "",
+      });
+    }
+  }, [sessionData]);
 
-  const handleAdd = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -54,25 +75,22 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
       startTime: dayjs(form.startTime).format("h:mm A"),
       endTime: dayjs(form.endTime).format("h:mm A"),
     };
+    console.log(payload);
 
     try {
-      const res = await createSession(payload).unwrap();
+      const res = await updateSession({
+        id: sessionData._id,
+        body: payload,
+      }).unwrap();
 
       if (res?.success) {
-        toast.success("Session added successfully!");
-        setForm({
-          title: "",
-          course: "",
-          date: "",
-          startTime: "",
-          endTime: "",
-        });
-        setOpenAddModal(false);
+        toast.success("Session updated successfully!");
+        setOpenEditModal(false);
         refetch();
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong while adding the session.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update session.");
     }
   };
 
@@ -86,17 +104,17 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
     >
       <Modal
         centered
-        open={openAddModal}
-        onCancel={() => setOpenAddModal(false)}
+        open={openEditModal}
+        onCancel={() => setOpenEditModal(false)}
         width={400}
         footer={false}
       >
         <div className="p-6 bg-action rounded-lg">
           <h1 className="text-[20px] font-medium mb-3 text-white">
-            Add Session
+            Edit Session
           </h1>
           <form onSubmit={handleSubmit}>
-            {/* Course */}
+            {/* Course Select */}
             <div style={{ marginBottom: "16px" }}>
               <label
                 style={{
@@ -107,11 +125,10 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
               >
                 Course
               </label>
-
               <select
                 name="course"
                 value={form.course}
-                onChange={handleAdd}
+                onChange={handleChange}
                 style={{
                   border: "1px solid #E0E4EC",
                   padding: "10px",
@@ -138,7 +155,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
                 type="text"
                 name="title"
                 value={form.title}
-                onChange={handleAdd}
+                onChange={handleChange}
                 placeholder="Enter session title"
                 className="w-full border border-[#E0E4EC] bg-white rounded-lg px-4 py-2 h-[52px] outline-none"
               />
@@ -185,7 +202,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
               type="submit"
               className="w-full bg-[#13333A] text-white rounded-lg py-2 h-[44px] mt-2"
             >
-              Submit
+              Update
             </button>
           </form>
         </div>
@@ -194,4 +211,4 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   );
 };
 
-export default AddSessionModal;
+export default EditSessionModal;

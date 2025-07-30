@@ -1,18 +1,43 @@
 import { useState } from "react";
 import { ConfigProvider, Table } from "antd";
 import { FiEdit } from "react-icons/fi";
-import { useGetSessionsQuery } from "../../redux/features/courseApi";
+import {
+  useDeleteSessionMutation,
+  useGetSessionsQuery,
+} from "../../redux/features/courseApi";
 import moment from "moment";
-import { Button } from "antd/es";
+import { Button, Modal } from "antd/es";
 import { PlusOutlined } from "@ant-design/icons";
 import AddSessionModal from "../../Components/Dashboard/AddSessionModal";
+import EditSessionModal from "../../Components/Dashboard/EditSessionModal";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 const ClassSchedule = () => {
   const [page, setPage] = useState(1);
   const [openAddModal, setOpenAddModal] = useState(false);
-  const limit = 15;
-  const { data: sessionsData } = useGetSessionsQuery({ page, limit });
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [value, setValue] = useState(null);
+  const [deleteId, setDeleteId] = useState("");
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const limit = 12;
+  const { data: sessionsData, refetch } = useGetSessionsQuery({ page, limit });
   const sessions = sessionsData?.data;
+
+  const [deleteSession] = useDeleteSessionMutation();
+
+  const handleDelete = async () => {
+    try {
+      const res = await deleteSession({ id: deleteId }).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+        refetch();
+        setOpenDeleteModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columns = [
     {
@@ -69,7 +94,7 @@ const ClassSchedule = () => {
             className="flex justify-center items-center rounded-md"
             onClick={() => {
               setValue(record);
-              setOpenEditModel(true);
+              setOpenEditModal(true);
             }}
             style={{
               cursor: "pointer",
@@ -81,6 +106,25 @@ const ClassSchedule = () => {
             }}
           >
             <FiEdit size={16} className="text-secondary" />
+          </button>
+          <button
+            className="flex justify-center items-center rounded-md"
+            onClick={() => {
+              {
+                setDeleteId(record?._id);
+                setOpenDeleteModal(true);
+              }
+            }}
+            style={{
+              cursor: "pointer",
+              border: "none",
+              outline: "none",
+              backgroundColor: "#121212",
+              width: "40px",
+              height: "32px",
+            }}
+          >
+            <RiDeleteBin6Line size={16} className="text-secondary" />
           </button>
         </div>
       ),
@@ -163,6 +207,7 @@ const ClassSchedule = () => {
               size="small"
               columns={columns}
               dataSource={sessions}
+              rowKey="_id"
               pagination={{
                 total: sessionsData?.pagination?.total,
                 current: page,
@@ -176,7 +221,37 @@ const ClassSchedule = () => {
       <AddSessionModal
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
+        refetch={refetch}
       />
+      <EditSessionModal
+        openEditModal={openEditModal}
+        setOpenEditModal={setOpenEditModal}
+        refetch={refetch}
+        sessionData={value}
+      />
+      {/* delete modal */}
+      <Modal
+        centered
+        open={openDeleteModal}
+        onCancel={() => setOpenDeleteModal(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center text-[#FDFDFD]">
+            Do you want to delete this Tutorial?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#13333A] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

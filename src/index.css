@@ -117,8 +117,13 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
   padding: 0 !important;
 } */
 
-:where(.css-dev-only-do-not-override-1vjf2v5).ant-modal .ant-modal-content{
-  background-color: #2E7A8A;
+:where(.css-dev-only-do-not-override-1vjf2v5).ant-modal .ant-modal-content {
+  background-color: #2e7a8a;
+  padding: 0 !important;
+}
+
+:where(.css-dev-only-do-not-override-wjlpzy).ant-modal .ant-modal-content {
+  background-color: #2e7a8a;
   padding: 0 !important;
 }
 
@@ -181,6 +186,6 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
   display: none;
 }
 
-:where(.css-dev-only-do-not-override-1vjf2v5).ant-layout{
+:where(.css-dev-only-do-not-override-1vjf2v5).ant-layout {
   background: #000000 !important;
 }
