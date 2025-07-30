@@ -31,7 +31,7 @@ const Tutorials = () => {
   const handleDelete = async () => {
     try {
       const res = await deleteTutorial({ id: deleteId }).unwrap();
-      if (res?.success) {
+      if(res?.success) {
         toast.success(res?.message);
         refetch();
         setOpenDeleteModal(false);

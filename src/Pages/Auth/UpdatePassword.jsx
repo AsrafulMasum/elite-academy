@@ -11,9 +11,9 @@ const UpdatePassword = () => {
   const [resetPassword] = useResetPasswordMutation();
 
   const onFinish = async (values) => {
-    if (values) {
+    if(values) {
       const token = new URLSearchParams(window.location.search).get("token");
-      if (!token) {
+      if(!token) {
         console.error("Reset token is missing!");
         return;
       }
@@ -30,7 +30,7 @@ const UpdatePassword = () => {
           token,
         }).unwrap();
 
-        if (res?.success) {
+        if(res?.success) {
           navigate("/login");
           toast.success(res?.message);
         }

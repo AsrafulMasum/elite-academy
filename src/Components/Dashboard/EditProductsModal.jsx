@@ -28,7 +28,7 @@ const EditProductsModal = ({
   });
 
   useEffect(() => {
-    if (product) {
+    if(product) {
       setForm({
         title: product.title || "",
         price: product.price || "",
@@ -38,7 +38,7 @@ const EditProductsModal = ({
         description: product.description || "",
       });
 
-      if (product.sizes && Array.isArray(product.sizes)) {
+      if(product.sizes && Array.isArray(product.sizes)) {
         setTags(product.sizes);
       }
     }
@@ -47,7 +47,7 @@ const EditProductsModal = ({
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "image" && files?.length > 0) {
+    if(name === "image" && files?.length > 0) {
       const fileArray = Array.from(files);
       const urls = fileArray.map((file) => URL.createObjectURL(file));
       setImgURLs(urls);
@@ -70,7 +70,7 @@ const EditProductsModal = ({
     formData.append("subcategory", form.subcategory);
     formData.append("description", form.description);
 
-    if (imageFiles && imageFiles.length > 0) {
+    if(imageFiles && imageFiles.length > 0) {
       imageFiles.forEach((file) => {
         formData.append("image", file);
       });
@@ -79,7 +79,7 @@ const EditProductsModal = ({
     formData.append("sizes", JSON.stringify(tags));
     const res = await updateProduct({ id: product?._id, formData });
 
-    if (res?.data?.success) {
+    if(res?.data?.success) {
       setForm({
         title: "",
         image: [],

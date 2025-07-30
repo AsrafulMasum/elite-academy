@@ -63,8 +63,7 @@ const categoriesApi = baseApi.injectEndpoints({
 export const {
   useGetSubCategoriesQuery,
   useAddSubCategoryMutation,
-  useDeleteSubCategoryMutation,
-
+  useDeleteSubCategoryMutation,  
   useGetCategoriesQuery,
   useAddCategoryMutation,
   useDeleteCategoryMutation,

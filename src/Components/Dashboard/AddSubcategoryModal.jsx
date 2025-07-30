@@ -25,7 +25,7 @@ const AddSubCategoryModal = ({
     try {
 
       const res = await addSubCategory({ ...values, category });
-      if (res?.data) {
+      if(res?.data) {
         refetch();
         form.resetFields();
 

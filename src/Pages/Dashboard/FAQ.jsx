@@ -51,7 +51,7 @@ const FAQ = () => {
     e.preventDefault();
     const question = e.target.question.value;
     const ans = e.target.ans.value;
-    if (!question || !ans) {
+    if(!question || !ans) {
       return false;
     }
     console.log(question, ans);
@@ -61,7 +61,7 @@ const FAQ = () => {
     e.preventDefault();
     const question = e.target.question.value;
     const ans = e.target.ans.value;
-    if (!question || !ans) {
+    if(!question || !ans) {
       return false;
     }
     console.log(question, ans, editID);

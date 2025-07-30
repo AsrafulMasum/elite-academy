@@ -4,28 +4,33 @@ import { PlusOutlined } from "@ant-design/icons";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { useGetCoursesQuery } from "../../redux/features/courseApi";
+import {
+  useDeleteCourseMutation,
+  useGetCoursesQuery,
+} from "../../redux/features/courseApi";
 import moment from "moment";
 import { imageUrl } from "../../redux/api/baseApi";
+import AddCourseModal from "../../Components/Dashboard/AddCourseModal.Jsx";
+import toast from "react-hot-toast";
 
 const Courses = () => {
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);  
   const [deleteId, setDeleteId] = useState("");
-  const [editID, seteditID] = useState("");
-  const { data: courseData, isLoading } = useGetCoursesQuery();
+  const [editData, setEditData] = useState("");
+
+  const { data: courseData, isLoading, refetch } = useGetCoursesQuery();
+  const [deleteCourse, { isLoading: deleting }] = useDeleteCourseMutation();
 
   const dropdownRef = useRef();
-  const [form] = Form.useForm();
 
   // ----------------------- Action -------------------
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
@@ -35,28 +40,21 @@ const Courses = () => {
     };
   }, []);
 
-  const handleAddCategory = async () => {
-    try {
-      const values = await form.validateFields();
-      console.log(values);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
-  };
 
-  const handleUpdate = async () => {
-    try {
-      const values = await form.validateFields();
-      console.log(values);
-      setOpenEditModal(false);
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    }
-  };
+  const handleDeleteCategory = async () => {
 
-  const handleDelete = () => {
-    console.log(deleteId);
-    setShowDelete(false);
+    try {
+      const res = await deleteCourse(deleteId).unwrap();
+      
+      if(res?.data) {
+        toast.success("Course Delete successfully");
+        setDeleteId("")
+        setShowDelete(false);
+        refetch();
+      }
+    } catch (error) {
+      console.log("error", error)
+    }
   };
 
   // --------------------------- Table  Column -----------------------------
@@ -64,35 +62,37 @@ const Courses = () => {
     {
       title: "Sl. No",
       dataIndex: "serial",
-      key: "serial",
-      align: "left",
-      width: "100px",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>#{text}</span>,
+      render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
     },
     {
       title: "Course Name",
-      // dataIndex: "name",
+      dataIndex: "name",
       key: "name",
       align: "left",
-      render: (record) => (
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12">
-            <img
-              src={`${imageUrl}${record?.image}`}
-              alt=""
-              className="w-full h-full object-cover rounded-md"
-            />
-          </div>
-          <span style={{ color: "#FDFDFD" }}>{record?.name}</span>
-        </div>
-      ),
+      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
       title: "Couch",
-      dataIndex: "_id",
       key: "_id",
       align: "left",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (record) => (
+        <div className="flex items-center gap-3">
+          <div style={{ height: 48, width: 48 }}>
+            <img
+              src={
+                record?.couch?.image && record?.couch?.image?.startsWith("http")
+                  ? record?.couch?.image
+                  : record?.couch?.image
+                  ? `${imageUrl}${record?.couch?.image}`
+                  : "/default-avatar.png"
+              }
+              alt=""
+              className="h-12 w-12 object-cover rounded-full"
+            />
+          </div>
+          <span style={{ color: "#FDFDFD" }}>{record?.couch?.name}</span>
+        </div>
+      ),
     },
     {
       title: "Start Time",
@@ -140,8 +140,8 @@ const Courses = () => {
         >
           <button
             onClick={() => {
-              setOpenEditModal(true);
-              seteditID(record?._id);
+              setOpenAddModel(true);
+              setEditData(record);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >
@@ -161,8 +161,6 @@ const Courses = () => {
       ),
     },
   ];
-
-  console.log("courseData", courseData);
 
   return (
     <div className="h-full">
@@ -236,115 +234,27 @@ const Courses = () => {
             <Table
               size="small"
               columns={columns}
+              rowKey="_id"
               dataSource={courseData?.data}
-              loading={isLoading}
-              // pagination={{
-              //   total: total,
-              //   current: page,
-              //   pageSize: pageSize,
-              //   onChange: (page) => setPage(page),
-              // }}
+              loading={isLoading || deleting}
+              pagination={{
+                total: courseData?.pagination?.total,
+                current: page,
+                pageSize: courseData?.pagination?.limit,
+                onChange: (page) => setPage(page),
+              }}
             />
           </ConfigProvider>
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
-
-      <Modal
-        centered
+      <AddCourseModal
         open={openAddModel}
-        onCancel={() => {
-          setOpenAddModel(false);
-        }}
-        width={500}
-        footer={false}
-      >
-        <div className="p-6 ">
-          <h1
-            className="font-semibold text-black text-xl"
-            style={{ marginBottom: "12px" }}
-          >
-            {`Add Category`}
-          </h1>
-
-          <Form form={form}>
-            <div>
-              <p className="text-[#6D6D6D] py-1">Category Name</p>
-              <Form.Item
-                name="categoryName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Package Name",
-                  },
-                ]}
-              >
-                <Input
-                  className="w-[100%] border outline-none px-3 py-[10px]"
-                  type="text"
-                />
-              </Form.Item>
-            </div>
-
-            <div className="text-center mt-6">
-              <button
-                onClick={handleAddCategory}
-                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
-              >
-                Add Category
-              </button>
-            </div>
-          </Form>
-        </div>
-      </Modal>
-
-      <Modal
-        centered
-        open={openEditModal}
-        onCancel={() => {
-          setOpenEditModal(false);
-        }}
-        width={500}
-        footer={false}
-      >
-        <div className="p-6 ">
-          <h1
-            className="font-semibold text-black text-xl"
-            style={{ marginBottom: "12px" }}
-          >
-            {`Edit Category`}
-          </h1>
-
-          <Form form={form}>
-            <div>
-              <p className="text-[#6D6D6D] py-1">Category Name</p>
-              <Form.Item
-                name="categoryName"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Package Name",
-                  },
-                ]}
-              >
-                <Input
-                  className="w-[100%] border outline-none px-3 py-[10px]"
-                  type="text"
-                />
-              </Form.Item>
-            </div>
-
-            <div className="text-center mt-6">
-              <button
-                onClick={handleUpdate}
-                className="bg-[#BB6D42] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
-              >
-                Edit Category
-              </button>
-            </div>
-          </Form>
-        </div>
-      </Modal>
+        setOpenAddModel={setOpenAddModel}
+        editData={editData}
+        setEditData={setEditData}
+        refetch={refetch}
+      />
 
       <Modal
         centered
@@ -358,11 +268,11 @@ const Courses = () => {
             Are you sure !
           </p>
           <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content ?
+            Do you want to delete this Course ?
           </p>
           <button
-            onClick={handleDelete}
-            className="bg-[#BB6D42] py-2 px-5 text-white rounded-md"
+            onClick={handleDeleteCategory}
+            className="bg-action py-2 px-5 text-white rounded-md"
           >
             Confirm
           </button>

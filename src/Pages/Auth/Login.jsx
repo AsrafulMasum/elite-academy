@@ -15,7 +15,7 @@ const Login = () => {
         password: values.password,
       }).unwrap();
 
-      if (res?.success) {
+      if(res?.success) {
         localStorage.setItem("token", JSON.stringify(res?.data?.accessToken));
         toast.success("Login successful!");
         navigate("/");

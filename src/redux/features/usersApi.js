@@ -21,9 +21,37 @@ const usersApi = baseApi.injectEndpoints({
         };
       },
     }),
+    // In your API slice
+    getCoach: builder.query({
+      query: (searchTerm = "") => {
+        return {
+          url: `/user?role=COUCH&searchTerm=${searchTerm}`,
+          method: "GET",
+        };
+      },
+    }),
 
+    addCoach: builder.mutation({
+      query:(data)=>{
+      return {
+        url: "/user?role=COUCH",
+        method: "POST",
+        body: data
+      }
+      }
+    }),
+
+    updateCoach: builder.mutation({
+      query: (data)=>{
+        return {
+          url: "/user?role=COUCH",
+          method: "PATCH",
+          body: data
+        }
+      }
+    }),
     lockUser: builder.mutation({
-      query: ({id}) => {
+      query: ({ id }) => {
         console.log(id);
         return {
           url: `/user/${id}`,
@@ -33,5 +61,12 @@ const usersApi = baseApi.injectEndpoints({
     }),
   }),
 });
-export const { useGetStudentsQuery, useGetUsersQuery, useLockUserMutation } =
-  usersApi;
+export const {
+  useGetStudentsQuery,
+  useGetUsersQuery,
+  useUpdateCoachMutation,
+
+  useAddCoachMutation,  
+  useLockUserMutation,
+  useGetCoachQuery,
+} = usersApi;

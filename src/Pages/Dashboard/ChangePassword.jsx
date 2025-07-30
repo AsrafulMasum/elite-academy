@@ -9,13 +9,13 @@ const ChangePassword = () => {
 
   const handleChangePassword = (values) => {
     console.log(values);
-    if (values?.current_password === values.new_password) {
+    if(values?.current_password === values.new_password) {
       setNewPassError("The New password is semilar with old Password");
     } else {
       setNewPassError("");
     }
 
-    if (values?.new_password !== values.confirm_password) {
+    if(values?.new_password !== values.confirm_password) {
       setConPassError("New Password and Confirm Password Doesn't Matched");
     } else {
       setConPassError("");

@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
     email: "tushar@gmail.com",
   };
 
-  if (user.email) {
+  if(user.email) {
     return children;
   }
 

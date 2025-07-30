@@ -206,7 +206,7 @@ const SalonCategoryList = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenAddModel(false);
       }
     };
@@ -301,7 +301,7 @@ const SalonCategoryList = () => {
               showSizeChanger={false}
               size="small"
               itemRender={(pageNum, type, originalElement) => {
-                if (type === "prev") {
+                if(type === "prev") {
                   return (
                     <a
                       className="hover:text-[#333333]"
@@ -312,7 +312,7 @@ const SalonCategoryList = () => {
                     </a>
                   );
                 }
-                if (type === "next") {
+                if(type === "next") {
                   return (
                     <a
                       className="hover:text-[#333333]"

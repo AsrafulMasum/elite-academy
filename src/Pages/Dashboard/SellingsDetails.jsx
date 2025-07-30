@@ -252,7 +252,7 @@ const SellingsDetails = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
