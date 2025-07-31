@@ -37,7 +37,7 @@ const Category = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const searchTerm = searchParams.get("searchTerm") || "";
 
-  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery(searchTerm);
+  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery({searchTerm, page});
   const [deleteCategory] = useDeleteCategoryMutation();
 
 

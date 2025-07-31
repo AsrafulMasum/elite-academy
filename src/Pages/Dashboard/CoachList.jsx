@@ -24,7 +24,7 @@ const CoachLists = () => {
   const [showActive, setShowActive] = useState(false);
   const [selectCoach, setSelectCoach] = useState("");
 
-  const { data: coachData, isLoading, refetch } = useGetCoachQuery(searchTerm);
+  const { data: coachData, isLoading, refetch } = useGetCoachQuery({searchTerm, page});
   const [lockUser, { isLoading: updating }] = useLockUserMutation();
 
   // ----------------- Action --------------------

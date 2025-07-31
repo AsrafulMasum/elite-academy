@@ -27,7 +27,7 @@ const Courses = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("searchTerm") || "";
 
-  const { data: courseData, isLoading, refetch } = useGetCoursesQuery(searchTerm);
+  const { data: courseData, isLoading, refetch } = useGetCoursesQuery({searchTerm, page});
   const [deleteCourse, { isLoading: deleting }] = useDeleteCourseMutation();
 
   const dropdownRef = useRef();
