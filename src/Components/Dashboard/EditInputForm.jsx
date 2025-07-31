@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input } from "antd";
-// import { useUpdateSubscriptionMutation } from "../../redux/features/subscriptionApi";
-// import toast from "react-hot-toast";
+import { useUpdateSubscriptionMutation } from "../../redux/features/subscriptionApi";
+import toast from "react-hot-toast";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -13,23 +13,23 @@ const formItemLayoutWithOutLabel = {
 
 const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
   const [form] = Form.useForm();
-  //   const [updateSubscription] = useUpdateSubscriptionMutation();
+  const [updateSubscription] = useUpdateSubscriptionMutation();
 
   const onFinish = async (values) => {
-    // const res = await updateSubscription({
-    //   id: packageData._id,
-    //   body: values,
-    // })
-    //   .unwrap()
-    //   .catch((error) => {
-    //     console.error("Failed to update package:", error);
-    //     toast.error("Failed to update package. Please try again.");
-    //   });
-    // if(res?.success) {
-    //   refetch();
-    //   setOpenEditModal(false);
-    //   toast.success("Package updated successfully!");
-    // }
+    const res = await updateSubscription({
+      id: packageData._id,
+      body: values,
+    })
+      .unwrap()
+      .catch((error) => {
+        console.error("Failed to update package:", error);
+        toast.error("Failed to update package. Please try again.");
+      });
+    if (res?.success) {
+      refetch();
+      setOpenEditModal(false);
+      toast.success("Package updated successfully!");
+    }
   };
 
   useEffect(() => {
@@ -63,11 +63,11 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
         </Form.Item>
 
         <Form.Item
-          name="credit"
+          name="duration"
           rules={[{ required: true, message: "Please input package fees!" }]}
         >
           <Input
-            placeholder="Package Fees"
+            placeholder="Package Duration"
             style={{ height: 48, width: "100%" }}
           />
         </Form.Item>
@@ -88,7 +88,7 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
           rules={[
             {
               validator: async (_, packageDetails) => {
-                if(!packageDetails || packageDetails.length < 1) {
+                if (!packageDetails || packageDetails.length < 1) {
                   return Promise.reject(new Error("At least 1 field"));
                 }
               },

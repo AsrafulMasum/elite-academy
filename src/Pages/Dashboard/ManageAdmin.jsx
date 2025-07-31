@@ -495,6 +495,7 @@ const ManageAdmin = () => {
           >
             <Table
               size="small"
+              rowKey="_id"
               columns={columns}
               dataSource={adminData?.data}
               loading={isLoading || updating}

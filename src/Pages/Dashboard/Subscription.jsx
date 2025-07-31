@@ -5,6 +5,11 @@ import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdDeleteOutline } from "react-icons/md";
 import EditInputForm from "../../Components/Dashboard/EditInputForm";
 import AddInputForm from "../../Components/Dashboard/AddInputForm";
+import {
+  useDeleteSubscriptionMutation,
+  useGetSubscriptionsQuery,
+} from "../../redux/features/subscriptionApi";
+import toast from "react-hot-toast";
 
 const initialPackages = [
   {
@@ -55,6 +60,8 @@ const Subscription = () => {
   const [deleteId, setDeleteId] = useState("");
   const [packages, setPackages] = useState([]);
   const [editPackage, setEditPackage] = useState(null);
+  const { data: packageData, refetch } = useGetSubscriptionsQuery();
+  const [deleteSubscription] = useDeleteSubscriptionMutation();
 
   // Open edit modal for a specific package
   const handleEditClick = (pkg) => {
@@ -69,29 +76,29 @@ const Subscription = () => {
   };
 
   const handleDelete = async () => {
-    // try {
-    //   const res = await deleteSubscription(deleteId);
-    //   if(res?.data) {
-    //     toast.success("Subscription deleted successfully");
-    //     setShowDelete(false);
-    //     setDeleteId("");
-    //     refetch();
-    //   } else {
-    //     console.error("Failed to delete subscription:", res.error);
-    //   }
-    // } catch (error) {
-    //   console.error("Error deleting subscription:", error);
-    //   setShowDelete(false);
-    // }
+    try {
+      const res = await deleteSubscription(deleteId);
+      if (res?.data) {
+        toast.success("Subscription deleted successfully");
+        setShowDelete(false);
+        setDeleteId("");
+        refetch();
+      } else {
+        console.error("Failed to delete subscription:", res.error);
+      }
+    } catch (error) {
+      console.error("Error deleting subscription:", error);
+      setShowDelete(false);
+    }
   };
 
-  // useEffect(() => {
-  //   if(Array.isArray(packageData)) {
-  //     setPackages(packageData);
-  //   } else {
-  //     setPackages([]);
-  //   }
-  // }, [packageData]);
+  useEffect(() => {
+    if (Array.isArray(packageData)) {
+      setPackages(packageData);
+    } else {
+      setPackages([]);
+    }
+  }, [packageData]);
 
   return (
     <div className="bg-green h-full">
@@ -125,7 +132,7 @@ const Subscription = () => {
 
       <div className="flex flex-wrap justify-center items-center gap-10 mt-10">
         {Array.isArray(packages) &&
-          initialPackages?.map((singleData) => (
+          packages?.map((singleData) => (
             <div
               key={singleData?._id}
               className="max-w-[320px] bg-[#F4F4F4] py-4 px-6 border border-[#2E7A8A] rounded-lg"
@@ -142,19 +149,16 @@ const Subscription = () => {
                 </div>
               </div>
               <h4 className="text-text text-xl font-medium text-center pb-2.5">
-                Get {singleData?.packageName} Package
+                Get {singleData?.name}
               </h4>
-              <p className="text-sub_title text-sm leading-[148%] text-center pb-4">
-                {singleData?.packageFees} % Service Fee Per Booking
-              </p>
               <h4 className="text-text text-center pb-3">
                 <span className="text-4xl font-semibold">
-                  $ {singleData?.packagePrice}
+                  $ {singleData?.price}
                 </span>{" "}
-                / per {singleData?.duration?.split(" ")[1]}
+                / per {singleData?.duration}
               </h4>
               <div className="space-y-4">
-                {singleData?.packageDetails?.map((details, idx) => (
+                {singleData?.features?.map((details, idx) => (
                   <div className="flex gap-2" key={idx}>
                     <IoCheckmarkCircle className="min-w-[24px] text-[#00BA00]" />
                     <p className="text-xs text-sub_title leading-[148%]">
@@ -199,7 +203,7 @@ const Subscription = () => {
           </h1>
           <EditInputForm
             packageData={editPackage}
-            // refetch={refetch}
+            refetch={refetch}
             setOpenEditModal={setOpenEditModal}
           />
         </div>
@@ -220,10 +224,7 @@ const Subscription = () => {
           >
             Add Package
           </h1>
-          <AddInputForm
-            //  refetch={refetch}
-            setOpenAddModel={setOpenAddModel}
-          />
+          <AddInputForm refetch={refetch} setOpenAddModel={setOpenAddModel} />
         </div>
       </Modal>
 
@@ -240,11 +241,11 @@ const Subscription = () => {
             Are you sure!
           </p>
           <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content?
+            Do you want to delete this package?
           </p>
           <button
             onClick={handleDelete}
-            className="bg-[#3536FF] py-2 px-5 text-white rounded-md"
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
           >
             Confirm
           </button>

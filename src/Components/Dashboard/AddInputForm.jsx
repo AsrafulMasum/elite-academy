@@ -1,8 +1,7 @@
-import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input } from "antd";
-// import { useCreateSubscriptionMutation } from "../../redux/features/subscriptionApi";
-// import toast from "react-hot-toast";
+import { useCreateSubscriptionMutation } from "../../redux/features/subscriptionApi";
+import toast from "react-hot-toast";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -13,35 +12,33 @@ const formItemLayoutWithOutLabel = {
 
 const AddInputForm = ({ refetch, setOpenAddModel }) => {
   const [form] = Form.useForm();
-  //   const [createSubscription] = useCreateSubscriptionMutation();
+  const [createSubscription] = useCreateSubscriptionMutation();
 
   const onFinish = async (values) => {
-    const { title, credit, price, description } = values;
+    const { name, duration, price, features } = values;
     const packageData = {
-      title,
-      credit,
-      price,
-      description,
-      duration: "1 year",
-      paymentType: "Yearly",
+      name,
+      price: parseInt(price),
+      features,
+      duration,
     };
-    // try {
-    //   const res = await createSubscription(packageData).unwrap();
-    //   if(res?.success) {
-    //     refetch();
-    //     setOpenAddModel(false);
-    //     form.resetFields();
-    //     toast.success("Package created successfully!");
-    //   } else {
-    //     console.error("Failed to create package:", res?.message);
-    //     setOpenAddModel(false);
-    //     toast.error("Failed to create package. Please try again.");
-    //   }
-    // } catch (error) {
-    //   console.error("Failed to create package:", error);
-    //   setOpenAddModel(false);
-    //   toast.error("Failed to create package. Please try again.");
-    // }
+    try {
+      const res = await createSubscription(packageData).unwrap();
+      if (res?.success) {
+        refetch();
+        setOpenAddModel(false);
+        form.resetFields();
+        toast.success("Package created successfully!");
+      } else {
+        console.error("Failed to create package:", res?.message);
+        setOpenAddModel(false);
+        toast.error("Failed to create package. Please try again.");
+      }
+    } catch (error) {
+      console.error("Failed to create package:", error);
+      setOpenAddModel(false);
+      toast.error("Failed to create package. Please try again.");
+    }
   };
 
   return (
@@ -62,7 +59,7 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
       >
         {/* Static Fields */}
         <Form.Item
-          name="title"
+          name="name"
           rules={[{ required: true, message: "Please input package name!" }]}
         >
           <Input
@@ -72,11 +69,11 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
         </Form.Item>
 
         <Form.Item
-          name="credit"
+          name="duration"
           rules={[{ required: true, message: "Please input package fees!" }]}
         >
           <Input
-            placeholder="Package Fees"
+            placeholder="Package Duration"
             style={{ height: 48, width: "90%" }}
           />
         </Form.Item>
@@ -93,11 +90,11 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
 
         {/* Dynamic Passenger Fields */}
         <Form.List
-          name="description"
+          name="features"
           rules={[
             {
               validator: async (_, packageDetails) => {
-                if(!packageDetails || packageDetails.length < 1) {
+                if (!packageDetails || packageDetails.length < 1) {
                   return Promise.reject(new Error("At least 1 fields"));
                 }
               },
