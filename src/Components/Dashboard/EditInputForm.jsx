@@ -16,25 +16,37 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
   const [updateSubscription] = useUpdateSubscriptionMutation();
 
   const onFinish = async (values) => {
+    const { name, duration, price, features } = values;
+    const payload = {
+      name,
+      price: parseInt(price),
+      features,
+      duration,
+    };
     const res = await updateSubscription({
-      id: packageData._id,
-      body: values,
+      id: packageData?._id,
+      body: payload,
     })
       .unwrap()
       .catch((error) => {
         console.error("Failed to update package:", error);
         toast.error("Failed to update package. Please try again.");
       });
+
     if (res?.success) {
       refetch();
       setOpenEditModal(false);
       toast.success("Package updated successfully!");
+      form.resetFields();
     }
   };
 
   useEffect(() => {
-    form.setFieldsValue(packageData);
-  }, []);
+    if (packageData) {
+      form.resetFields();
+      form.setFieldsValue(packageData);
+    }
+  }, [packageData]);
 
   return (
     <ConfigProvider
@@ -53,7 +65,7 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
       >
         {/* Static Fields */}
         <Form.Item
-          name="title"
+          name="name"
           rules={[{ required: true, message: "Please input package name!" }]}
         >
           <Input
@@ -84,7 +96,7 @@ const EditInputForm = ({ packageData, refetch, setOpenEditModal }) => {
 
         {/* Dynamic Package Details Fields */}
         <Form.List
-          name="description"
+          name="features"
           rules={[
             {
               validator: async (_, packageDetails) => {

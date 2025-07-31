@@ -11,48 +11,6 @@ import {
 } from "../../redux/features/subscriptionApi";
 import toast from "react-hot-toast";
 
-const initialPackages = [
-  {
-    _id: "basic",
-    packageName: "Basic",
-    packageFees: 5,
-    packagePrice: 30,
-    packageDetails: [
-      "10 days free trial",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-    ],
-  },
-  {
-    _id: "gold",
-    packageName: "Gold",
-    packageFees: 3,
-    packagePrice: 110,
-    packageDetails: [
-      "10 days free trial",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-    ],
-  },
-  {
-    _id: "premium",
-    packageName: "Premium",
-    packageFees: 0,
-    packagePrice: 180,
-    packageDetails: [
-      "10 days free trial",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-      "It is a long established fact that a reader will be distracted by the readable content",
-    ],
-  },
-];
-
 const Subscription = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
