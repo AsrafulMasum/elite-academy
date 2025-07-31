@@ -1,285 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import { ConfigProvider, Input, Select, Table } from "antd";
+import { useState } from "react";
+import { ConfigProvider, Input, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
-import provider from "../../assets/serviceProvider.png";
-import { GoArrowUpRight } from "react-icons/go";
-import SellingsDetailsModal from "../../Components/Dashboard/SellingsDetailsModal";
+import { useGetSellingListQuery } from "../../redux/features/paymentApi";
+import { imageUrl } from "../../redux/api/baseApi";
+import { IoDownloadOutline } from "react-icons/io5";
+import moment from "moment";
 
-const data = [
-  {
-    key: 1,
-    orderId: "ORD-1001",
-    items: [
-      {
-        _id: "p1",
-        product: {
-          image: "https://images.unsplash.com/photo-1606813902914-9439ec3b3c4a", // Sneakers
-        },
-      },
-      {
-        _id: "p2",
-        product: {
-          image: "https://images.unsplash.com/photo-1580910051070-dc9f66fdb9f0", // Sunglasses
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud1@example.com",
-    orderDate: "2025-07-01",
-    deliveryDate: "2025-07-05",
-    status: "Pending",
-  },
-  {
-    key: 2,
-    orderId: "ORD-1002",
-    items: [
-      {
-        _id: "p3",
-        product: {
-          image: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce", // Apple
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud2@example.com",
-    orderDate: "2025-07-02",
-    deliveryDate: "2025-07-06",
-    status: "Delivered",
-  },
-  {
-    key: 3,
-    orderId: "ORD-1003",
-    items: [
-      {
-        _id: "p4",
-        product: {
-          image: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0642", // Headphones
-        },
-      },
-      {
-        _id: "p5",
-        product: {
-          image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f", // Smartwatch
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud3@example.com",
-    orderDate: "2025-07-03",
-    deliveryDate: "2025-07-07",
-    status: "Cancelled",
-  },
-  {
-    key: 4,
-    orderId: "ORD-1004",
-    items: [
-      {
-        _id: "p6",
-        product: {
-          image: "https://images.unsplash.com/photo-1616627987230-5ecb7be11b20", // Camera
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud4@example.com",
-    orderDate: "2025-07-04",
-    deliveryDate: "2025-07-08",
-    status: "Delivered",
-  },
-  {
-    key: 5,
-    orderId: "ORD-1005",
-    items: [
-      {
-        _id: "p7",
-        product: {
-          image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff", // Watch
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud5@example.com",
-    orderDate: "2025-07-05",
-    deliveryDate: "2025-07-09",
-    status: "Pending",
-  },
-  {
-    key: 6,
-    orderId: "ORD-1006",
-    items: [
-      {
-        _id: "p8",
-        product: {
-          image: "https://images.unsplash.com/photo-1539874754764-5a965591ceb3", // Backpack
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud6@example.com",
-    orderDate: "2025-07-06",
-    deliveryDate: "2025-07-10",
-    status: "Pending",
-  },
-  {
-    key: 7,
-    orderId: "ORD-1007",
-    items: [
-      {
-        _id: "p9",
-        product: {
-          image: "https://images.unsplash.com/photo-1542293787938-c9e299b880ed", // Perfume
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud7@example.com",
-    orderDate: "2025-07-07",
-    deliveryDate: "2025-07-11",
-    status: "Delivered",
-  },
-  {
-    key: 8,
-    orderId: "ORD-1008",
-    items: [
-      {
-        _id: "p10",
-        product: {
-          image: "https://images.unsplash.com/photo-1614285737453-0668abfa869c", // Laptop
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud8@example.com",
-    orderDate: "2025-07-08",
-    deliveryDate: "2025-07-12",
-    status: "Pending",
-  },
-  {
-    key: 9,
-    orderId: "ORD-1009",
-    items: [
-      {
-        _id: "p11",
-        product: {
-          image: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622", // Shoes
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud9@example.com",
-    orderDate: "2025-07-09",
-    deliveryDate: "2025-07-13",
-    status: "Delivered",
-  },
-  {
-    key: 10,
-    orderId: "ORD-1010",
-    items: [
-      {
-        _id: "p12",
-        product: {
-          image: "https://images.unsplash.com/photo-1581291519195-ef11498d1cf5", // Clothes
-        },
-      },
-    ],
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={provider} height={46} width={46} />,
-    },
-    email: "mahmud10@example.com",
-    orderDate: "2025-07-10",
-    deliveryDate: "2025-07-14",
-    status: "Cancelled",
-  },
-];
-
-const itemsPerPage = 10;
-const total = 10;
+const limit = 12;
 
 const SellingsDetails = () => {
-  const [page, setPage] = useState(() => {
-    const urlPage = new URLSearchParams(window.location.search).get("page");
-    return urlPage ? parseInt(urlPage, 10) : 1;
-  });
-
-  const [value, setValue] = useState(null);
+  const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-  const [selectedRating, setSelectedRating] = useState("Rating");
-  const [selectedLocation, setSelectedLocation] = useState("Location");
-
-  const dropdownRef = useRef();
-  console.log(value);
-  const locations = [
-    { value: "London", label: "London" },
-    { value: "Dhaka", label: "Dhaka" },
-    { value: "Washington DC", label: "Washington DC" },
-    { value: "Virginia", label: "Virginia" },
-    { value: "California", label: "California" },
-    { value: "Oklahoma", label: "Oklahoma" },
-  ];
-
-  const ratings = [
-    { value: "Above 4", label: "Above 4" },
-    { value: "Below 4", label: "Below 4" },
-  ];
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  const pageSize = 10;
-  const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
+  const { data: sellingList } = useGetSellingListQuery({
+    page,
+    limit,
+    searchTerm: searchText,
+  });
 
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
   };
 
-  const handleRatingChange = (value) => {
-    setSelectedRating(value);
-  };
-
-  const handleLocationChange = (value) => {
-    setSelectedLocation(value);
-  };
-
-  const handleModalClose = () => {
-    setValue(null);
+  const handleDownload = (record) => {
+    if (record?.invoice) {
+      const link = document.createElement("a");
+      link.href = record.invoice;
+      link.setAttribute("download", "");
+      link.click();
+    } else {
+      toast.error("Invoice not available.");
+    }
   };
 
   const columns = [
@@ -287,12 +38,14 @@ const SellingsDetails = () => {
       title: "Serial No.",
       dataIndex: "key",
       key: "key",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      render: (_, __, index) => (
+        <span className="text-[#FDFDFD]">{index + 1}</span>
+      ),
     },
     {
       title: "Order Id",
-      dataIndex: "orderId",
-      key: "orderId",
+      dataIndex: "orderid",
+      key: "orderid",
       render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
@@ -302,18 +55,16 @@ const SellingsDetails = () => {
       render: (_, record) => {
         return (
           <div className="flex gap-1">
-            {record?.items?.map((item) => (
+            {record?.orderItems?.map((item) => (
               <img
                 key={item?._id}
-                src={item?.product?.image}
-                // src={
-                //   item?.product?.image &&
-                //   item?.product?.image.startsWith("http")
-                //     ? item?.product?.image
-                //     : item?.product?.image
-                //     ? `${imageUrl}${item?.product?.image}`
-                //     : "/default-avatar.png"
-                // }
+                src={
+                  item?.image && item?.image.startsWith("http")
+                    ? item?.image
+                    : item?.image
+                    ? `${imageUrl}${item?.image}`
+                    : "/default-avatar.png"
+                }
                 alt={`Product ${item?._id}`}
                 className="w-8 h-8 object-cover rounded border border-[#3F857B]"
               />
@@ -352,22 +103,20 @@ const SellingsDetails = () => {
       },
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Contact No.",
+      dataIndex: "phone",
+      key: "phone",
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
       title: "Order Date",
-      dataIndex: "orderDate",
-      key: "orderDate",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
-    },
-    {
-      title: "Delivery Date",
-      dataIndex: "deliveryDate",
-      key: "deliveryDate",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (_, record) => (
+        <span style={{ color: "#FDFDFD" }}>
+          {moment(record?.createdAt).format("YYYY-MM-DD")}
+        </span>
+      ),
     },
     {
       title: "Status",
@@ -376,9 +125,9 @@ const SellingsDetails = () => {
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: "Invoice",
+      dataIndex: "invoice",
+      key: "invoice",
       render: (_, record) => (
         <div
           style={{
@@ -390,8 +139,8 @@ const SellingsDetails = () => {
           }}
         >
           <button
-            className="flex justify-center items-center rounded-md"
-            onClick={() => setValue(record)}
+            onClick={() => handleDownload(record)}
+            className="flex justify-center items-center rounded-md pb-1"
             style={{
               cursor: "pointer",
               border: "none",
@@ -401,7 +150,7 @@ const SellingsDetails = () => {
               height: "32px",
             }}
           >
-            <GoArrowUpRight size={26} className="text-secondary" />
+            <IoDownloadOutline size={26} className="text-secondary" />
           </button>
         </div>
       ),
@@ -409,11 +158,10 @@ const SellingsDetails = () => {
   ];
 
   return (
-    <div className="w-full bg-[#13333A]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
-          height: "100%",
         }}
       >
         <div
@@ -435,6 +183,36 @@ const SellingsDetails = () => {
           >
             Sellings Details
           </h3>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div
+              style={{
+                width: "353px",
+                height: "40px",
+                borderRadius: "8px",
+              }}
+            >
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#13333A",
+                  },
+                }}
+              >
+                <Input
+                  placeholder="Search..."
+                  onChange={handleSearchChange}
+                  prefix={<FiSearch size={14} color="#868FA0" />}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    fontSize: "14px",
+                    backgroundColor: "#FAFAFA",
+                  }}
+                  size="middle"
+                />
+              </ConfigProvider>
+            </div>
+          </div>
         </div>
 
         <div className="relative h-full">
@@ -458,19 +236,19 @@ const SellingsDetails = () => {
           >
             <Table
               size="small"
+              rowKey="_id"
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={sellingList?.data}
               pagination={{
-                total: total,
+                total: sellingList?.pagination?.total,
                 current: page,
-                pageSize: itemsPerPage,
+                pageSize: limit,
                 onChange: (page) => setPage(page),
               }}
             />
           </ConfigProvider>
         </div>
       </div>
-      <SellingsDetailsModal value={value} handleModalClose={handleModalClose} />
     </div>
   );
 };

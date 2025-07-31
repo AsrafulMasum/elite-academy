@@ -132,7 +132,7 @@ const EnrollmentFees = () => {
       ),
     },
   ];
-  console.log(searchText);
+
   return (
     <div className="w-full h-full bg-[#13333A]">
       <div

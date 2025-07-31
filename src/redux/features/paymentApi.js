@@ -10,7 +10,17 @@ const paymentApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getSellingList: builder.query({
+      query: ({ limit, page, searchTerm }) => {
+        return {
+          url: `/order?page=${page}&limit=${limit}&searchTerm=${searchTerm}`,
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetEnrollmentFeeListQuery } = paymentApi;
+export const { useGetEnrollmentFeeListQuery, useGetSellingListQuery } =
+  paymentApi;
