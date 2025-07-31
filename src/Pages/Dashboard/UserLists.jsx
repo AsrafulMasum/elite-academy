@@ -8,7 +8,6 @@ import { GoArrowUpRight } from "react-icons/go";
 import { useGetUsersQuery } from "../../redux/features/usersApi";
 import { imageUrl } from "../../redux/api/baseApi";
 
-
 const UserLists = () => {
   const [page, setPage] = useState(1);
 
@@ -27,7 +26,7 @@ const UserLists = () => {
       title: "Serial No.",
       dataIndex: "key",
       key: "key",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
     },
     {
       title: "User Name",
@@ -143,7 +142,8 @@ const UserLists = () => {
   const handleUserType = (value) => {
     setUserType(value);
   };
-
+  
+  console.log(userType);
   return (
     <div className="w-full h-full bg-[#13333A]">
       <div
