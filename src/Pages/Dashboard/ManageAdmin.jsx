@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, ConfigProvider, Input, Select, Table } from "antd";
+import { Button, ConfigProvider, Input, Modal, Select, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import provider from "../../assets/serviceProvider.png";
-import { CiUnlock } from "react-icons/ci";
+import { CiLock, CiUnlock } from "react-icons/ci";
 import { PlusOutlined } from "@ant-design/icons";
 import AddAdminModal from "../../Components/Dashboard/AddAdminModal";
+import {
+  useGetAdminQuery,
+  useLockUserMutation,
+} from "../../redux/features/usersApi";
+import { imageUrl } from "../../redux/api/baseApi";
+import { useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const data = [
   {
@@ -241,8 +248,19 @@ const ManageAdmin = () => {
 
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [userType, setUserType] = useState("User Type");
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get("searchTerm") || "";
+
+  const {
+    data: adminData,
+    isLoading,
+    refetch,
+  } = useGetAdminQuery({ searchTerm, page });
+  const [lockUser, { isLoading: updating }] = useLockUserMutation();
+
+  const [showActive, setShowActive] = useState(false);
+  const [selectAdmin, setSelectAdmin] = useState("");
 
   const UserType = [
     { value: "Normal User", label: "Normal User" },
@@ -252,38 +270,33 @@ const ManageAdmin = () => {
   const columns = [
     {
       title: "Serial No.",
-      dataIndex: "key",
+      // dataIndex: "key",
       key: "key",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      render: (_, __, index) => (
+        <span className="text-[#FDFDFD]">{index + 1}</span>
+      ),
     },
     {
       title: "Admin Name",
-      dataIndex: "adminName",
       key: "adminName",
-      render: (user) => {
-        return (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <p>{user?.img} </p>
-
-            <p
-              style={{
-                letterSpacing: 0.4,
-                fontSize: "#666666",
-                fontWeight: "400",
-                color: "#FDFDFD",
-              }}
-            >
-              {user?.name}
-            </p>
+      render: (record) => (
+        <div className="flex items-center gap-3">
+          <div style={{ height: 48, width: 48 }}>
+            <img
+              src={
+                record?.image && record?.image?.startsWith("http")
+                  ? record?.image
+                  : record?.image
+                  ? `${imageUrl}${record?.image}`
+                  : "/default-avatar.png"
+              }
+              alt=""
+              className="h-12 w-12 object-cover rounded-full"
+            />
           </div>
-        );
-      },
+          <span style={{ color: "#FDFDFD" }}>{record?.name}</span>
+        </div>
+      ),
     },
     {
       title: "Admin Id",
@@ -323,25 +336,13 @@ const ManageAdmin = () => {
             paddingRight: 10,
           }}
         >
-          {/* <button
-            className="flex justify-center items-center rounded-md"
-            onClick={() => setOpen(true)}
-            style={{
-              cursor: "pointer",
-              border: "none",
-              outline: "none",
-              backgroundColor: "#121212",
-              width: "40px",
-              height: "32px",
-            }}
-          >
-            <GoArrowUpRight size={26} className="text-secondary" />
-          </button> */}
-
           <div>
             <button
               className="flex justify-center items-center rounded-md"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setShowActive(true);
+                setSelectAdmin(record?._id);
+              }}
               style={{
                 cursor: "pointer",
                 border: "none",
@@ -351,7 +352,11 @@ const ManageAdmin = () => {
                 height: "32px",
               }}
             >
-              <CiUnlock size={26} className="text-secondary" />
+              {record?.status === "active" ? (
+                <CiUnlock size={26} className="text-secondary" />
+              ) : (
+                <CiLock size={26} className="text-[#FF0000]" />
+              )}
             </button>
           </div>
         </div>
@@ -362,13 +367,36 @@ const ManageAdmin = () => {
   const pageSize = 10;
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
+  // ----------------------- Action -------------------
+  useEffect(() => {
+    refetch();
+  }, [searchParams]);
+
+  // Handle search input change
   const handleSearchChange = (e) => {
-    e.preventDefault();
-    setSearchText(e.target.value);
+    const newValue = e.target.value;
+
+    const newParams = new URLSearchParams(searchParams);
+    if (newValue) {
+      newParams.set("searchTerm", newValue);
+    } else {
+      newParams.delete("searchTerm");
+    }
+    setSearchParams(newParams);
   };
 
-  const handleUserType = (value) => {
-    setUserType(value);
+  const handleLockAdmin = async () => {
+    try {
+      const res = await lockUser({ id: selectAdmin });
+
+      if (res?.data) {
+        toast.success(res?.data?.message);
+        refetch();
+        setShowActive(false);
+      }
+    } catch (error) {
+      setShowActive(false);
+    }
   };
 
   return (
@@ -477,7 +505,8 @@ const ManageAdmin = () => {
             <Table
               size="small"
               columns={columns}
-              dataSource={paginatedData}
+              dataSource={adminData?.data}
+              loading={isLoading || updating}
               pagination={{
                 total: total,
                 current: page,
@@ -493,6 +522,29 @@ const ManageAdmin = () => {
         openAddModel={openAddModel}
         setOpenAddModel={setOpenAddModel}
       />
+
+      <Modal
+        centered
+        open={showActive}
+        onCancel={() => setShowActive(false)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure !
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content ?
+          </p>
+          <button
+            onClick={handleLockAdmin}
+            className="bg-action py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

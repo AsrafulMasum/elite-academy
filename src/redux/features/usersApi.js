@@ -22,9 +22,9 @@ const usersApi = baseApi.injectEndpoints({
     }),
 
     getCoach: builder.query({
-      query: (searchTerm = "") => {
+      query: ({searchTerm, page}) => {
         return {
-          url: `/user?role=COUCH&searchTerm=${searchTerm}`,
+          url: `/user?role=COUCH&searchTerm=${searchTerm}&page=${page}`,
           method: "GET",
         };
       },
@@ -50,6 +50,14 @@ const usersApi = baseApi.injectEndpoints({
       }
     }),
 
+    getAdmin: builder.query({
+      query: ({searchTerm})=>{
+        return {
+          url: `/user?role=ADMIN&searchTerm=${searchTerm}`,
+          method: "GET",
+        }
+      }
+    }),
     lockUser: builder.mutation({
       query: ({ id }) => {        
         return {
@@ -64,6 +72,8 @@ export const {
   useGetStudentsQuery,
   useGetUsersQuery,
   useUpdateCoachMutation,
+
+  useGetAdminQuery,
   useAddCoachMutation,  
   useLockUserMutation,
   useGetCoachQuery,
