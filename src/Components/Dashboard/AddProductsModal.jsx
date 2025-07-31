@@ -233,7 +233,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
               >
                 {subCategoryData?.data &&
                   subCategoryData?.data.map((sCategory) => (
-                    <option value={sCategory?._id}>{sCategory?.name}</option>
+                    <option key={sCategory?._id} value={sCategory?._id}>{sCategory?.name}</option>
                   ))}
               </select>
             )}

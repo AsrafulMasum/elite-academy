@@ -85,7 +85,7 @@ const AdminProfile = () => {
       ? user?.image
       : user?.image
       ? `${imageUrl}${user?.image}`
-      : "/default-avatar.png";
+      : "/default-avatar.jpg";
 
   return (
     <div>

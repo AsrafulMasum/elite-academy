@@ -84,7 +84,7 @@ const CoachLists = () => {
                     ? record?.image
                     : record?.image
                     ? `${imageUrl}${record?.image}`
-                    : "/default-avatar.png"
+                    : "/default-avatar.jpg"
                 }
                 alt=""
                 className="h-12 w-12 object-cover rounded-full"

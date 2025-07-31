@@ -75,7 +75,7 @@ const Tutorials = () => {
     //           ? record?.thumbnail
     //           : record?.thumbnail
     //           ? `${imageUrl}${record?.thumbnail}`
-    //           : "/default-avatar.png"
+    //           : "/default-avatar.jpg"
     //       }
     //       className="w-16 h-16 object-cover rounded-lg"
     //     />
@@ -222,6 +222,7 @@ const Tutorials = () => {
           >
             <Table
               size="small"
+              rowKey="_id"
               columns={columns}
               dataSource={tutorialsData?.data}
               pagination={{

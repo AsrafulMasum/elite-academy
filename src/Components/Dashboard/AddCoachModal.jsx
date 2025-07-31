@@ -54,7 +54,7 @@ const AddCoachModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       width={500}
       footer={false}
     >
-      <div className="">
+      <div className="p-6">
         <h1 className="font-semibold text-black text-xl mb-3">Add Coach</h1>
 
         <Form form={form} onFinish={handleAddCoach}>

@@ -1,11 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Modal, Table } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
-
 
 import { RiDeleteBin6Line } from "react-icons/ri";
 import AddCategoryModal from "../../Components/Dashboard/AddCategoryModal";
@@ -15,7 +14,7 @@ import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { imageUrl } from "../../redux/api/baseApi";
 import {
   useDeleteCategoryMutation,
-  useGetCategoriesQuery
+  useGetCategoriesQuery,
 } from "../../redux/features/categoriesApi";
 import { useSearchParams } from "react-router-dom";
 
@@ -24,7 +23,7 @@ const Category = () => {
   const [open, setOpen] = useState(false);
   const [openAddModel, setOpenAddModel] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  
+
   const [deleteId, setDeleteId] = useState("");
   const [editData, setEditData] = useState(null);
 
@@ -32,52 +31,37 @@ const Category = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const [openSubCategory, setOpenSubCategory] = useState(false);
-  const dropdownRef = useRef();  
 
-    const [searchParams, setSearchParams] = useSearchParams();
-    const searchTerm = searchParams.get("searchTerm") || "";
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get("searchTerm") || "";
 
-  const {data: categoryData, isLoading, refetch} = useGetCategoriesQuery({searchTerm, page});
+  const {
+    data: categoryData,
+    isLoading,
+    refetch,
+  } = useGetCategoriesQuery({ searchTerm, page });
   const [deleteCategory] = useDeleteCategoryMutation();
-
 
   // ------------------- Action -----------------------
 
-     useEffect(() => {
-      refetch();
-    }, [searchParams]);
-  
-    // Handle search input change
-    const handleSearchChange = (e) => {
-      const newValue = e.target.value;
-  
-      const newParams = new URLSearchParams(searchParams);
-      if(newValue) {
-        newParams.set("searchTerm", newValue);
-      } else {
-        newParams.delete("searchTerm");
-      }
-      setSearchParams(newParams);
-    };
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const newValue = e.target.value;
 
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if(dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+    const newParams = new URLSearchParams(searchParams);
+    if (newValue) {
+      newParams.set("searchTerm", newValue);
+    } else {
+      newParams.delete("searchTerm");
+    }
+    setSearchParams(newParams);
+  };
 
   const handleDelete = async () => {
     try {
       const res = await deleteCategory(deleteId);
 
-      if(res?.data) {
+      if (res?.data) {
         toast.success(res?.data?.message);
         refetch();
         setShowDelete(false);
@@ -122,7 +106,9 @@ const Category = () => {
       render: (_, record) => (
         <>
           {record?.subcategories?.slice(0, 5).map((sCategory) => (
-            <span style={{ color: "#FDFDFD" }}>{sCategory?.name}, </span>
+            <span key={sCategory?.name} style={{ color: "#FDFDFD" }}>
+              {sCategory?.name},{" "}
+            </span>
           ))}
 
           {record?.subcategories?.length > 0 && (

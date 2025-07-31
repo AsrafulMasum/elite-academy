@@ -120,7 +120,7 @@ const AddCategoryModal = ({
                                 ? editData?.image
                                 : editData?.image
                                 ? `${imageUrl}${editData?.image}`
-                                : "/default-avatar.png"
+                                : "/default-avatar.jpg"
                             }
                             alt={`preview-`}
                             className="h-32 w-44 rounded-lg object-cover z-[99] p-2"

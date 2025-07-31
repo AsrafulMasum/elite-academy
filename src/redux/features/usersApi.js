@@ -58,6 +58,16 @@ const usersApi = baseApi.injectEndpoints({
       },
     }),
 
+    addAdmin: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/user/admin",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+
     lockUser: builder.mutation({
       query: ({ id }) => {
         return {
@@ -76,4 +86,5 @@ export const {
   useAddCoachMutation,
   useLockUserMutation,
   useGetCoachQuery,
+  useAddAdminMutation,
 } = usersApi;

@@ -30,16 +30,16 @@ const EditProductsModal = ({
   useEffect(() => {
     if(product) {
       setForm({
-        title: product.title || "",
-        price: product.price || "",
-        quantity: product.quantity || "",
-        subcategory: product.subcategory || "",
+        title: product?.title || "",
+        price: product?.price || "",
+        quantity: product?.quantity || "",
+        subcategory: product?.subcategory || "",
         productSize: [],
-        description: product.description || "",
+        description: product?.description || "",
       });
 
-      if(product.sizes && Array.isArray(product.sizes)) {
-        setTags(product.sizes);
+      if(product?.sizes && Array.isArray(product?.sizes)) {
+        setTags(product?.sizes);
       }
     }
   }, [product]);
@@ -124,14 +124,14 @@ const EditProductsModal = ({
             <div className="h-32 w-full flex items-center justify-center bg-gray-300 rounded-lg relative">
               {imgURLs.length || product?.images?.length > 0 ? (
                 <div className="w-full max-h-32 overflow-x-auto overflow-y-hidden p-2">
-                  <div className="flex gap-2 w-max">
+                  <div className="w-full h-full flex gap-2 overflow-x-auto p-2">
                     {imgURLs?.length > 0
                       ? imgURLs?.map((url, index) => (
                           <img
                             key={index}
                             src={url}
                             alt={`preview-${index}`}
-                            className="h-full w-20 rounded-lg object-cover z-[99]"
+                            className="h-full w-20 rounded-lg object-cover"
                           />
                         ))
                       : product?.images?.map((url, index) => (
@@ -142,7 +142,7 @@ const EditProductsModal = ({
                                 ? url
                                 : url
                                 ? `${imageUrl}${url}`
-                                : "/default-avatar.png"
+                                : "/default-avatar.jpg"
                             }
                             alt={`preview-${index}`}
                             className="h-full w-20 rounded-lg object-cover z-[99]"
@@ -221,7 +221,7 @@ const EditProductsModal = ({
             >
               {subCategoryData &&
                 subCategoryData?.data.map((sCategory) => (
-                  <option value={sCategory?._id}>{sCategory?.name}</option>
+                  <option key={sCategory?._id} value={sCategory?._id}>{sCategory?.name}</option>
                 ))}
             </select>
           </div>

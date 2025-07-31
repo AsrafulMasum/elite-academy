@@ -270,7 +270,7 @@ const ManageAdmin = () => {
   const columns = [
     {
       title: "Serial No.",
-      // dataIndex: "key",
+      dataIndex: "key",
       key: "key",
       render: (_, __, index) => (
         <span className="text-[#FDFDFD]">{index + 1}</span>
@@ -279,7 +279,8 @@ const ManageAdmin = () => {
     {
       title: "Admin Name",
       key: "adminName",
-      render: (record) => (
+      dataIndex: "adminName",
+      render: (_, record) => (
         <div className="flex items-center gap-3">
           <div style={{ height: 48, width: 48 }}>
             <img
@@ -288,7 +289,7 @@ const ManageAdmin = () => {
                   ? record?.image
                   : record?.image
                   ? `${imageUrl}${record?.image}`
-                  : "/default-avatar.png"
+                  : "/default-avatar.jpg"
               }
               alt=""
               className="h-12 w-12 object-cover rounded-full"
@@ -299,15 +300,9 @@ const ManageAdmin = () => {
       ),
     },
     {
-      title: "Admin Id",
-      dataIndex: "adminId",
-      key: "adminId",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
-    },
-    {
       title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
+      dataIndex: "role",
+      key: "role",
       render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
@@ -368,9 +363,6 @@ const ManageAdmin = () => {
   const paginatedData = data.slice((page - 1) * pageSize, page * pageSize);
 
   // ----------------------- Action -------------------
-  useEffect(() => {
-    refetch();
-  }, [searchParams]);
 
   // Handle search input change
   const handleSearchChange = (e) => {
@@ -400,11 +392,10 @@ const ManageAdmin = () => {
   };
 
   return (
-    <div className="w-full  bg-[#13333A]">
+    <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
           borderRadius: "8px",
-          height: "100%",
         }}
       >
         <div
@@ -508,9 +499,9 @@ const ManageAdmin = () => {
               dataSource={adminData?.data}
               loading={isLoading || updating}
               pagination={{
-                total: total,
+                total: adminData?.pagination?.total,
                 current: page,
-                pageSize: itemsPerPage,
+                pageSize: adminData?.pagination?.limit,
                 onChange: (page) => setPage(page),
               }}
             />
@@ -518,9 +509,11 @@ const ManageAdmin = () => {
         </div>
       </div>
       <UserDetailsModal open={open} setOpen={setOpen} />
+
       <AddAdminModal
         openAddModel={openAddModel}
         setOpenAddModel={setOpenAddModel}
+        refetch={refetch}
       />
 
       <Modal

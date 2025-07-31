@@ -63,7 +63,7 @@ const SellingsDetails = () => {
                     ? item?.image
                     : item?.image
                     ? `${imageUrl}${item?.image}`
-                    : "/default-avatar.png"
+                    : "/default-avatar.jpg"
                 }
                 alt={`Product ${item?._id}`}
                 className="w-8 h-8 object-cover rounded border border-[#3F857B]"

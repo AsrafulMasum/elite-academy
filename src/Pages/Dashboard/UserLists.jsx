@@ -59,7 +59,7 @@ const UserLists = () => {
                   ? record?.image
                   : record?.image
                   ? `${imageUrl}${record?.image}`
-                  : "/default-avatar.png"
+                  : "/default-avatar.jpg"
               }
               className="w-10 h-10 object-cover rounded-full"
             />

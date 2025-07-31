@@ -93,7 +93,7 @@ const SellingsDetailsModal = ({ value, handleModalClose }) => {
                       ? item?.product?.image
                       : item?.product?.image
                       ? `${imageUrl}${item?.product?.image}`
-                      : "/default-avatar.png"
+                      : "/default-avatar.jpg"
                   }
                   alt={`Product ${item?._id}`}
                   className="w-10 h-10 object-cover rounded border border-[#3F857B]"

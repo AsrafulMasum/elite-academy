@@ -4,7 +4,6 @@ const courseApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getTutorials: builder.query({
       query: ({ page, limit }) => {
-        console.log(page, limit);
         return {
           url: `/tutorial?page=${page}&limit=${limit}`,
           method: "GET",
@@ -77,7 +76,6 @@ const courseApi = baseApi.injectEndpoints({
 
     updateSession: builder.mutation({
       query: ({ id, body }) => {
-        console.log(body, "body");
         return {
           url: `/session/${id}`,
           method: "PATCH",
@@ -108,12 +106,10 @@ const courseApi = baseApi.injectEndpoints({
 
 export const {
   useGetTutorialsQuery,
-
   useGetCoursesQuery,
   useAddCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,
-  
   useGetTopicsQuery,
   useGetSessionsQuery,
   useDeleteTutorialMutation,

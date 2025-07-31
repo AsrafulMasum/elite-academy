@@ -43,7 +43,7 @@ const Dashboard = () => {
       ? user?.image
       : user?.image
       ? `${imageUrl}${user?.image}`
-      : "/default-avatar.png";
+      : "/default-avatar.jpg";
 
   const linkItems = [
     {
@@ -528,6 +528,7 @@ const Dashboard = () => {
                   width: "40px",
                   height: "40px",
                   borderRadius: "100%",
+                  objectFit: "cover",
                 }}
                 alt=""
               />
@@ -544,21 +545,21 @@ const Dashboard = () => {
               </h2>
             </Link>
           </div>
-        </Header>        
-          <Content
-            style={{
-              marginTop: "88px",
-              marginBottom: "16px",
-              marginLeft: "265px",
-              marginRight: "16px",
-              borderRadius: "8px",
-              overflow: "auto",
-              // backgroundColor: "#13333A",
-              overflowX: "hidden",
-            }}
-          >
-            <Outlet />
-          </Content>        
+        </Header>
+        <Content
+          style={{
+            marginTop: "88px",
+            marginBottom: "16px",
+            marginLeft: "265px",
+            marginRight: "16px",
+            borderRadius: "8px",
+            overflow: "auto",
+            // backgroundColor: "#13333A",
+            overflowX: "hidden",
+          }}
+        >
+          <Outlet />
+        </Content>
       </Layout>
     </Layout>
   );

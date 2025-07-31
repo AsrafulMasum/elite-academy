@@ -28,7 +28,7 @@ const UserDetailsModal = ({ value, setValue }) => {
                 ? value?.image
                 : value?.image
                 ? `${imageUrl}${value?.image}`
-                : "/default-avatar.png"
+                : "/default-avatar.jpg"
             }
             alt="Image of User"
           />

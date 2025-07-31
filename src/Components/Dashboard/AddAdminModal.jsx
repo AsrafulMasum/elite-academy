@@ -1,13 +1,23 @@
 import { Form, Input, Modal, Select } from "antd";
+import { useAddAdminMutation } from "../../redux/features/usersApi";
+import toast from "react-hot-toast";
 const { Option } = Select;
 
-const AddAdminModal = ({ openAddModel, setOpenAddModel }) => {
+const AddAdminModal = ({ openAddModel, setOpenAddModel, refetch }) => {
   const [form] = Form.useForm();
+  const [addAdmin] = useAddAdminMutation();
 
   const handleAddAdmin = async () => {
     try {
       const values = await form.validateFields();
       console.log(values);
+      const res = await addAdmin(values).unwrap();
+      console.log(res);
+      if (res?.success) {
+        setOpenAddModel(false);
+        toast.success(res?.message);
+        refetch();
+      }
     } catch (error) {
       console.log("Validation Failed:", error);
     }
@@ -85,7 +95,7 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel }) => {
           </div>
           <div style={{ width: "100%" }}>
             <p className="text-[#6D6D6D] py-1">Designation </p>
-            <Form.Item name="adminType">
+            <Form.Item name="role">
               <Select
                 placeholder="Select admin designation"
                 style={{
@@ -93,8 +103,8 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel }) => {
                   height: 40,
                 }}
               >
-                <Option value="super-admin">Super Admin</Option>
-                <Option value="admin">Admin</Option>
+                <Option value="SUPER_ADMIN">SUPER_ADMIN</Option>
+                <Option value="ADMIN">ADMIN</Option>
               </Select>
             </Form.Item>
           </div>
@@ -102,7 +112,7 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel }) => {
           <div className="mt-5">
             <p className="text-[#6D6D6D] py-1">Password </p>
             <Form.Item
-              name="title"
+              name="password"
               rules={[
                 {
                   required: true,

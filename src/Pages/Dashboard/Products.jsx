@@ -1,23 +1,24 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Input, Modal, Table } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import AddProductsModal from "../../Components/Dashboard/AddProductsModal";
 import EditProductsModal from "../../Components/Dashboard/EditProductsModal";
 import { imageUrl } from "../../redux/api/baseApi";
-import { useDeleteProductMutation, useGetProductsQuery } from "../../redux/features/productApi";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "../../redux/features/productApi";
 import { useSearchParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 
 const Products = () => {
-
   // ----------------- Hooks ------------------------
   const [page, setPage] = useState(1);
   const [openAddModal, setOpenAddModel] = useState(false);
   const [openEditModel, setOpenEditModel] = useState(false);
-
 
   const [showDelete, setShowDelete] = useState(false);
   const [deleteId, setDeleteId] = useState("");
@@ -27,50 +28,49 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("searchTerm") || "";
 
-    const { data: productData, isLoading, refetch } = useGetProductsQuery(searchTerm);
-  const [deleteProduct] = useDeleteProductMutation()
+  const {
+    data: productData,
+    isLoading,
+    refetch,
+  } = useGetProductsQuery(searchTerm);
+  const [deleteProduct] = useDeleteProductMutation();
 
   // ----------------------- Action ------------------------
-
-   useEffect(() => {
-    refetch();
-  }, [searchParams]);
-
   // Handle search input change
   const handleSearchChange = (e) => {
     const newValue = e.target.value;
 
     const newParams = new URLSearchParams(searchParams);
-    if(newValue) {
+    if (newValue) {
       newParams.set("searchTerm", newValue);
     } else {
       newParams.delete("searchTerm");
     }
     setSearchParams(newParams);
   };
-  
-    const handleDelete = async (id) => {      
+
+  const handleDelete = async (id) => {
     try {
-      const res = await deleteProduct(id);      
-      if(res?.data?.success){
+      const res = await deleteProduct(id);
+      if (res?.data?.success) {
         toast.success("Deleted Product Successfully");
         refetch();
         setShowDelete(!showDelete);
         setDeleteId("");
-
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-
   // ---------------- Table Column -------------------
   const columns = [
     {
       title: "Serial No.",
       key: "serial",
-     render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
+      render: (_, __, index) => (
+        <span className="text-[#FDFDFD]">{index + 1}</span>
+      ),
     },
     {
       title: "Product Name",
@@ -86,14 +86,12 @@ const Products = () => {
         return (
           <img
             key={record?._id}
-            // src={`http://10.10.7.6:5000/${record?.images[0]}`}
             src={
-              record?.images &&
-              record?.images[0]?.startsWith("http")
+              record?.images && record?.images[0]?.startsWith("http")
                 ? record?.images[0]
                 : record?.images[0]
                 ? `${imageUrl}${record?.images[0]}`
-                : "/default-avatar.png"
+                : "/default-avatar.jpg"
             }
             alt={`Product ${record?._id}`}
             className="w-11 h-11 object-cover rounded border border-[#3F857B]"
@@ -105,7 +103,9 @@ const Products = () => {
       title: "Product Id",
       dataIndex: "productId",
       key: "productId",
-      render: (_,record) => <span className="text-[#FDFDFD]">{record?._id}</span>,
+      render: (_, record) => (
+        <span className="text-[#FDFDFD]">{record?._id}</span>
+      ),
     },
     {
       title: "Category",
@@ -136,10 +136,10 @@ const Products = () => {
         let status = "";
         let statusClass = "";
 
-        if(record.stock === 0) {
+        if (record.quantity === 0) {
           status = "Stock Out";
           statusClass = "bg-[#FC605726] text-[#FC6057]";
-        } else if(record.stock < 10) {
+        } else if (record.quantity < 10) {
           status = "Short Stock";
           statusClass = "bg-yellow-100 text-yellow-700";
         } else {
@@ -207,7 +207,7 @@ const Products = () => {
     <div className="w-full h-full bg-[#13333A]">
       <div
         style={{
-          borderRadius: "8px",          
+          borderRadius: "8px",
         }}
       >
         <div
@@ -231,7 +231,7 @@ const Products = () => {
               Products
             </h3>
           </div>
-           <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
               <div
                 style={{
@@ -286,40 +286,40 @@ const Products = () => {
           </div>
         </div>
 
-          <div className="relative h-full">
-            <ConfigProvider
-              theme={{
-                components: {
-                  Pagination: {
-                    itemActiveBg: "#FFC107",
-                    borderRadius: "100%",
-                    colorText: "white",
-                    colorTextDisabled: "#6C6C6C",
-                  },
-                  Table: {
-                    rowHoverBg: "#13333A",
-                  },
+        <div className="relative h-full">
+          <ConfigProvider
+            theme={{
+              components: {
+                Pagination: {
+                  itemActiveBg: "#FFC107",
+                  borderRadius: "100%",
+                  colorText: "white",
+                  colorTextDisabled: "#6C6C6C",
                 },
-                token: {
-                  colorPrimary: "#13333A",
+                Table: {
+                  rowHoverBg: "#13333A",
                 },
+              },
+              token: {
+                colorPrimary: "#13333A",
+              },
+            }}
+          >
+            <Table
+              size="small"
+              columns={columns}
+              rowKey="_id"
+              dataSource={productData?.data}
+              loading={isLoading}
+              pagination={{
+                total: productData?.pagination?.total,
+                current: page,
+                pageSize: productData?.pagination?.limit,
+                onChange: (page) => setPage(page),
               }}
-            >
-              <Table
-                size="small"
-                columns={columns}
-                rowKey="_id"
-                dataSource={productData?.data}
-                loading={isLoading}
-                pagination={{
-                  total: productData?.pagination?.total,
-                  current: page,
-                  pageSize: productData?.pagination?.limit,
-                  onChange: (page) => setPage(page),
-                }}
-              />
-            </ConfigProvider>
-          </div>        
+            />
+          </ConfigProvider>
+        </div>
       </div>
       <AddProductsModal
         openAddModel={openAddModal}
@@ -349,7 +349,7 @@ const Products = () => {
             Do you want to delete this product?
           </p>
           <button
-            onClick={()=>handleDelete(deleteId)}
+            onClick={() => handleDelete(deleteId)}
             className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
           >
             Confirm
