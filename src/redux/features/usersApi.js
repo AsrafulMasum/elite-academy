@@ -12,46 +12,54 @@ const usersApi = baseApi.injectEndpoints({
     }),
 
     getUsers: builder.query({
-      query: ({ srcText, page }) => {
-        console.log(srcText, page);
+      query: ({ srcText, page, subscriber }) => {
         return {
-          url: `/user?role=GUEST&searchTerm=${srcText}&page=${page}`,
+          url: `/user?role=GUEST&searchTerm=${srcText}&page=${page}&subscriber=${subscriber}`,
           method: "GET",
         };
       },
     }),
 
     getCoach: builder.query({
-      query: (searchTerm = "") => {
+      query: ({ searchTerm, page }) => {
         return {
-          url: `/user?role=COUCH&searchTerm=${searchTerm}`,
+          url: `/user?role=COUCH&searchTerm=${searchTerm}&page=${page}`,
           method: "GET",
         };
       },
     }),
 
     addCoach: builder.mutation({
-      query:(data)=>{
-      return {
-        url: "/user?role=COUCH",
-        method: "POST",
-        body: data
-      }
-      }
+      query: (data) => {
+        return {
+          url: "/user?role=COUCH",
+          method: "POST",
+          body: data,
+        };
+      },
     }),
 
     updateCoach: builder.mutation({
-      query: (data)=>{
+      query: (data) => {
         return {
           url: "/user?role=COUCH",
           method: "PATCH",
-          body: data
-        }
-      }
+          body: data,
+        };
+      },
+    }),
+
+    getAdmin: builder.query({
+      query: ({ searchTerm }) => {
+        return {
+          url: `/user?role=ADMIN&searchTerm=${searchTerm}`,
+          method: "GET",
+        };
+      },
     }),
 
     lockUser: builder.mutation({
-      query: ({ id }) => {        
+      query: ({ id }) => {
         return {
           url: `/user/${id}`,
           method: "PATCH",
@@ -64,7 +72,9 @@ export const {
   useGetStudentsQuery,
   useGetUsersQuery,
   useUpdateCoachMutation,
-  useAddCoachMutation,  
+
+  useGetAdminQuery,
+  useAddCoachMutation,
   useLockUserMutation,
   useGetCoachQuery,
 } = usersApi;

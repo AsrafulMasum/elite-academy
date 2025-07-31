@@ -14,9 +14,14 @@ const UserLists = () => {
   const [open, setOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [userType, setUserType] = useState("User Type");
-  const { data: userData } = useGetUsersQuery({ srcText: searchText, page });
-  console.log(userData);
+  const { data: userData } = useGetUsersQuery({
+    srcText: searchText,
+    page,
+    subscriber: userType,
+  });
+
   const UserType = [
+    { value: "User Type", label: "User Type" },
     { value: "Normal User", label: "Normal User" },
     { value: "Subscribed User", label: "Subscribed User" },
   ];
@@ -26,7 +31,9 @@ const UserLists = () => {
       title: "Serial No.",
       dataIndex: "key",
       key: "key",
-      render: (_, __, index) => <span className="text-[#FDFDFD]">{index + 1}</span>,
+      render: (_, __, index) => (
+        <span className="text-[#FDFDFD]">{index + 1}</span>
+      ),
     },
     {
       title: "User Name",
@@ -142,8 +149,7 @@ const UserLists = () => {
   const handleUserType = (value) => {
     setUserType(value);
   };
-  
-  console.log(userType);
+
   return (
     <div className="w-full h-full bg-[#13333A]">
       <div
