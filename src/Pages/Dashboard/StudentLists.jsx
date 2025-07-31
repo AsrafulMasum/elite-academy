@@ -19,7 +19,7 @@ const StudentLists = () => {
   const [lock, setLock] = useState("");
   const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const { data: userData, refetch } = useGetStudentsQuery({searchText, page});
+  const { data: userData, refetch } = useGetStudentsQuery({ searchText, page });
   const [lockUser] = useLockUserMutation();
 
   const columns = [
@@ -187,18 +187,26 @@ const StudentLists = () => {
                 borderRadius: "8px",
               }}
             >
-              <Input
-                placeholder="Search..."
-                onChange={handleSearchChange}
-                prefix={<FiSearch size={14} color="#868FA0" />}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  fontSize: "14px",
-                  backgroundColor: "#FAFAFA",
+              <ConfigProvider
+                theme={{
+                  token: {
+                    colorPrimary: "#13333A",
+                  },
                 }}
-                size="middle"
-              />
+              >
+                <Input
+                  placeholder="Search..."
+                  onChange={handleSearchChange}
+                  prefix={<FiSearch size={14} color="#868FA0" />}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    fontSize: "14px",
+                    backgroundColor: "#FAFAFA",
+                  }}
+                  size="middle"
+                />
+              </ConfigProvider>
             </div>
           </div>
         </div>

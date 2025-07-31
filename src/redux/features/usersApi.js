@@ -72,7 +72,6 @@ export const {
   useGetStudentsQuery,
   useGetUsersQuery,
   useUpdateCoachMutation,
-
   useGetAdminQuery,
   useAddCoachMutation,
   useLockUserMutation,

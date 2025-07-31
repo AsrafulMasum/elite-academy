@@ -1,24 +1,29 @@
 import { useState } from "react";
-import { ConfigProvider, Input, Select, Table } from "antd";
+import { ConfigProvider, Input, Modal, Select, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
-import provider from "../../assets/serviceProvider.png";
-import { CiUnlock } from "react-icons/ci";
+import { CiLock, CiUnlock } from "react-icons/ci";
 import { GoArrowUpRight } from "react-icons/go";
-import { useGetUsersQuery } from "../../redux/features/usersApi";
+import {
+  useGetUsersQuery,
+  useLockUserMutation,
+} from "../../redux/features/usersApi";
 import { imageUrl } from "../../redux/api/baseApi";
+import toast from "react-hot-toast";
+import moment from "moment";
 
 const UserLists = () => {
   const [page, setPage] = useState(1);
-
-  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [lock, setLock] = useState("");
   const [userType, setUserType] = useState("User Type");
-  const { data: userData } = useGetUsersQuery({
+  const { data: userData, refetch } = useGetUsersQuery({
     srcText: searchText,
     page,
     subscriber: userType,
   });
+  const [lockUser] = useLockUserMutation();
 
   const UserType = [
     { value: "User Type", label: "User Type" },
@@ -83,13 +88,15 @@ const UserLists = () => {
       title: "Type",
       dataIndex: "type",
       key: "type",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (_,record) => <span style={{ color: "#FDFDFD" }}>{
+        record?.subscription ? "Subscribed User" : "Normal User"
+      }</span>,
     },
     {
       title: "Start Date",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (_, record) => <span style={{ color: "#FDFDFD" }}>{moment(record?.createdAt).format("YYYY-MM-DD")}</span>,
     },
     {
       title: "Action",
@@ -105,9 +112,9 @@ const UserLists = () => {
             paddingRight: 10,
           }}
         >
-          <button
+          {/* <button
             className="flex justify-center items-center rounded-md"
-            onClick={() => setOpen(true)}
+            onClick={() => setValue(record)}
             style={{
               cursor: "pointer",
               border: "none",
@@ -118,12 +125,12 @@ const UserLists = () => {
             }}
           >
             <GoArrowUpRight size={26} className="text-secondary" />
-          </button>
+          </button> */}
 
           <div>
             <button
               className="flex justify-center items-center rounded-md"
-              onClick={() => setOpen(true)}
+              onClick={() => setLock(record?._id)}
               style={{
                 cursor: "pointer",
                 border: "none",
@@ -133,13 +140,30 @@ const UserLists = () => {
                 height: "32px",
               }}
             >
-              <CiUnlock size={26} className="text-secondary" />
+              {record?.status === "active" ? (
+                <CiUnlock size={26} className="text-secondary" />
+              ) : (
+                <CiLock size={26} className="text-[#FF0000]" />
+              )}
             </button>
           </div>
         </div>
       ),
     },
   ];
+
+  const handleDelete = async () => {
+    try {
+      const res = await lockUser({ id: lock });
+      if (res?.data?.success) {
+        refetch();
+        setLock("");
+        toast.success(res?.data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSearchChange = (e) => {
     e.preventDefault();
@@ -268,7 +292,31 @@ const UserLists = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
+
+      {/* <UserDetailsModal value={value} setValue={setValue} /> */}
+
+      <Modal
+        centered
+        open={lock}
+        onCancel={() => setLock(null)}
+        width={400}
+        footer={false}
+      >
+        <div className="p-6 text-center">
+          <p className="text-[#D93D04] text-center font-semibold">
+            Are you sure!
+          </p>
+          <p className="pt-4 pb-12 text-center">
+            Do you want to delete this content?
+          </p>
+          <button
+            onClick={handleDelete}
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
+          >
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };
