@@ -116,17 +116,17 @@ const Dashboard = () => {
     //     />
     //   ),
     // },
-    {
-      title: "Interested User",
-      path: "/interestedUser",
-      icon: (pathname) => (
-        <TbUserHeart
-          className={`text-xl ${
-            pathname === "/interestedUser" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
-          }`}
-        />
-      ),
-    },
+    // {
+    //   title: "Interested User",
+    //   path: "/interestedUser",
+    //   icon: (pathname) => (
+    //     <TbUserHeart
+    //       className={`text-xl ${
+    //         pathname === "/interestedUser" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+    //       }`}
+    //     />
+    //   ),
+    // },
     {
       title: "Products",
       path: "/products",
@@ -408,7 +408,7 @@ const Dashboard = () => {
                   }}
                 />
               )}
-              {item.title === "Interested User" && (
+              {item.title === "Enrollment Fees" && (
                 <hr
                   style={{
                     border: "none",

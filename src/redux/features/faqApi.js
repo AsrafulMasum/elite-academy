@@ -21,7 +21,7 @@ const faqApi = baseApi.injectEndpoints({
 
     updateFAQ: builder.mutation({
       query: ({ id, faq }) => ({
-        method: "PATCH",
+        method: "PUT",
         url: `/faq/${id}`,
         body: faq,
       }),
