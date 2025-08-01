@@ -1,21 +1,42 @@
 import { useState } from "react";
-import { ConfigProvider, Input, Table } from "antd";
+import { Button, ConfigProvider, Input, Select, Table, Tag } from "antd";
 import { FiSearch } from "react-icons/fi";
-import { useGetSellingListQuery } from "../../redux/features/paymentApi";
+import {
+  useChangeOrderStatusMutation,
+  useGetSellingListQuery,
+} from "../../redux/features/paymentApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { IoDownloadOutline } from "react-icons/io5";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 const limit = 12;
 
 const SellingsDetails = () => {
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-  const { data: sellingList } = useGetSellingListQuery({
+  const [changeOrderStatus] = useChangeOrderStatusMutation();
+  const { data: sellingList, refetch } = useGetSellingListQuery({
     page,
     limit,
     searchTerm: searchText,
   });
+
+  const statusOptions = [
+    { value: "pending", label: "Pending" },
+    { value: "packing", label: "Packing" },
+    { value: "shipping", label: "Shipping" },
+    { value: "cancelled", label: "Cancelled" },
+    { value: "delivered", label: "Delivered" },
+  ];
+
+  const statusColorMap = {
+    pending: { color: "#D48806", bg: "#F7F1CC" },
+    packing: { color: "#1890FF", bg: "#D9EEFF" },
+    shipping: { color: "#13C2C2", bg: "#CCFAF9" },
+    cancelled: { color: "#FF4D4F", bg: "#FFD8D7" },
+    delivered: { color: "#52C41A", bg: "#D9F2CD" },
+  };
 
   const handleSearchChange = (e) => {
     e.preventDefault();
@@ -122,7 +143,58 @@ const SellingsDetails = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
+      render: (status, record) => {
+        const currentStyle = statusColorMap[status] || {
+          color: "#595959",
+          bg: "#FAFAFA",
+        };
+
+        return (
+          <select
+            value={status}
+            onChange={async (e) => {
+              const newStatus = e.target.value;
+
+              const data = {
+                orderId: record._id,
+                status: { status: newStatus },
+              };
+              try {
+                const res = await changeOrderStatus({ data }).unwrap();
+                if (res?.success) {
+                  refetch();
+                  toast.success(res?.message);
+                }
+              } catch (error) {
+                console.error("Failed to update status", error);
+              }
+            }}
+            style={{
+              backgroundColor: currentStyle.bg,
+              color: currentStyle.color,
+              fontWeight: 500,
+              borderRadius: 6,
+              fontSize: 13,
+              width: 120,
+              height: 28,
+              padding: "0 8px",
+              border: "none",
+              cursor: "pointer",
+              textAlign: "center",
+              appearance: "none",
+              WebkitAppearance: "none",
+              MozAppearance: "none",
+              outline: "none",
+            }}
+          >
+            {statusOptions.map(({ value, label }) => (
+              <option key={value} value={value} style={{ textAlign: "center" }}>
+                {label}
+              </option>
+            ))}
+          </select>
+        );
+      },
     },
     {
       title: "Invoice",

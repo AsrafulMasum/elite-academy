@@ -19,8 +19,18 @@ const paymentApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    changeOrderStatus: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: `/order/${data?.orderId}`,
+          method: "PATCH",
+          body: data?.status,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetEnrollmentFeeListQuery, useGetSellingListQuery } =
+export const { useGetEnrollmentFeeListQuery, useGetSellingListQuery, useChangeOrderStatusMutation } =
   paymentApi;
