@@ -4,17 +4,9 @@ const statisticsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     statistics: builder.query({
       query: (year) => {
+        console.log(year);
         return {
-          url: `/dashboard?userYear=${year?.userYear}&sellerYear=${year?.sellerYear}`,
-          method: "GET",
-        };
-      },
-    }),
-
-    analytics: builder.query({
-      query: (year) => {
-        return {
-          url: `/dashboard/analytics?userYear=${year?.userYear}&sellerYear=${year?.sellerYear}`,
+          url: `/dashboard/analytics?year=${year?.userYear}&sellYear=${year?.sellerYear}&studentYear=${year?.studentYear}`,
           method: "GET",
         };
       },
@@ -22,4 +14,4 @@ const statisticsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useStatisticsQuery, useAnalyticsQuery } = statisticsApi;
+export const { useStatisticsQuery } = statisticsApi;

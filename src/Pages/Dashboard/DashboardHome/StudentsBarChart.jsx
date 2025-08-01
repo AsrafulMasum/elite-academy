@@ -1,4 +1,4 @@
-import { Dropdown } from "antd";
+import { ConfigProvider, DatePicker, Dropdown } from "antd";
 import { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import {
@@ -11,6 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { FaChevronDown } from "react-icons/fa";
 
 const salesChartData = [
   {
@@ -80,32 +81,8 @@ const salesChartData = [
   },
 ];
 
-const StudentsBarChart = () => {
-  const [year, setYear] = useState(2024);
-
-  const items = [
-    {
-      label: 2023,
-      key: "2023",
-    },
-    {
-      label: 2024,
-      key: "2024",
-    },
-    {
-      label: 2025,
-      key: "2025",
-    },
-    {
-      label: 2026,
-      key: "2026",
-    },
-  ];
-
-  const onClick = ({ key }) => {
-    setYear(key);
-  };
-
+const StudentsBarChart = ({setStudentYear, studentStats}) => {
+  
   const CustomLegend = () => {
     return (
       <div className="flex gap-2 2xl:gap-4 text-sm text-[#EEEEEE]">
@@ -125,27 +102,27 @@ const StudentsBarChart = () => {
         </h1>
         <div className="flex items-center gap-2 2xl:gap-6">
           <CustomLegend />
-          <Dropdown menu={{ items, onClick }}>
-            <p
-              className="rounded-full"
-              style={{
-                cursor: "pointer",
-                backgroundColor: "#F4E6FF",
-                padding: "6px 12px",
-                fontSize: "14px",
-                color: "#121212",
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#2E7A8A",
+              },
+            }}
+          >
+            <DatePicker
+              className="!cursor-pointer"
+              picker="year"
+              suffixIcon={<FaChevronDown className="text-gray-500 text-sm" />}
+              onChange={(_, dateString) => {
+                setStudentYear(dateString);
               }}
-              onClick={(e) => e.preventDefault()}
-            >
-              {year}
-              <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
-            </p>
-          </Dropdown>
+            />
+          </ConfigProvider>
         </div>
       </div>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart
-          data={salesChartData}
+          data={studentStats}
           margin={{
             top: 5,
             right: 30,
@@ -158,7 +135,7 @@ const StudentsBarChart = () => {
           <YAxis />
           <Tooltip />
           {/* <Bar barSize={10} radius={50} dataKey="saleTotal" fill="#EAF2F3" /> */}
-          <Bar barSize={10} radius={50} dataKey="students" fill="#FFC107" />
+          <Bar barSize={10} radius={50} dataKey="count" name="Students" fill="#FFC107" />
         </BarChart>
       </ResponsiveContainer>
     </div>

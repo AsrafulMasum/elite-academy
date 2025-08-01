@@ -1,4 +1,4 @@
-import { Dropdown, Select } from "antd";
+import { ConfigProvider, DatePicker, Dropdown, Select } from "antd";
 import { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import {
@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { FaChevronDown } from "react-icons/fa";
 
 const { Option } = Select;
 
@@ -36,10 +37,6 @@ const CustomLegend = () => {
         Sale
       </div>
       <div className="flex items-center gap-1 whitespace-nowrap">
-        <div className="w-3 h-3 bg-[#1976D2] rounded-sm " />
-        Profit
-      </div>
-      <div className="flex items-center gap-1 whitespace-nowrap">
         <div className="w-3 h-3 bg-[#FFC107] rounded-sm " />
         Enrollment
       </div>
@@ -47,32 +44,8 @@ const CustomLegend = () => {
   );
 };
 
-const SellingLineChart = () => {
-  const [year, setYear] = useState(2024);
-
-  const items = [
-    {
-      label: 2023,
-      key: "2023",
-    },
-    {
-      label: 2024,
-      key: "2024",
-    },
-    {
-      label: 2025,
-      key: "2025",
-    },
-    {
-      label: 2026,
-      key: "2026",
-    },
-  ];
-
-  const onClick = ({ key }) => {
-    setYear(key);
-  };
-
+const SellingLineChart = ({setSellerYear, sellingStats}) => {
+  
   return (
     <div className="bg-[#13333A] py-6 rounded-xl w-full">
       <div className="flex items-center justify-between px-10 mb-4">
@@ -81,28 +54,28 @@ const SellingLineChart = () => {
         </h1>
         <div className="flex items-center gap-6">
           <CustomLegend />
-          <Dropdown menu={{ items, onClick }}>
-            <p
-              className="rounded-full"
-              style={{
-                cursor: "pointer",
-                backgroundColor: "#F4E6FF",
-                padding: "6px 12px",
-                fontSize: "14px",
-                color: "#121212",
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: "#2E7A8A",
+              },
+            }}
+          >
+            <DatePicker
+              className="!cursor-pointer"
+              picker="year"
+              suffixIcon={<FaChevronDown className="text-gray-500 text-sm" />}
+              onChange={(_, dateString) => {
+                setSellerYear(dateString);
               }}
-              onClick={(e) => e.preventDefault()}
-            >
-              {year}
-              <DownOutlined style={{ paddingLeft: "18px" }} color="#717171" />
-            </p>
-          </Dropdown>
+            />
+          </ConfigProvider>
         </div>
       </div>
 
       <ResponsiveContainer width="100%" height={250}>
         <LineChart
-          data={earnChartData}
+          data={sellingStats}
           margin={{ top: 5, right: 30, left: 10, bottom: 0 }}
         >
           <CartesianGrid horizontal={false} />
@@ -112,19 +85,15 @@ const SellingLineChart = () => {
           <Line
             type="monotone"
             dataKey="enrollment"
+            name="Enrollment Fees"
             stroke="#FFC107"
             activeDot={{ r: 8 }}
           />
           <Line
             type="monotone"
-            dataKey="totalSale"
+            dataKey="count"
+            name="Total Sold"
             stroke="#1E90FF"
-            activeDot={{ r: 8 }}
-          />
-          <Line
-            type="monotone"
-            dataKey="profit"
-            stroke="#1976D2"
             activeDot={{ r: 8 }}
           />
         </LineChart>

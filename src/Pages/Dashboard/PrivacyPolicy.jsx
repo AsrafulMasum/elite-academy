@@ -1,12 +1,26 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import JoditEditor from "jodit-react";
-import Swal from "sweetalert2";
+import toast from "react-hot-toast";
+import { useGetRulesQuery, useUpdateRulesMutation } from "../../redux/features/rulesApi";
 
 const PrivacyPolicy = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  const [isLoading, seLoading] = useState(false);
 
+  // Fetching data from API
+  const { data, isLoading, isError } = useGetRulesQuery({ type: "privacy" });
+
+  // Mutation hook for updating data
+  const [updateRules, { isLoading: isUpdating }] = useUpdateRulesMutation();
+
+  // Set content when data is fetched
+  useEffect(() => {
+    if (data?.data?.content) {
+      setContent(data.data.content);
+    }
+  }, [data]);
+
+  // Editor config
   const config = {
     readonly: false,
     placeholder: "Start typings...",
@@ -15,74 +29,87 @@ const PrivacyPolicy = () => {
     },
   };
 
-  const handleSubmit = () => {
+  // Handle form submit
+  const handleSubmit = async () => {
     const tempElement = document.createElement("div");
     tempElement.innerHTML = content;
     const plainText = tempElement.innerText.trim();
 
-    console.log(plainText);
+    if (!plainText) {
+      toast.error("Content cannot be empty");
+      return;
+    }
 
-    setContent("");
+    try {
+      await updateRules({
+        type: "privacy",
+        content,
+      }).unwrap();
+      toast.success("Updated successfully!");
+    } catch (err) {
+      console.error("Update failed", err);
+      toast.error("Failed to update");
+    }
   };
 
   return (
-    <div className=" bg-green h-full px-4 py-2 rounded-lg pb-10 ">
-      <div
+    <div className="px-4 bg-green h-full">
+      <h3
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          margin: "16px 0",
+          color: "#FDFDFD",
+          fontSize: 18,
+          fontWeight: "500",
+          paddingTop: "24px",
+          paddingBottom: "36px",
+          lineHeight: "24px",
         }}
       >
-        <div>
-          <h3
-            className="font-semibold"
+        Privacy and Policy
+      </h3>
+
+      {isLoading ? (
+        <p className="text-white">Loading...</p>
+      ) : isError ? (
+        <p className="text-red-500">Failed to load content</p>
+      ) : (
+        <>
+          <div>
+            <JoditEditor
+              config={config}
+              ref={editor}
+              value={content}
+              onBlur={(newContent) => setContent(newContent)}
+            />
+          </div>
+
+          <div
             style={{
-              color: "#FDFDFD",
-              fontSize: 18,
-              fontWeight: "500",
-              lineHeight: "24px",
-              paddingBottom: "20px",
+              marginTop: 36,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Privacy Policy
-          </h3>
-        </div>
-        <div></div>
-      </div>
-      <div>
-        <JoditEditor
-          ref={editor}
-          value={content}
-          config={config}
-          tabIndex={1}
-          onBlur={(newContent) => setContent(newContent)}
-        />
-      </div>
-      <div
-        style={{
-          marginTop: 36,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <button
-          onClick={handleSubmit}
-          style={{
-            height: 48,
-            width: 173,
-            backgroundColor: "#2E7A8A",
-            color: "white",
-            borderRadius: "8px",
-            fontWeight: 500,
-            fontSize: 14,
-          }}
-        >
-          Save & Changes
-        </button>
-      </div>
+            <button
+              onClick={handleSubmit}
+              disabled={isUpdating}
+              style={{
+                height: 48,
+                width: 173,
+                backgroundColor: "#2E7A8A",
+                color: "white",
+                borderRadius: "8px",
+                fontWeight: 500,
+                fontSize: 14,
+                opacity: isUpdating ? 0.6 : 1,
+                cursor: isUpdating ? "not-allowed" : "pointer",
+              }}
+            >
+              {isUpdating ? "Saving..." : "Save & Changes"}
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
