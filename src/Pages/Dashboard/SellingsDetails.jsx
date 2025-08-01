@@ -167,6 +167,7 @@ const SellingsDetails = () => {
                 }
               } catch (error) {
                 console.error("Failed to update status", error);
+                toast.error(error?.data?.message);
               }
             }}
             style={{
