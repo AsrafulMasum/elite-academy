@@ -3,15 +3,17 @@ import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications, IoMdPaper } from "react-icons/io";
-import { TbDiscount, TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
+import {
+  TbDiscount,
+  TbPlayFootball,
+  TbUsers,
+  TbUsersGroup,
+} from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
-import {
-  RiAdminLine,
-  RiUser2Line,
-} from "react-icons/ri";
-import { useState } from "react";
+import { RiAdminLine, RiUser2Line } from "react-icons/ri";
+import { useEffect, useMemo, useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { GoQuestion } from "react-icons/go";
 import { BsExclamationCircle, BsPersonVideo3 } from "react-icons/bs";
@@ -20,6 +22,7 @@ import { PiVideo } from "react-icons/pi";
 import logo from "../../assets/logo.png";
 import { useProfileQuery } from "../../redux/features/authApi";
 import { imageUrl } from "../../redux/api/baseApi";
+import { useGetNotificationsQuery } from "../../redux/features/notificationApi";
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,6 +32,18 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { data } = useProfileQuery();
   const user = data?.data;
+
+  const { data: notificationData, refetch } = useGetNotificationsQuery();
+  const unreadCount = useMemo(
+    () => notificationData?.data?.unreadCount || 0,
+    [notificationData]
+  );
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -126,7 +141,7 @@ const Dashboard = () => {
     //     />
     //   ),
     // },
-    
+
     {
       title: "Products",
       path: "/products",
@@ -534,7 +549,7 @@ const Dashboard = () => {
                     fontSize: "12px",
                   }}
                 >
-                  1
+                  {unreadCount}
                 </div>
               </div>
             </Link>

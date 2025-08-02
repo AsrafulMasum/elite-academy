@@ -4,7 +4,6 @@ const statisticsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     statistics: builder.query({
       query: (year) => {
-        console.log(year);
         return {
           url: `/dashboard/analytics?year=${year?.userYear}&sellYear=${year?.sellerYear}&studentYear=${year?.studentYear}`,
           method: "GET",
