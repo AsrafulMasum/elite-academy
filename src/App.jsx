@@ -32,6 +32,7 @@ import Courses from "./Pages/Dashboard/Courses";
 import Tutorials from "./Pages/Dashboard/Tutorials";
 import ClassSchedule from "./Pages/Dashboard/ClassSchedule";
 import Coupon from "./Pages/Dashboard/Coupon";
+import Topics from "./Pages/Dashboard/Topics";
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
             <Route path="/subscription" element={<Subscription />} />
 
             <Route path="/courses" element={<Courses />} />
+            <Route path="/topics" element={<Topics />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/classSchedule" element={<ClassSchedule />} />
             <Route path="/settings/about-us" element={<AboutUs />} />

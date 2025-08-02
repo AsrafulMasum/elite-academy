@@ -76,6 +76,7 @@ const Dashboard = () => {
         />
       ),
     },
+
     {
       title: "Sellings Details",
       path: "/sellings-details",
@@ -102,6 +103,7 @@ const Dashboard = () => {
         />
       ),
     },
+
     // {
     //   title: "Wishlist",
     //   path: "/wishlist",
@@ -124,6 +126,7 @@ const Dashboard = () => {
     //     />
     //   ),
     // },
+    
     {
       title: "Products",
       path: "/products",
@@ -225,6 +228,7 @@ const Dashboard = () => {
         />
       ),
     },
+
     {
       title: "Subscription",
       path: "/subscription",
@@ -301,12 +305,6 @@ const Dashboard = () => {
         },
       ],
     },
-
-    // {
-    //   title: "Log out",
-    //   path: "/login",
-    //   icon: (pathname) => <CiLogout className={`text-xl`} />,
-    // },
   ];
 
   return (
