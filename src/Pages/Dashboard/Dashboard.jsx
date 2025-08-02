@@ -1,23 +1,20 @@
 import { ConfigProvider, Layout } from "antd";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-import adminImg from "../../assets/admin.jpg";
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IoIosNotifications, IoMdPaper } from "react-icons/io";
-import {
-  TbPlayFootball,
-  TbUserHeart,
-  TbUsers,
-  TbUsersGroup,
-} from "react-icons/tb";
+import { TbDiscount, TbPlayFootball, TbUsers, TbUsersGroup } from "react-icons/tb";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
-import { RiAdminLine, RiUser2Line } from "react-icons/ri";
+import {
+  RiAdminLine,
+  RiUser2Line,
+} from "react-icons/ri";
 import { useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { GoQuestion } from "react-icons/go";
-import { BsExclamationCircle } from "react-icons/bs";
+import { BsExclamationCircle, BsPersonVideo3 } from "react-icons/bs";
 import { MdOutlineCategory, MdOutlineWatchLater } from "react-icons/md";
 import { PiVideo } from "react-icons/pi";
 import logo from "../../assets/logo.png";
@@ -150,12 +147,35 @@ const Dashboard = () => {
       ),
     },
     {
+      title: "Coupon",
+      path: "/coupon",
+      icon: (pathname) => (
+        <TbDiscount
+          className={`text-xl ${
+            pathname === "/coupon" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+
+    {
       title: "Courses",
       path: "/courses",
       icon: (pathname) => (
         <TbPlayFootball
           className={`text-xl ${
             pathname === "/courses" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
+          }`}
+        />
+      ),
+    },
+    {
+      title: "Topics",
+      path: "/topics",
+      icon: (pathname) => (
+        <BsPersonVideo3
+          className={`text-xl ${
+            pathname === "/topics" ? "text-[#EEEEEE]" : "text-[#A3A3A3]"
           }`}
         />
       ),
@@ -399,7 +419,17 @@ const Dashboard = () => {
                 </ul>
               )}
 
+              {/* dividers */}
               {item.title === "User Lists" && (
+                <hr
+                  style={{
+                    border: "none",
+                    borderTop: "1px solid #19434C",
+                    margin: "8px 0",
+                  }}
+                />
+              )}
+              {item.title === "Coupon" && (
                 <hr
                   style={{
                     border: "none",

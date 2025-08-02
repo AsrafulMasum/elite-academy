@@ -8,7 +8,7 @@ import {
 } from "../../redux/features/courseApi";
 
 const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
-  const { data } = useGetCoursesQuery();
+  const { data } = useGetCoursesQuery({});
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
     id: course._id,

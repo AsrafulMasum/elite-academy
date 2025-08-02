@@ -12,7 +12,7 @@ const courseApi = baseApi.injectEndpoints({
     }),
 
     getCourses: builder.query({
-      query: ({searchTerm, page}) => {        
+      query: ({searchTerm, page}) => {   
         return {
           url: `/course?searchTerm=${searchTerm}&page=${page}`,
           method: "GET",

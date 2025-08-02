@@ -142,7 +142,7 @@ const Courses = () => {
       align: "left",
       render: (text) => (
         <span style={{ color: "#FDFDFD" }}>
-          {text.length > 60 ? `${text.slice(0, 30)}...` : text}
+          {text?.length > 60 ? `${text?.slice(0, 30)}...` : text}
         </span>
       ),
     },

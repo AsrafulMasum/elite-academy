@@ -31,6 +31,7 @@ import ManageAdmin from "./Pages/Dashboard/ManageAdmin";
 import Courses from "./Pages/Dashboard/Courses";
 import Tutorials from "./Pages/Dashboard/Tutorials";
 import ClassSchedule from "./Pages/Dashboard/ClassSchedule";
+import Coupon from "./Pages/Dashboard/Coupon";
 
 function App() {
   return (
@@ -52,14 +53,18 @@ function App() {
 
             <Route path="/sellings-details" element={<SellingsDetails />} />
             <Route path="/enrollment-fees" element={<EnrollmentFees />} />
+
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/interestedUser" element={<InterestedUser />} />
+
             <Route path="/products" element={<Products />} />
+            <Route path="/addCategory" element={<Category />} />
+            <Route path="/coupon" element={<Coupon />} />
+
             <Route path="/coach" element={<CoachLists />} />
             <Route path="/manage-admin" element={<ManageAdmin />} />
             <Route path="/subscription" element={<Subscription />} />
 
-            <Route path="/addCategory" element={<Category />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/classSchedule" element={<ClassSchedule />} />

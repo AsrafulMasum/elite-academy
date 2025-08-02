@@ -31,6 +31,7 @@ const categoriesApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    
     addCategory: builders.mutation({
       query: (data) => {
         return {
