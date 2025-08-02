@@ -1,9 +1,24 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, ConfigProvider, Modal, Table } from "antd";
-import { useState } from "react";
+import {
+  Button,
+  ConfigProvider,
+  Form,
+  Input,
+  Modal,
+  Table,
+  DatePicker,
+} from "antd";
+import { useEffect, useState } from "react";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
+import moment from "moment";
+import {
+  useAddCouponMutation,
+  useDeleteCouponMutation,
+  useGetCouponsQuery,
+  useUpdateCouponMutation,
+} from "../../redux/features/couponsApi";
 
 const Coupon = () => {
   const [openAddModal, setOpenAddModel] = useState(false);
@@ -13,25 +28,84 @@ const Coupon = () => {
   const [deleteId, setDeleteId] = useState("");
   const [page, setPage] = useState(1);
 
-  const coupons = [
-    {
-      _id: "1",
-      code: "MASUM10",
-      discount: "10%",
-      expiresAt: "2025-12-31",
-    },
-    {
-      _id: "2",
-      code: "SAVE50",
-      discount: "50%",
-      expiresAt: "2025-11-01",
-    },
-  ];
+  const [form] = Form.useForm();
+  const [editForm] = Form.useForm();
 
-  const handleDelete = (id) => {
-    toast.success("Coupon deleted");
-    setShowDelete(false);
-    setDeleteId("");
+  const { data, refetch, isLoading } = useGetCouponsQuery();
+  const [addCoupon] = useAddCouponMutation();
+  const [updateCoupon] = useUpdateCouponMutation();
+  const [deleteCoupon] = useDeleteCouponMutation();
+
+  useEffect(() => {
+    if (selectedCoupon) {
+      editForm.setFieldsValue({
+        code: selectedCoupon?.code,
+        discount: selectedCoupon?.discount,
+        expiry: moment(selectedCoupon?.expiry),
+      });
+    }
+  }, [selectedCoupon, editForm]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteCoupon({id});
+      if (res?.data?.success) {
+        toast.success("Coupon deleted successfully");
+        refetch();
+      } else {
+        toast.error(res?.error?.data?.message || "Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      setShowDelete(false);
+      setDeleteId("");
+    }
+  };
+
+  const handleAddCoupon = async (values) => {
+    const payload = {
+      ...values,
+      expiry: values.expiry.toISOString(),
+    };
+    try {
+      const res = await addCoupon({payload});
+      if (res?.data?.success) {
+        toast.success("Coupon added successfully");
+        form.resetFields();
+        setOpenAddModel(false);
+        refetch();
+      } else {
+        toast.error(res?.error?.data?.message || "Failed to add");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const handleUpdateCoupon = async (values) => {
+    const payload = {
+      ...values,
+      _id: selectedCoupon?._id,
+      expiry: values.expiry.toISOString(),
+    };
+    try {
+      const res = await updateCoupon(payload);
+      if (res?.data?.success) {
+        toast.success("Coupon updated successfully");
+        editForm.resetFields();
+        setOpenEditModal(false);
+        setSelectedCoupon(null);
+        refetch();
+      } else {
+        toast.error(res?.error?.data?.message || "Failed to update");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    }
   };
 
   const columns = [
@@ -56,15 +130,20 @@ const Coupon = () => {
     },
     {
       title: "Expires Date",
-      dataIndex: "expiresAt",
-      key: "expiresAt",
-      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
+      dataIndex: "expiry",
+      key: "expiry",
+      render: (text) => (
+        <span className="text-[#FDFDFD]">
+          {moment(text).format("YYYY-MM-DD")}
+        </span>
+      ),
     },
     {
       title: "Action",
       key: "action",
+      align: "center",
       render: (_, record) => (
-        <div className="flex items-center gap-2 pr-4">
+        <div className="flex items-center justify-center gap-2 pr-4">
           <button
             onClick={() => {
               setSelectedCoupon(record);
@@ -138,12 +217,13 @@ const Coupon = () => {
           <Table
             size="small"
             rowKey="_id"
-            dataSource={coupons}
+            dataSource={data?.data}
             columns={columns}
+            loading={isLoading}
             pagination={{
               current: page,
-              pageSize: 10,
-              total: coupons.length,
+              pageSize: 12,
+              total: data?.data?.length,
               onChange: (page) => setPage(page),
             }}
           />
@@ -170,7 +250,115 @@ const Coupon = () => {
         </div>
       </Modal>
 
-      {/* Add/Edit Coupon Modals can be added here */}
+      {/* Add Coupon Modal */}
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#13333A",
+          },
+        }}
+      >
+        <Modal
+          centered
+          open={openAddModal}
+          onCancel={() => setOpenAddModel(false)}
+          footer={false}
+        >
+          <div style={{ padding: "24px" }}>
+            <h2 className="text-xl font-medium mb-4">Add Coupon</h2>
+            <Form layout="vertical" form={form} onFinish={handleAddCoupon}>
+              <Form.Item
+                label="Coupon Code"
+                name="name"
+                rules={[
+                  { required: true, message: "Please enter a coupon code" },
+                ]}
+              >
+                <Input placeholder="e.g. MASUM10" />
+              </Form.Item>
+              <Form.Item
+                label="Discount"
+                name="discount"
+                rules={[
+                  { required: true, message: "Enter discount (e.g. 10%)" },
+                ]}
+              >
+                <Input placeholder="e.g. 10" />
+              </Form.Item>
+              <Form.Item
+                label="Expiry Date"
+                name="expiry"
+                rules={[{ required: true, message: "Select expiry date" }]}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="bg-[#2E7A8A] w-full"
+              >
+                Submit
+              </Button>
+            </Form>
+          </div>
+        </Modal>
+      </ConfigProvider>
+
+      {/* Edit Coupon Modal */}
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#13333A",
+          },
+        }}
+      >
+        <Modal
+          centered
+          open={openEditModal}
+          onCancel={() => setOpenEditModal(false)}
+          footer={false}
+        >
+          <div style={{ padding: "24px" }}>
+            <h2 className="text-xl font-medium mb-4">Edit Coupon</h2>
+            <Form
+              layout="vertical"
+              form={editForm}
+              onFinish={handleUpdateCoupon}
+            >
+              <Form.Item
+                label="Coupon Code"
+                name="code"
+                rules={[
+                  { required: true, message: "Please enter a coupon code" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Discount"
+                name="discount"
+                rules={[{ required: true, message: "Enter discount" }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Expiry Date"
+                name="expiry"
+                rules={[{ required: true, message: "Select expiry date" }]}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="bg-[#2E7A8A] w-full"
+              >
+                Update
+              </Button>
+            </Form>
+          </div>
+        </Modal>
+      </ConfigProvider>
     </div>
   );
 };
