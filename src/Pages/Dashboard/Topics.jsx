@@ -93,7 +93,6 @@ const Topics = () => {
   };
 
   const handleUpdateTopic = async (values) => {
-    console.log(selectedTopic?._id);
     const formData = new FormData();
     formData.append("title", values.name);
     if (editImageFile) {

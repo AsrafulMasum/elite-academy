@@ -13,7 +13,6 @@ const topicsApi = baseApi.injectEndpoints({
 
     addTopic: builder.mutation({
       query: (payload) => {
-        console.log(payload);
         return {
           url: "/topic",
           method: "POST",
@@ -24,7 +23,6 @@ const topicsApi = baseApi.injectEndpoints({
 
     updateTopic: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           url: `/topic/${data?.id}`,
           method: "PATCH",

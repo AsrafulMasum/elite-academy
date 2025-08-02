@@ -13,7 +13,6 @@ const couponsApi = baseApi.injectEndpoints({
 
     addCoupon: builder.mutation({
       query: ({ payload }) => {
-        console.log(payload);
         return {
           url: "/coupon",
           method: "POST",

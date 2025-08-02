@@ -12,7 +12,7 @@ const courseApi = baseApi.injectEndpoints({
     }),
 
     getCourses: builder.query({
-      query: ({searchTerm, page}) => {   
+      query: ({ searchTerm, page }) => {
         return {
           url: `/course?searchTerm=${searchTerm}&page=${page}`,
           method: "GET",
@@ -21,31 +21,34 @@ const courseApi = baseApi.injectEndpoints({
     }),
 
     addCourse: builder.mutation({
-      query: (data)=>{
+      query: (data) => {
         return {
           url: "/course",
           method: "POST",
-          body: data
-        }
-      }
+          body: data,
+        };
+      },
     }),
+
     updateCourse: builder.mutation({
-      query: ({id, ...data})=>{
+      query: ({ id, ...data }) => {
         return {
           url: `/course/${id}`,
           method: "PATCH",
-          body: data
-        }
-      }
+          body: data,
+        };
+      },
     }),
+
     deleteCourse: builder.mutation({
-      query: (id)=>{
+      query: (id) => {
         return {
           url: `/course/${id}`,
-          method: "DELETE",          
-        }
-      }
+          method: "DELETE",
+        };
+      },
     }),
+
     getTopics: builder.query({
       query: () => {
         return {
@@ -101,6 +104,16 @@ const courseApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    enrollStudent: builder.mutation({
+      query: ({ data }) => {
+        return {
+          url: "/enroll",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -116,4 +129,5 @@ export const {
   useCreateSessionMutation,
   useUpdateSessionMutation,
   useDeleteSessionMutation,
+  useEnrollStudentMutation,
 } = courseApi;

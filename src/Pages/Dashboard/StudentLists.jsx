@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ConfigProvider, Input, Modal, Table } from "antd";
+import { ConfigProvider, Input, Modal, Select, Table } from "antd";
 import { FiSearch } from "react-icons/fi";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 import { CiLock, CiUnlock } from "react-icons/ci";
@@ -10,17 +10,26 @@ import {
   useLockUserMutation,
 } from "../../redux/features/usersApi";
 import toast from "react-hot-toast";
-
-const itemsPerPage = 10;
-const total = 50;
+import { IoInformationCircleOutline } from "react-icons/io5";
+import {
+  useEnrollStudentMutation,
+  useGetCoursesQuery,
+} from "../../redux/features/courseApi";
 
 const StudentLists = () => {
   const [page, setPage] = useState(1);
   const [lock, setLock] = useState("");
   const [value, setValue] = useState(null);
+  const [student, setStudent] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [showEnrollModal, setShowEnrollModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
   const { data: userData, refetch } = useGetStudentsQuery({ searchText, page });
+  const { data: courses } = useGetCoursesQuery({});
+
   const [lockUser] = useLockUserMutation();
+  const [enrollStudent] = useEnrollStudentMutation();
 
   const columns = [
     {
@@ -80,6 +89,40 @@ const StudentLists = () => {
       render: (text) => <span style={{ color: "#FDFDFD" }}>{text}</span>,
     },
     {
+      title: "Enroll",
+      dataIndex: "enroll",
+      key: "enroll",
+      render: (_, record) => (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+
+            paddingRight: 10,
+          }}
+        >
+          <button
+            className="flex justify-center items-center rounded-md"
+            onClick={() => {
+              setStudent(record);
+              setShowEnrollModal(true);
+            }}
+            style={{
+              cursor: "pointer",
+              border: "none",
+              outline: "none",
+              backgroundColor: "#121212",
+              width: "40px",
+              height: "32px",
+            }}
+          >
+            <GoArrowUpRight size={26} className="text-secondary" />
+          </button>
+        </div>
+      ),
+    },
+    {
       title: "Action",
       dataIndex: "action",
       key: "action",
@@ -105,7 +148,7 @@ const StudentLists = () => {
               height: "32px",
             }}
           >
-            <GoArrowUpRight size={26} className="text-secondary" />
+            <IoInformationCircleOutline size={26} className="text-secondary" />
           </button>
 
           <div>
@@ -148,6 +191,31 @@ const StudentLists = () => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleEnroll = async () => {
+    if (!selectedCourse || !student?._id) {
+      toast.error("Please select a course");
+      return;
+    }
+    const data = {
+      user: student._id,
+      course: selectedCourse,
+    };
+    try {
+      const res = await enrollStudent({ data });
+      if (res?.data?.success) {
+        toast.success("Student enrolled successfully");
+        setShowEnrollModal(false);
+        setSelectedCourse(null);
+        setValue(null);
+      } else {
+        toast.error(res?.error?.data?.message || "Enrollment failed");
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+      console.error(err);
     }
   };
 
@@ -247,6 +315,39 @@ const StudentLists = () => {
       </div>
 
       <UserDetailsModal value={value} setValue={setValue} />
+
+      <Modal
+        centered
+        open={showEnrollModal}
+        onCancel={() => {
+          setShowEnrollModal(false);
+          setSelectedCourse(null);
+          setValue(null);
+        }}
+        footer={false}
+      >
+        <div className="p-6">
+          <h2 className="text-lg font-semibold mb-4">Enroll Student</h2>
+          <p className="text-[#6D6D6D] pb-2">Select Course</p>
+          <Select
+            style={{ width: "100%", marginBottom: "20px" }}
+            placeholder="Select a course"
+            onChange={(val) => setSelectedCourse(val)}
+            options={
+              courses?.data?.map((course) => ({
+                label: course.name,
+                value: course._id,
+              })) || []
+            }
+          />
+          <button
+            onClick={handleEnroll}
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md w-full"
+          >
+            Submit
+          </button>
+        </div>
+      </Modal>
 
       <Modal
         centered
