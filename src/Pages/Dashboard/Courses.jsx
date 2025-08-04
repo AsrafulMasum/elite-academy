@@ -12,9 +12,9 @@ import {
 } from "../../redux/features/courseApi";
 import moment from "moment";
 import { imageUrl } from "../../redux/api/baseApi";
-import AddCourseModal from "../../Components/Dashboard/AddCourseModal.Jsx";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router-dom";
+import AddCourseModal from "../../Components/Dashboard/AddCourseModal";
 
 const Courses = () => {
   const [page, setPage] = useState(1);
