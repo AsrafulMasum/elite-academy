@@ -61,7 +61,7 @@ const EditTutorialModal = ({
     try {
       // Update text fields first
       const updateRes = await fetch(
-        `http://10.10.7.6:5000/api/v1/tutorial/${tutorialData?._id}`,
+        `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,
         {
           method: "PATCH",
           headers: {

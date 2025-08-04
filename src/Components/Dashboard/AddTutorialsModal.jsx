@@ -82,7 +82,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
         // }
 
         const res = await fetch(
-          "http://10.10.7.6:5000/api/v1/tutorial/upload",
+          "http://31.97.114.108:5000/api/v1/tutorial/upload",
           {
             method: "POST",
             body: formData,
