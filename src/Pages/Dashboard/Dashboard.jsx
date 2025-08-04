@@ -537,25 +537,27 @@ const Dashboard = () => {
               >
                 <IoIosNotifications className="text-3xl text-[#E6E6E6]" />
 
-                <div
-                  style={{
-                    width: "16px",
-                    height: "16px",
-                    borderRadius: "50%",
-                    background: "#FFC107",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    color: "#121212",
-                    position: "absolute",
-                    top: 2,
-                    right: 4,
-                    fontWeight: "500",
-                    fontSize: "12px",
-                  }}
-                >
-                  {unreadCount}
-                </div>
+                {!unreadCount === 0 && (
+                  <div
+                    style={{
+                      width: "16px",
+                      height: "16px",
+                      borderRadius: "50%",
+                      background: "#FFC107",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#121212",
+                      position: "absolute",
+                      top: 2,
+                      right: 4,
+                      fontWeight: "500",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {unreadCount}
+                  </div>
+                )}
               </div>
             </Link>
             <Link
