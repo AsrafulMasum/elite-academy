@@ -9,6 +9,7 @@ const notificationApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      providesTags: ["notifications"],
     }),
 
     readNotification: builder.mutation({
@@ -18,6 +19,7 @@ const notificationApi = baseApi.injectEndpoints({
           method: "PATCH",
         };
       },
+      invalidatesTags: ["notifications"],
     }),
   }),
 });

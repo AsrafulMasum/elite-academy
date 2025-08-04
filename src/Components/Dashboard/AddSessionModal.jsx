@@ -17,7 +17,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
     endTime: "",
   });
 
-  const { data } = useGetCoursesQuery();
+  const { data } = useGetCoursesQuery({});
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
     id: course._id,

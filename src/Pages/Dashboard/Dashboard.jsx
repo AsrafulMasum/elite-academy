@@ -1,4 +1,4 @@
-import { ConfigProvider, Layout } from "antd";
+import { Layout } from "antd";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { GiMoneyStack, GiTakeMyMoney } from "react-icons/gi";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -23,6 +23,7 @@ import logo from "../../assets/logo.png";
 import { useProfileQuery } from "../../redux/features/authApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { useGetNotificationsQuery } from "../../redux/features/notificationApi";
+import { io } from "socket.io-client";
 
 const { Header, Sider, Content } = Layout;
 
@@ -38,12 +39,16 @@ const Dashboard = () => {
     () => notificationData?.data?.unreadCount || 0,
     [notificationData]
   );
+
+  const socket = useMemo(() => io(imageUrl), []);
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    socket.on(`notification::${user?._id}`, (data) => {
+      console.log(data);
+
       refetch();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [refetch]);
+    });
+  }, [socket, user?._id]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -395,7 +400,7 @@ const Dashboard = () => {
                     gap: "8px",
                     background: item.path === pathname ? "#2E7A8A" : "none",
                     width: "100%",
-                    padding: "10px 8px 10px 35px",
+                    padding: "8px 8px 8px 35px",
                   }}
                 >
                   <div style={{ height: "24px" }}>{item.icon(pathname)}</div>

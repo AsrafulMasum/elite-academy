@@ -7,7 +7,6 @@ import {
   useUpdateCourseMutation,
 } from "../../redux/features/courseApi";
 import { useGetCoachQuery } from "../../redux/features/usersApi";
-import moment from "moment";
 
 import dayjs from "dayjs";
 
@@ -28,10 +27,10 @@ const AddCourseModal = ({
 
   const [addCourse, { isLoading }] = useAddCourseMutation();
   const [updateCourse, { isLoading: updating }] = useUpdateCourseMutation();
-  const { data: coachData, isLoading: coachLoading } = useGetCoachQuery();
+  const { data: coachData, isLoading: coachLoading } = useGetCoachQuery({});
 
   useEffect(() => {
-    if(editData) {
+    if (editData) {
       setForm({
         name: editData?.name,
         description: editData?.description,
@@ -55,9 +54,9 @@ const AddCourseModal = ({
     e.preventDefault();
 
     try {
-      if(editData) {
+      if (editData) {
         const res = await updateCourse({ ...form, id: editData?._id }).unwrap();
-        if(res?.success) {
+        if (res?.success) {
           toast.success("Course Update successfully");
           setForm({
             name: "",
@@ -72,7 +71,7 @@ const AddCourseModal = ({
         }
       } else {
         const res = await addCourse(form).unwrap();
-        if(res?.success) {
+        if (res?.success) {
           toast.success("Course added successfully");
           setForm({
             name: "",

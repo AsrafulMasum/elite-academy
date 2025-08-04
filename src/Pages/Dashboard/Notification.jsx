@@ -1,17 +1,22 @@
-import { useState, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ConfigProvider, Pagination } from "antd";
 import toast from "react-hot-toast";
 import {
   useGetNotificationsQuery,
   useReadNotificationMutation,
 } from "../../redux/features/notificationApi";
-import { formatDistanceToNow } from "date-fns";
 import { CiBellOn } from "react-icons/ci";
+import { useProfileQuery } from "../../redux/features/authApi";
+import { io } from "socket.io-client";
+import { imageUrl } from "../../redux/api/baseApi";
 
 const Notifications = () => {
   const [page, setPage] = useState(1);
   const { data: notificationData, refetch } = useGetNotificationsQuery(page);
   const [readNotification] = useReadNotificationMutation();
+
+  const { data } = useProfileQuery();
+  const user = data?.data;
 
   const handleRead = async () => {
     try {
@@ -24,6 +29,16 @@ const Notifications = () => {
       toast.error(error?.data?.message);
     }
   };
+
+  const socket = useMemo(() => io(imageUrl), []);
+
+  useEffect(() => {
+    socket.on(`notification::${user?._id}`, (data) => {
+      console.log(data);
+
+      refetch();
+    });
+  }, [socket, user?._id]);
 
   return (
     <div className="h-full bg-green p-6">
@@ -42,15 +57,15 @@ const Notifications = () => {
           <div
             key={notification?._id}
             className={`p-3 rounded-lg flex items-center gap-3 ${
-              notification?.read ? "bg-transparent border" : "bg-action border-none" 
+              notification?.read
+                ? "bg-transparent border"
+                : "bg-action border-none"
             }`}
           >
             <CiBellOn className="text-4xl bg-[#121212] text-white p-1.5 rounded-full" />
             <div className="text-white">
               <p>{notification?.body}</p>
-              <p className="text-gray-300 mt-1">
-                {notification?.timeAgo}
-              </p>
+              <p className="text-gray-300 mt-1">{notification?.timeAgo}</p>
             </div>
           </div>
         ))}
