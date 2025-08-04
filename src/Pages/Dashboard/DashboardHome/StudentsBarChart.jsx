@@ -131,7 +131,7 @@ const StudentsBarChart = ({setStudentYear, studentStats}) => {
           }}
         >
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           {/* <Bar barSize={10} radius={50} dataKey="saleTotal" fill="#EAF2F3" /> */}

@@ -79,7 +79,7 @@ const SellingLineChart = ({setSellerYear, sellingStats}) => {
           margin={{ top: 5, right: 30, left: 10, bottom: 0 }}
         >
           <CartesianGrid horizontal={false} />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Line

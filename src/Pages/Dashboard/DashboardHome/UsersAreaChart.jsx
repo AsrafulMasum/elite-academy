@@ -79,7 +79,7 @@ const UsersAreaChart = ({setUserYear, userStats}) => {
           </defs>
           <CartesianGrid horizontal vertical={false} />
           <XAxis
-            dataKey="name"
+            dataKey="month"
             padding="gap"
             minTickGap={2}
             fontSize="12px"
