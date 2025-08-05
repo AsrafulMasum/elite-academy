@@ -7,6 +7,7 @@ import {
   useCreateSessionMutation,
   useGetCoursesQuery,
 } from "../../redux/features/courseApi";
+import { ImSpinner9 } from "react-icons/im";
 
 const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const [form, setForm] = useState({
@@ -23,7 +24,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
     id: course._id,
   }));
 
-  const [createSession] = useCreateSessionMutation();
+  const [createSession, {isLoading}] = useCreateSessionMutation();
 
   const handleAdd = (e) => {
     const { name, value } = e.target;
@@ -91,8 +92,8 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
         width={400}
         footer={false}
       >
-        <div className="p-6 bg-action rounded-lg">
-          <h1 className="text-[20px] font-medium mb-3 text-white">
+        <div className="p-6 rounded-lg">
+          <h1 className="text-[20px] font-medium mb-3 text-black">
             Add Session
           </h1>
           <form onSubmit={handleSubmit}>
@@ -102,7 +103,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "white",
+                  color: "gray",
                 }}
               >
                 Course
@@ -133,7 +134,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
 
             {/* Title */}
             <div className="mb-4">
-              <label className="text-white mb-1 block">Session Title</label>
+              <label className="text-gray-400 mb-1 block">Session Title</label>
               <input
                 type="text"
                 name="title"
@@ -147,7 +148,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
             {/* Date */}
             <div className="flex gap-4 mb-4 w-full">
               <div>
-                <label className="text-white mb-1 block">Date</label>
+                <label className="text-gray-400 mb-1 block">Date</label>
                 <DatePicker
                   className="w-full h-[52px]"
                   style={{ borderRadius: 8 }}
@@ -161,7 +162,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
             {/* Time Pickers */}
             <div className="w-full flex gap-4 mb-4">
               <div className="w-1/2">
-                <label className="text-white mb-1 block">Start Time</label>
+                <label className="text-gray-400 mb-1 block">Start Time</label>
                 <TimePicker
                   className="h-[52px] w-full"
                   onChange={(time) => handleTimeChange("startTime", time)}
@@ -170,7 +171,7 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
                 />
               </div>
               <div className="w-1/2">
-                <label className="text-white mb-1 block">End Time</label>
+                <label className="text-gray-400 mb-1 block">End Time</label>
                 <TimePicker
                   className="h-[52px] w-full"
                   onChange={(time) => handleTimeChange("endTime", time)}
@@ -183,9 +184,10 @@ const AddSessionModal = ({ openAddModal, setOpenAddModal, refetch }) => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-[#13333A] text-white rounded-lg py-2 h-[44px] mt-2"
+              className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
             >
-              Submit
+              {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+              {isLoading ? "Submitting" : "Submit"}
             </button>
           </form>
         </div>

@@ -23,7 +23,6 @@ const couponsApi = baseApi.injectEndpoints({
 
     updateCoupon: builder.mutation({
       query: (payload) => {
-        console.log(payload);
         return {
           url: `/coupon/${payload?.id}`,
           method: "PATCH",

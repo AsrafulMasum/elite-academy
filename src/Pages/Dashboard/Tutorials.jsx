@@ -12,7 +12,7 @@ import EditTutorialModal from "../../Components/Dashboard/EditTutorialModal";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
 
-const itemsPerPage = 4;
+const itemsPerPage = 5;
 
 const Tutorials = () => {
   const [page, setPage] = useState(1);
@@ -22,7 +22,11 @@ const Tutorials = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const { data: tutorialsData, refetch } = useGetTutorialsQuery({
+  const {
+    data: tutorialsData,
+    refetch,
+    isLoading,
+  } = useGetTutorialsQuery({
     page,
     limit: itemsPerPage,
   });
@@ -31,7 +35,7 @@ const Tutorials = () => {
   const handleDelete = async () => {
     try {
       const res = await deleteTutorial({ id: deleteId }).unwrap();
-      if(res?.success) {
+      if (res?.success) {
         toast.success(res?.message);
         refetch();
         setOpenDeleteModal(false);
@@ -87,7 +91,7 @@ const Tutorials = () => {
       key: "video",
       render: (_, record) => (
         <video
-          className="h-30 w-60 object-cover"
+          className="h-28 w-60 object-cover"
           controls
           src={`${imageUrl}/video/${record?.video}`}
         />
@@ -225,6 +229,7 @@ const Tutorials = () => {
               rowKey="_id"
               columns={columns}
               dataSource={tutorialsData?.data}
+              loading={isLoading}
               pagination={{
                 showSizeChanger: false,
                 total: tutorialsData?.pagination?.total,

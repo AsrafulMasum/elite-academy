@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ChunkedVideoUpload from "./ChunkedVideoUpload";
 import {
+  useAddTutorialMutation,
   useGetCoursesQuery,
   useGetTopicsQuery,
 } from "../../redux/features/courseApi";
+import { ImSpinner9 } from "react-icons/im";
 
 const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
   const { data } = useGetCoursesQuery({});
@@ -19,6 +21,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
     name: topic?.title,
     id: topic?._id,
   }));
+  const [addTutorial, { isLoading }] = useAddTutorialMutation();
 
   const [imgURLs, setImgURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
@@ -81,36 +84,27 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
         //   formData.append("image", imageFiles[0]);
         // }
 
-        const res = await fetch(
-          "http://31.97.114.108:5000/api/v1/tutorial/upload",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        const res = await addTutorial(formData).unwrap();
 
-        if (!res.ok) {
-          toast.error(`Upload failed at chunk ${i}`);
-          return;
+        if (res?.data) {
+          toast.success("✅ Tutorial uploaded successfully!");
+          refetch();
+          setOpenAddModal(false);
+          setVideoFile(null);
+          setImgURLs([]);
+          setImageFiles([]);
+          setForm({
+            productName: "",
+            image: "",
+            startDate: "",
+            endDate: "",
+            price: "",
+            quantity: "",
+            course: "",
+            topic: "",
+          });
         }
       }
-
-      toast.success("✅ Tutorial uploaded successfully!");
-      refetch();
-      setOpenAddModal(false);
-      setVideoFile(null);
-      setImgURLs([]);
-      setImageFiles([]);
-      setForm({
-        productName: "",
-        image: "",
-        startDate: "",
-        endDate: "",
-        price: "",
-        quantity: "",
-        course: "",
-        topic: "",
-      });
     } catch (err) {
       console.error("Upload failed", err);
       toast.error("Upload failed");
@@ -131,8 +125,8 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
       width={400}
       footer={false}
     >
-      <div className="p-6 bg-action rounded-lg">
-        <h1 className="text-[20px] font-medium mb-3 text-white">
+      <div className="p-6 rounded-lg">
+        <h1 className="text-[20px] font-medium mb-3 text-black">
           Add Tutorials
         </h1>
 
@@ -162,7 +156,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Tutorial Video
             </label>
@@ -173,7 +167,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Tutorial Name
             </label>
@@ -197,7 +191,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Course
             </label>
@@ -227,7 +221,7 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Topic
             </label>
@@ -255,22 +249,13 @@ const AddTutorialsModal = ({ openAddModal, setOpenAddModal, refetch }) => {
             </select>
           </div>
 
-          <input
-            className="cursor-pointer"
-            style={{
-              border: "none",
-              width: "100%",
-              height: "44px",
-              marginTop: "10px",
-              background: "#13333A",
-              color: "white",
-              borderRadius: "8px",
-              outline: "none",
-              padding: "10px 20px",
-            }}
-            value="Submit"
+          <button
             type="submit"
-          />
+            className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
+          >
+            {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+            {isLoading ? "Uploading" : "Upload"}
+          </button>
         </form>
       </div>
     </Modal>

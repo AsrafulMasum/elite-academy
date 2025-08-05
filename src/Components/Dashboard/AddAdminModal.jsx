@@ -2,17 +2,16 @@ import { Form, Input, Modal, Select } from "antd";
 import { useAddAdminMutation } from "../../redux/features/usersApi";
 import toast from "react-hot-toast";
 const { Option } = Select;
+import { ImSpinner9 } from "react-icons/im";
 
 const AddAdminModal = ({ openAddModel, setOpenAddModel, refetch }) => {
   const [form] = Form.useForm();
-  const [addAdmin] = useAddAdminMutation();
+  const [addAdmin, { isLoading }] = useAddAdminMutation();
 
   const handleAddAdmin = async () => {
     try {
       const values = await form.validateFields();
-      console.log(values);
       const res = await addAdmin(values).unwrap();
-      console.log(res);
       if (res?.success) {
         setOpenAddModel(false);
         toast.success(res?.message);
@@ -130,9 +129,10 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel, refetch }) => {
           <div className="text-center mt-6">
             <button
               onClick={handleAddAdmin}
-              className="bg-action px-6 py-3 w-full text-[#FEFEFE] rounded-md"
+              className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
             >
-              Create Admin
+              {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+              {isLoading ? "Creating Admin" : "Create Admin"}
             </button>
           </div>
         </Form>

@@ -16,7 +16,6 @@ const subscriptionApi = baseApi.injectEndpoints({
 
     createSubscription: builder.mutation({
       query: (data) => {
-        console.log(data);
         return {
           method: "POST",
           url: "/package",

@@ -93,7 +93,7 @@ const SubCategory = () => {
   const [showDelete, setShowDelete] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const [editID, seteditID] = useState("");
+  const [editID, setEditID] = useState("");
 
   const dropdownRef = useRef();
   const [form] = Form.useForm();
@@ -168,7 +168,7 @@ const SubCategory = () => {
           <button
             onClick={() => {
               setOpenEditModal(true);
-              seteditID(record?._id);
+              setEditID(record?._id);
             }}
             className="bg-[#000000] w-10 h-8 flex justify-center items-center rounded-md"
           >

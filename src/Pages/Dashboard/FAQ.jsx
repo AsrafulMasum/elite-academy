@@ -126,8 +126,6 @@ const FAQ = () => {
     setShowDelete(true);
   };
 
-  console.log(faqData);
-
   return (
     <div className="bg-green h-full px-3 py-2 rounded-lg">
       <div style={{ margin: "24px 16px" }}>

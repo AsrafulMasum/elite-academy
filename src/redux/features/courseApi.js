@@ -12,7 +12,7 @@ const courseApi = baseApi.injectEndpoints({
     }),
 
     getCourses: builder.query({
-      query: ({ searchTerm, page }) => {
+      query: ({ searchTerm = "", page }) => {
         return {
           url: `/course?searchTerm=${searchTerm}&page=${page}`,
           method: "GET",
@@ -87,6 +87,26 @@ const courseApi = baseApi.injectEndpoints({
       },
     }),
 
+    addTutorial: builder.mutation({
+      query: (payload) => {
+        return {
+          method: "POST",
+          url: `/tutorial/upload`,
+          body: payload,
+        };
+      },
+    }),
+
+    updateTutorial: builder.mutation({
+      query: (payload) => {
+        return {
+          method: "PATCH",
+          url: `/tutorial/upload/${payload?.id}`,
+          body: payload,
+        };
+      },
+    }),
+
     deleteSession: builder.mutation({
       query: ({ id }) => {
         return {
@@ -125,6 +145,7 @@ export const {
   useDeleteCourseMutation,
   useGetTopicsQuery,
   useGetSessionsQuery,
+  useAddTutorialMutation,
   useDeleteTutorialMutation,
   useCreateSessionMutation,
   useUpdateSessionMutation,

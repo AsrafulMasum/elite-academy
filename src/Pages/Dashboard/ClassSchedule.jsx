@@ -21,7 +21,7 @@ const ClassSchedule = () => {
   const [deleteId, setDeleteId] = useState("");
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const limit = 12;
-  const { data: sessionsData, refetch } = useGetSessionsQuery({ page, limit });
+  const { data: sessionsData, refetch, isLoading } = useGetSessionsQuery({ page, limit });
   const sessions = sessionsData?.data;
 
   const [deleteSession] = useDeleteSessionMutation();
@@ -208,6 +208,7 @@ const ClassSchedule = () => {
               columns={columns}
               dataSource={sessions}
               rowKey="_id"
+              loading={isLoading}
               pagination={{
                 total: sessionsData?.pagination?.total,
                 current: page,
@@ -218,6 +219,7 @@ const ClassSchedule = () => {
           </ConfigProvider>
         </div>
       </div>
+
       <AddSessionModal
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
@@ -246,7 +248,7 @@ const ClassSchedule = () => {
           </p>
           <button
             onClick={handleDelete}
-            className="bg-[#13333A] py-2 px-5 text-white rounded-md"
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
           >
             Confirm
           </button>

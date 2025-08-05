@@ -2,6 +2,7 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Form, Input } from "antd";
 import { useCreateSubscriptionMutation } from "../../redux/features/subscriptionApi";
 import toast from "react-hot-toast";
+import { ImSpinner9 } from "react-icons/im";
 
 const formItemLayoutWithOutLabel = {
   wrapperCol: {
@@ -12,7 +13,7 @@ const formItemLayoutWithOutLabel = {
 
 const AddInputForm = ({ refetch, setOpenAddModel }) => {
   const [form] = Form.useForm();
-  const [createSubscription] = useCreateSubscriptionMutation();
+  const [createSubscription, { isLoading }] = useCreateSubscriptionMutation();
 
   const onFinish = async (values) => {
     const { name, duration, price, features } = values;
@@ -163,12 +164,13 @@ const AddInputForm = ({ refetch, setOpenAddModel }) => {
             htmlType="submit"
             style={{
               height: 48,
-              width: "90%",
+              width: "100%",
               backgroundColor: "#2E7A8A",
               fontSize: "18px",
             }}
           >
-            Submit
+            {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+            {isLoading ? "Submitting" : "Submit"}
           </Button>
         </Form.Item>
       </Form>

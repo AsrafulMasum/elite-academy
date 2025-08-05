@@ -1,4 +1,4 @@
-import { Modal, message } from "antd";
+import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import ChunkedVideoUpload from "./ChunkedVideoUpload";
 import {
@@ -7,6 +7,8 @@ import {
 } from "../../redux/features/courseApi";
 import { imageUrl } from "../../redux/api/baseApi";
 import { AiOutlineClose } from "react-icons/ai";
+import toast from "react-hot-toast";
+import { ImSpinner9 } from "react-icons/im";
 
 const EditTutorialModal = ({
   openEditModal,
@@ -14,11 +16,12 @@ const EditTutorialModal = ({
   tutorialData,
   refetch,
 }) => {
-  const { data: coursesData } = useGetCoursesQuery();
+  const { data: coursesData } = useGetCoursesQuery({});
   const { data: topicsData } = useGetTopicsQuery();
   const [showDefaultVideo, setShowDefaultVideo] = useState(true);
   const [videoFile, setVideoFile] = useState(null);
-
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [form, setForm] = useState({
     productName: "",
     course: "",
@@ -26,7 +29,7 @@ const EditTutorialModal = ({
   });
 
   useEffect(() => {
-    if(tutorialData) {
+    if (tutorialData) {
       setForm({
         productName: tutorialData?.title || "",
         course: tutorialData?.course?._id || "",
@@ -55,11 +58,79 @@ const EditTutorialModal = ({
     setShowDefaultVideo(false);
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     // Update text fields first
+  //     const updateRes = await fetch(
+  //       `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,
+  //       {
+  //         method: "PATCH",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           title: form.productName,
+  //           course: form.course,
+  //           topic: form.topic,
+  //         }),
+  //       }
+  //     );
+
+  //     const updateData = await updateRes.json();
+
+  //     if(!updateRes.ok || !updateData.success) {
+  //       throw new Error(updateData.message || "Failed to update tutorial data");
+  //     }
+
+  //     // Upload video in chunks if a new video is selected
+  //     if(videoFile) {
+  //       const chunkSize = 5 * 1024 * 1024; // 5MB
+  //       const totalChunks = Math.ceil(videoFile.size / chunkSize);
+
+  //       for (let i = 0; i < totalChunks; i++) {
+  //         const start = i * chunkSize;
+  //         const end = Math.min(videoFile.size, start + chunkSize);
+  //         const chunk = videoFile.slice(start, end);
+
+  //         const formData = new FormData();
+  //         formData.append("chunk", chunk);
+  //         formData.append("chunkIndex", i);
+  //         formData.append("totalChunks", totalChunks);
+  //         formData.append("fileName", videoFile.name);
+
+  //         const chunkRes = await fetch(
+  //           `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,
+  //           {
+  //             method: "PATCH",
+  //             body: formData,
+  //           }
+  //         );
+
+  //         const chunkData = await chunkRes.json();
+  //         if(!chunkRes.ok || !chunkData.success) {
+  //           throw new Error(chunkData?.message || "Chunk upload failed");
+  //         }
+  //       }
+  //     }
+
+  //     message.success("Tutorial updated successfully!");
+  //     setOpenEditModal(false);
+  //     refetch();
+  //   } catch (error) {
+  //     console.error(error);
+  //     message.error(error.message || "An error occurred");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setProgress(0);
 
     try {
-      // Update text fields first
+      // 1. Update metadata
       const updateRes = await fetch(
         `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,
         {
@@ -76,13 +147,12 @@ const EditTutorialModal = ({
       );
 
       const updateData = await updateRes.json();
-
-      if(!updateRes.ok || !updateData.success) {
+      if (!updateRes.ok || !updateData.success) {
         throw new Error(updateData.message || "Failed to update tutorial data");
       }
 
-      // Upload video in chunks if a new video is selected
-      if(videoFile) {
+      // 2. Upload video chunks (if video selected)
+      if (videoFile) {
         const chunkSize = 5 * 1024 * 1024; // 5MB
         const totalChunks = Math.ceil(videoFile.size / chunkSize);
 
@@ -98,7 +168,7 @@ const EditTutorialModal = ({
           formData.append("fileName", videoFile.name);
 
           const chunkRes = await fetch(
-            `http://10.10.7.6:5000/api/v1/tutorial/${tutorialData?._id}`,
+            `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,
             {
               method: "PATCH",
               body: formData,
@@ -106,18 +176,23 @@ const EditTutorialModal = ({
           );
 
           const chunkData = await chunkRes.json();
-          if(!chunkRes.ok || !chunkData.success) {
+          if (!chunkRes.ok || !chunkData.success) {
             throw new Error(chunkData?.message || "Chunk upload failed");
           }
+
+          // Optional: update upload progress
+          setProgress(Math.round(((i + 1) / totalChunks) * 100));
         }
       }
-
-      message.success("Tutorial updated successfully!");
-      setOpenEditModal(false);
-      refetch();
     } catch (error) {
       console.error(error);
-      message.error(error.message || "An error occurred");
+      toast.error(error.message || "An error occurred");
+    } finally {
+      refetch();
+      setLoading(false);
+      setProgress(0);
+      toast.success("Tutorial updated successfully!");
+      setOpenEditModal(false);
     }
   };
 
@@ -129,7 +204,7 @@ const EditTutorialModal = ({
       width={400}
       footer={false}
     >
-      <div className="p-6 bg-action rounded-lg">
+      <div className="p-6 rounded-lg">
         <h1 className="text-[20px] font-medium mb-3 text-white">
           Edit Tutorial
         </h1>
@@ -137,7 +212,7 @@ const EditTutorialModal = ({
         <form onSubmit={handleSubmit}>
           {/* Video Upload */}
           <div className="mb-4">
-            <label className="block mb-1 text-white">Tutorial Video</label>
+            <label className="block mb-1 text-gray-400">Tutorial Video</label>
             <div className="relative w-full h-40 flex justify-center items-center">
               {videoFile ? (
                 <video
@@ -171,7 +246,7 @@ const EditTutorialModal = ({
 
           {/* Tutorial Name */}
           <div className="mb-4 mt-10">
-            <label className="block mb-1 text-white">Tutorial Name</label>
+            <label className="block mb-1 text-gray-400">Tutorial Name</label>
             <input
               value={form.productName}
               type="text"
@@ -184,7 +259,7 @@ const EditTutorialModal = ({
 
           {/* Course */}
           <div className="mb-4">
-            <label className="block mb-1 text-white">Course</label>
+            <label className="block mb-1 text-gray-400">Course</label>
             <select
               name="course"
               value={form.course}
@@ -202,7 +277,7 @@ const EditTutorialModal = ({
 
           {/* Topic */}
           <div className="mb-4">
-            <label className="block mb-1 text-white">Topic</label>
+            <label className="block mb-1 text-gray-400">Topic</label>
             <select
               name="topic"
               value={form.topic}
@@ -219,11 +294,13 @@ const EditTutorialModal = ({
           </div>
 
           {/* Submit */}
-          <input
-            className="cursor-pointer bg-[#13333A] text-white w-full py-2 mt-4 rounded"
-            value="Update"
+          <button
             type="submit"
-          />
+            className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
+          >
+            {loading && <ImSpinner9 size={20} className="animate-spin" />}
+            {loading ? "Uploading" : "Upload"}
+          </button>
         </form>
       </div>
     </Modal>

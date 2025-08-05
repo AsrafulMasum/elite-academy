@@ -7,6 +7,7 @@ import {
   useGetCoursesQuery,
   useUpdateSessionMutation,
 } from "../../redux/features/courseApi";
+import { ImSpinner9 } from "react-icons/im";
 
 const EditSessionModal = ({
   openEditModal,
@@ -22,8 +23,8 @@ const EditSessionModal = ({
     endTime: "",
   });
 
-  const { data } = useGetCoursesQuery();
-  const [updateSession] = useUpdateSessionMutation();
+  const { data } = useGetCoursesQuery({});
+  const [updateSession, { isLoading }] = useUpdateSessionMutation();
 
   const courseOptions = data?.data?.map((course) => ({
     name: course.name,
@@ -31,7 +32,7 @@ const EditSessionModal = ({
   }));
 
   useEffect(() => {
-    if(sessionData) {
+    if (sessionData) {
       setForm({
         title: sessionData.title || "",
         course: sessionData.course?._id || "",
@@ -75,7 +76,6 @@ const EditSessionModal = ({
       startTime: dayjs(form.startTime).format("h:mm A"),
       endTime: dayjs(form.endTime).format("h:mm A"),
     };
-    console.log(payload);
 
     try {
       const res = await updateSession({
@@ -83,7 +83,7 @@ const EditSessionModal = ({
         body: payload,
       }).unwrap();
 
-      if(res?.success) {
+      if (res?.success) {
         toast.success("Session updated successfully!");
         setOpenEditModal(false);
         refetch();
@@ -109,8 +109,8 @@ const EditSessionModal = ({
         width={400}
         footer={false}
       >
-        <div className="p-6 bg-action rounded-lg">
-          <h1 className="text-[20px] font-medium mb-3 text-white">
+        <div className="p-6 rounded-lg">
+          <h1 className="text-[20px] font-medium mb-3 text-black">
             Edit Session
           </h1>
           <form onSubmit={handleSubmit}>
@@ -120,7 +120,7 @@ const EditSessionModal = ({
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "white",
+                  color: "gray",
                 }}
               >
                 Course
@@ -150,7 +150,7 @@ const EditSessionModal = ({
 
             {/* Title */}
             <div className="mb-4">
-              <label className="text-white mb-1 block">Session Title</label>
+              <label className="text-gray-400 mb-1 block">Session Title</label>
               <input
                 type="text"
                 name="title"
@@ -164,7 +164,7 @@ const EditSessionModal = ({
             {/* Date */}
             <div className="flex gap-4 mb-4 w-full">
               <div>
-                <label className="text-white mb-1 block">Date</label>
+                <label className="text-gray-400 mb-1 block">Date</label>
                 <DatePicker
                   className="w-full h-[52px]"
                   style={{ borderRadius: 8 }}
@@ -178,7 +178,7 @@ const EditSessionModal = ({
             {/* Time Pickers */}
             <div className="w-full flex gap-4 mb-4">
               <div className="w-1/2">
-                <label className="text-white mb-1 block">Start Time</label>
+                <label className="text-gray-400 mb-1 block">Start Time</label>
                 <TimePicker
                   className="h-[52px] w-full"
                   onChange={(time) => handleTimeChange("startTime", time)}
@@ -187,7 +187,7 @@ const EditSessionModal = ({
                 />
               </div>
               <div className="w-1/2">
-                <label className="text-white mb-1 block">End Time</label>
+                <label className="text-gray-400 mb-1 block">End Time</label>
                 <TimePicker
                   className="h-[52px] w-full"
                   onChange={(time) => handleTimeChange("endTime", time)}
@@ -200,9 +200,10 @@ const EditSessionModal = ({
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-[#13333A] text-white rounded-lg py-2 h-[44px] mt-2"
+              className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
             >
-              Update
+              {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+              {isLoading ? "Uploading" : "Upload"}
             </button>
           </form>
         </div>

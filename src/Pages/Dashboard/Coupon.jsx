@@ -40,7 +40,7 @@ const Coupon = () => {
   useEffect(() => {
     if (selectedCoupon) {
       editForm.setFieldsValue({
-        code: selectedCoupon?.code,
+        name: selectedCoupon?.name,
         discount: selectedCoupon?.discount,
         expiry: moment(selectedCoupon?.expiry),
       });
@@ -70,6 +70,7 @@ const Coupon = () => {
       ...values,
       expiry: values.expiry.toISOString(),
     };
+
     try {
       const res = await addCoupon({ payload });
       if (res?.data?.success) {
@@ -87,11 +88,12 @@ const Coupon = () => {
   };
 
   const handleUpdateCoupon = async (values) => {
-    console.log(values.expiry.toISOString())
     const payload = {
-      ...values,
+      body: {
+        ...values,
+        expiry: values.expiry.toISOString(),
+      },
       id: selectedCoupon?._id,
-      expiry: values.expiry.toISOString(),
     };
     try {
       const res = await updateCoupon(payload);
@@ -117,6 +119,12 @@ const Coupon = () => {
       render: (_, __, index) => (
         <span className="text-[#FDFDFD]">{index + 1}</span>
       ),
+    },
+    {
+      title: "Title",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <span className="text-[#FDFDFD]">{text}</span>,
     },
     {
       title: "Code",
@@ -270,7 +278,7 @@ const Coupon = () => {
             <h2 className="text-xl font-medium mb-4">Add Coupon</h2>
             <Form layout="vertical" form={form} onFinish={handleAddCoupon}>
               <Form.Item
-                label="Coupon Code"
+                label="Coupon Title"
                 name="name"
                 rules={[
                   { required: true, message: "Please enter a coupon code" },
@@ -337,8 +345,8 @@ const Coupon = () => {
               onFinish={handleUpdateCoupon}
             >
               <Form.Item
-                label="Coupon Code"
-                name="code"
+                label="Coupon Title"
+                name="name"
                 rules={[
                   { required: true, message: "Please enter a coupon code" },
                 ]}

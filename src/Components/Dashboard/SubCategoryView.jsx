@@ -10,8 +10,6 @@ const SubCategoryView = ({selectedCategory,  showSubModal, setShowSubModal, refe
   const handleDeleteSubCategory = async (id) => {
     try {
       const res = await deleteSubCategory(id);  
-
-      console.log("res", res?.data?.success);
       if(res?.data?.success) {        
         refetch();
         toast.success(res?.data?.message);        

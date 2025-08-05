@@ -24,7 +24,11 @@ const CoachLists = () => {
   const [showActive, setShowActive] = useState(false);
   const [selectCoach, setSelectCoach] = useState("");
 
-  const { data: coachData, isLoading, refetch } = useGetCoachQuery({searchTerm, page});
+  const {
+    data: coachData,
+    isLoading,
+    refetch,
+  } = useGetCoachQuery({ searchTerm, page });
   const [lockUser, { isLoading: updating }] = useLockUserMutation();
 
   // ----------------- Action --------------------
@@ -38,7 +42,7 @@ const CoachLists = () => {
     const newValue = e.target.value;
 
     const newParams = new URLSearchParams(searchParams);
-    if(newValue) {
+    if (newValue) {
       newParams.set("searchTerm", newValue);
     } else {
       newParams.delete("searchTerm");
@@ -50,7 +54,7 @@ const CoachLists = () => {
     try {
       const res = await lockUser({ id: selectCoach });
 
-      if(res?.data) {
+      if (res?.data) {
         toast.success(res?.data?.message);
         refetch();
         setShowActive(false);
@@ -288,12 +292,20 @@ const CoachLists = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
-      <AddCoachModal
-        openAddModel={openAddModel}
-        setOpenAddModel={setOpenAddModel}
-        refetch={refetch}
-      />
+
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#13333A",
+          },
+        }}
+      >
+        <AddCoachModal
+          openAddModel={openAddModel}
+          setOpenAddModel={setOpenAddModel}
+          refetch={refetch}
+        />
+      </ConfigProvider>
 
       <Modal
         centered
