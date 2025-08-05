@@ -31,7 +31,7 @@ const ChipsInput = ({ separator = ",", tags, setTags }) => {
   return (
     <div style={{ marginBottom: "16px" }}>
       <label
-        style={{ display: "block", marginBottom: "5px", color: "white" }}
+        style={{ display: "block", marginBottom: "5px", color: "gray" }}
       >
         Product Size
       </label>

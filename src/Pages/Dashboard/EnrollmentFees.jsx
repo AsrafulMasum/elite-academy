@@ -15,7 +15,7 @@ const EnrollmentFees = () => {
   const [value, setValue] = useState(null);
   const [searchText, setSearchText] = useState("");
 
-  const { data: enrollmentFees } = useGetEnrollmentFeeListQuery({
+  const { data: enrollmentFees, isLoading } = useGetEnrollmentFeeListQuery({
     page,
     limit,
     searchTerm: searchText,
@@ -217,6 +217,7 @@ const EnrollmentFees = () => {
               columns={columns}
               dataSource={enrollmentFees?.data}
               rowKey="_id"
+              loading={isLoading}
               pagination={{
                 total: enrollmentFees?.pagination?.total,
                 current: page,

@@ -15,6 +15,7 @@ import { useSearchParams } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 
 const Products = () => {
+  const limit = 10;
   // ----------------- Hooks ------------------------
   const [page, setPage] = useState(1);
   const [openAddModal, setOpenAddModel] = useState(false);
@@ -32,9 +33,8 @@ const Products = () => {
     data: productData,
     isLoading,
     refetch,
-  } = useGetProductsQuery(searchTerm);
+  } = useGetProductsQuery({ searchTerm, page, limit });
   const [deleteProduct] = useDeleteProductMutation();
-
   // ----------------------- Action ------------------------
   // Handle search input change
   const handleSearchChange = (e) => {

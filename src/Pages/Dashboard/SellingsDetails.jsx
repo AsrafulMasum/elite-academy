@@ -10,13 +10,17 @@ import { IoDownloadOutline } from "react-icons/io5";
 import moment from "moment";
 import toast from "react-hot-toast";
 
-const limit = 12;
+const limit = 10;
 
 const SellingsDetails = () => {
   const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const [changeOrderStatus] = useChangeOrderStatusMutation();
-  const { data: sellingList, refetch } = useGetSellingListQuery({
+  const {
+    data: sellingList,
+    refetch,
+    isLoading,
+  } = useGetSellingListQuery({
     page,
     limit,
     searchTerm: searchText,
@@ -87,7 +91,7 @@ const SellingsDetails = () => {
                     : "/default-avatar.jpg"
                 }
                 alt={`Product ${item?._id}`}
-                className="w-8 h-8 object-cover rounded border border-[#3F857B]"
+                className="w-10 h-10 object-cover rounded border border-[#3F857B]"
               />
             ))}
           </div>
@@ -312,6 +316,7 @@ const SellingsDetails = () => {
               rowKey="_id"
               columns={columns}
               dataSource={sellingList?.data}
+              loading={isLoading}
               pagination={{
                 total: sellingList?.pagination?.total,
                 current: page,

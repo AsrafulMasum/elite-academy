@@ -27,29 +27,32 @@ const Courses = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("searchTerm") || "";
 
-  const { data: courseData, isLoading, refetch } = useGetCoursesQuery({searchTerm, page});
+  const {
+    data: courseData,
+    isLoading,
+    refetch,
+  } = useGetCoursesQuery({ searchTerm, page });
   const [deleteCourse, { isLoading: deleting }] = useDeleteCourseMutation();
 
   const dropdownRef = useRef();
 
   // ----------------------- Action -------------------
-   useEffect(() => {
+  useEffect(() => {
     refetch();
-  },[searchParams]);
+  }, [searchParams]);
 
   // Handle search input change
   const handleSearchChange = (e) => {
     const newValue = e.target.value;
 
     const newParams = new URLSearchParams(searchParams);
-    if(newValue) {
+    if (newValue) {
       newParams.set("searchTerm", newValue);
     } else {
       newParams.delete("searchTerm");
     }
     setSearchParams(newParams);
   };
-  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -300,14 +303,22 @@ const Courses = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
-      <AddCourseModal
-        open={openAddModel}
-        setOpenAddModel={setOpenAddModel}
-        editData={editData}
-        setEditData={setEditData}
-        refetch={refetch}
-      />
+
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#13333A",
+          },
+        }}
+      >
+        <AddCourseModal
+          open={openAddModel}
+          setOpenAddModel={setOpenAddModel}
+          editData={editData}
+          setEditData={setEditData}
+          refetch={refetch}
+        />
+      </ConfigProvider>
 
       <Modal
         centered

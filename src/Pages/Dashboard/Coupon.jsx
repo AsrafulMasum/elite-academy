@@ -32,8 +32,9 @@ const Coupon = () => {
   const [editForm] = Form.useForm();
 
   const { data, refetch, isLoading } = useGetCouponsQuery();
-  const [addCoupon] = useAddCouponMutation();
-  const [updateCoupon] = useUpdateCouponMutation();
+  const [addCoupon, { isLoading: isAddLoading }] = useAddCouponMutation();
+  const [updateCoupon, { isLoading: isEditLoading }] =
+    useUpdateCouponMutation();
   const [deleteCoupon] = useDeleteCouponMutation();
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const Coupon = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await deleteCoupon({id});
+      const res = await deleteCoupon({ id });
       if (res?.data?.success) {
         toast.success("Coupon deleted successfully");
         refetch();
@@ -70,7 +71,7 @@ const Coupon = () => {
       expiry: values.expiry.toISOString(),
     };
     try {
-      const res = await addCoupon({payload});
+      const res = await addCoupon({ payload });
       if (res?.data?.success) {
         toast.success("Coupon added successfully");
         form.resetFields();
@@ -86,9 +87,10 @@ const Coupon = () => {
   };
 
   const handleUpdateCoupon = async (values) => {
+    console.log(values.expiry.toISOString())
     const payload = {
       ...values,
-      _id: selectedCoupon?._id,
+      id: selectedCoupon?._id,
       expiry: values.expiry.toISOString(),
     };
     try {
@@ -274,7 +276,7 @@ const Coupon = () => {
                   { required: true, message: "Please enter a coupon code" },
                 ]}
               >
-                <Input placeholder="e.g. MASUM10" />
+                <Input className="h-[52px]" />
               </Form.Item>
               <Form.Item
                 label="Discount"
@@ -283,22 +285,31 @@ const Coupon = () => {
                   { required: true, message: "Enter discount (e.g. 10%)" },
                 ]}
               >
-                <Input placeholder="e.g. 10" />
+                <Input className="h-[52px]" />
               </Form.Item>
               <Form.Item
                 label="Expiry Date"
                 name="expiry"
                 rules={[{ required: true, message: "Select expiry date" }]}
               >
-                <DatePicker style={{ width: "100%" }} />
+                <DatePicker style={{ width: "100%" }} className="h-[52px]" />
               </Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="bg-[#2E7A8A] w-full"
-              >
-                Submit
-              </Button>
+              <input
+                className="cursor-pointer"
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "44px",
+                  marginTop: "10px",
+                  background: "#2E7A8A",
+                  color: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  padding: "10px 20px",
+                }}
+                value={isAddLoading ? "Submitting" : "Submit"}
+                type="submit"
+              />
             </Form>
           </div>
         </Modal>
@@ -332,29 +343,38 @@ const Coupon = () => {
                   { required: true, message: "Please enter a coupon code" },
                 ]}
               >
-                <Input />
+                <Input className="h-[52px]" />
               </Form.Item>
               <Form.Item
                 label="Discount"
                 name="discount"
                 rules={[{ required: true, message: "Enter discount" }]}
               >
-                <Input />
+                <Input className="h-[52px]" />
               </Form.Item>
               <Form.Item
                 label="Expiry Date"
                 name="expiry"
                 rules={[{ required: true, message: "Select expiry date" }]}
               >
-                <DatePicker style={{ width: "100%" }} />
+                <DatePicker style={{ width: "100%" }} className="h-[52px]" />
               </Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="bg-[#2E7A8A] w-full"
-              >
-                Update
-              </Button>
+              <input
+                className="cursor-pointer"
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "44px",
+                  marginTop: "10px",
+                  background: "#2E7A8A",
+                  color: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  padding: "10px 20px",
+                }}
+                value={isEditLoading ? "Uploading" : "Upload"}
+                type="submit"
+              />
             </Form>
           </div>
         </Modal>

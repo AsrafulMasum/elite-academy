@@ -3,13 +3,14 @@ import { baseApi } from "../api/baseApi";
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({searchTerm, page}) => {
+      query: ({ searchTerm, page, limit }) => {
         return {
           method: "GET",
-          url: `/product?searchTerm=${searchTerm}&page=${page}`,
+          url: `/product?limit=${limit}&page=${page}&searchTerm=${searchTerm}`,
         };
       },
     }),
+
     addProduct: builder.mutation({
       query: (data) => ({
         url: "/product",
@@ -17,6 +18,7 @@ const productApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+
     updateProduct: builder.mutation({
       query: (data) => {
         return {
@@ -26,12 +28,13 @@ const productApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     deleteProduct: builder.mutation({
-      query: (id)=>({
+      query: (id) => ({
         url: `/product/${id}`,
-        method: "DELETE",        
-      })
-    })
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -39,5 +42,5 @@ export const {
   useGetProductsQuery,
   useAddProductMutation,
   useUpdateProductMutation,
-  useDeleteProductMutation
+  useDeleteProductMutation,
 } = productApi;

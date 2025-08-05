@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { Spin } from "antd";
-import { AiOutlineLoading } from "react-icons/ai";
+import { BiLoaderCircle } from "react-icons/bi";
 import { useProfileQuery } from "../redux/features/authApi";
 
 const PrivateRoute = ({ children }) => {
@@ -9,9 +8,8 @@ const PrivateRoute = ({ children }) => {
 
   if (isLoading || isFetching) {
     return (
-      <div>
-        {" "}
-        <Spin indicator={<AiOutlineLoading style={{ fontSize: 48 }} spin />} />
+      <div className="h-screen w-full flex justify-center items-center bg-green text-secondary">
+        <BiLoaderCircle className="text-7xl animate-spin" />
       </div>
     );
   }

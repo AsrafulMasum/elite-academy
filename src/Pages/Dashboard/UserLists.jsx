@@ -18,7 +18,11 @@ const UserLists = () => {
   const [searchText, setSearchText] = useState("");
   const [lock, setLock] = useState("");
   const [userType, setUserType] = useState("User Type");
-  const { data: userData, refetch } = useGetUsersQuery({
+  const {
+    data: userData,
+    refetch,
+    isLoading,
+  } = useGetUsersQuery({
     srcText: searchText,
     page,
     subscriber: userType,
@@ -88,15 +92,21 @@ const UserLists = () => {
       title: "Type",
       dataIndex: "type",
       key: "type",
-      render: (_,record) => <span style={{ color: "#FDFDFD" }}>{
-        record?.subscription ? "Subscribed User" : "Normal User"
-      }</span>,
+      render: (_, record) => (
+        <span style={{ color: "#FDFDFD" }}>
+          {record?.subscription ? "Subscribed User" : "Normal User"}
+        </span>
+      ),
     },
     {
       title: "Start Date",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (_, record) => <span style={{ color: "#FDFDFD" }}>{moment(record?.createdAt).format("YYYY-MM-DD")}</span>,
+      render: (_, record) => (
+        <span style={{ color: "#FDFDFD" }}>
+          {moment(record?.createdAt).format("YYYY-MM-DD")}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -282,6 +292,7 @@ const UserLists = () => {
               columns={columns}
               rowKey="_id"
               dataSource={userData?.data}
+              loading={isLoading}
               pagination={{
                 total: userData?.pagination?.total,
                 current: page,

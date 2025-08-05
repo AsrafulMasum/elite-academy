@@ -5,6 +5,7 @@ import { imageUrl } from "../../redux/api/baseApi";
 import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
 import ChipsInput from "./ChipsInput";
 import { useUpdateProductMutation } from "../../redux/features/productApi";
+import toast from "react-hot-toast";
 
 const EditProductsModal = ({
   openEditModel,
@@ -28,7 +29,7 @@ const EditProductsModal = ({
   });
 
   useEffect(() => {
-    if(product) {
+    if (product) {
       setForm({
         title: product?.title || "",
         price: product?.price || "",
@@ -38,7 +39,7 @@ const EditProductsModal = ({
         description: product?.description || "",
       });
 
-      if(product?.sizes && Array.isArray(product?.sizes)) {
+      if (product?.sizes && Array.isArray(product?.sizes)) {
         setTags(product?.sizes);
       }
     }
@@ -47,7 +48,7 @@ const EditProductsModal = ({
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if(name === "image" && files?.length > 0) {
+    if (name === "image" && files?.length > 0) {
       const fileArray = Array.from(files);
       const urls = fileArray.map((file) => URL.createObjectURL(file));
       setImgURLs(urls);
@@ -63,14 +64,13 @@ const EditProductsModal = ({
 
     // Submit logic here
     const formData = new FormData();
-
     formData.append("title", form.title);
     formData.append("price", form.price);
     formData.append("quantity", form.quantity);
     formData.append("subcategory", form.subcategory);
     formData.append("description", form.description);
 
-    if(imageFiles && imageFiles.length > 0) {
+    if (imageFiles && imageFiles.length > 0) {
       imageFiles.forEach((file) => {
         formData.append("image", file);
       });
@@ -79,7 +79,7 @@ const EditProductsModal = ({
     formData.append("sizes", JSON.stringify(tags));
     const res = await updateProduct({ id: product?._id, formData });
 
-    if(res?.data?.success) {
+    if (res?.data?.success) {
       setForm({
         title: "",
         image: [],
@@ -88,7 +88,7 @@ const EditProductsModal = ({
         subcategory: "",
         description: "",
       });
-
+      toast.success(res?.data?.message);
       setTags([]);
       refetch();
       setImgURLs([]);
@@ -97,7 +97,6 @@ const EditProductsModal = ({
     // Reset and close
     setOpenEditModel(false);
   };
-
 
   useEffect(() => {
     return () => {
@@ -109,14 +108,14 @@ const EditProductsModal = ({
     <Modal
       centered
       open={openEditModel}
-      onCancel={() => {        
+      onCancel={() => {
         setOpenEditModel(false);
       }}
       width={700}
       footer={false}
     >
-      <div className="p-6 bg-action rounded-lg">
-        <h1 className="text-[20px] font-medium mb-3 text-white">
+      <div className="p-6 rounded-lg">
+        <h1 className="text-[20px] font-medium mb-3 text-black">
           Edit Product
         </h1>
         <form onSubmit={handleSubmit}>
@@ -174,7 +173,7 @@ const EditProductsModal = ({
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "white",
+                  color: "gray"
                 }}
               >
                 {input.label}
@@ -201,7 +200,7 @@ const EditProductsModal = ({
           {/* Subcategory */}
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Sub Category
             </label>
@@ -221,7 +220,9 @@ const EditProductsModal = ({
             >
               {subCategoryData &&
                 subCategoryData?.data.map((sCategory) => (
-                  <option key={sCategory?._id} value={sCategory?._id}>{sCategory?.name}</option>
+                  <option key={sCategory?._id} value={sCategory?._id}>
+                    {sCategory?.name}
+                  </option>
                 ))}
             </select>
           </div>
@@ -231,7 +232,7 @@ const EditProductsModal = ({
           {/* Description */}
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Description
             </label>
@@ -259,13 +260,13 @@ const EditProductsModal = ({
               width: "100%",
               height: "44px",
               marginTop: "10px",
-              background: "#13333A",
+              background: "#2E7A8A",
               color: "white",
               borderRadius: "8px",
               outline: "none",
               padding: "10px 20px",
             }}
-            value="Update"
+            value={isLoading ? "Uploading" : "Upload"}
             type="submit"
           />
         </form>

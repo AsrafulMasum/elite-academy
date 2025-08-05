@@ -69,7 +69,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
         setImageFiles([]);
         setTags([])
         refetch();
-        toast.success("Offer added successfully");
+        toast.success(res?.message);
       }
     } catch (err) {
       console.error("Add offer failed", err);
@@ -91,8 +91,8 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       width={700}
       footer={false}
     >
-      <div className="p-6 bg-action rounded-lg">
-        <h1 className="text-[20px] font-medium mb-3 text-white">
+      <div className="p-6 rounded-lg">
+        <h1 className="text-[20px] font-medium mb-3 text-black">
           Add Products
         </h1>
         <form onSubmit={handleSubmit}>
@@ -127,7 +127,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Product Name
             </label>
@@ -155,7 +155,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "white",
+                  color: "gray"
                 }}
               >
                 Price
@@ -183,7 +183,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "white",
+                  color: "gray"
                 }}
               >
                 Quantity
@@ -209,7 +209,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Sub Category
             </label>
@@ -243,7 +243,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
 
           <div style={{ marginBottom: "16px" }}>
             <label
-              style={{ display: "block", marginBottom: "5px", color: "white" }}
+              style={{ display: "block", marginBottom: "5px", color: "gray" }}
             >
               Description
             </label>
@@ -272,7 +272,7 @@ const AddProductsModal = ({ openAddModel, setOpenAddModel, refetch }) => {
               width: "100%",
               height: "44px",
               marginTop: "10px",
-              background: "#13333A",
+              background: "#2E7A8A",
               color: "white",
               borderRadius: "8px",
               outline: "none",

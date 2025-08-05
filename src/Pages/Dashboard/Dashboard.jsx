@@ -537,7 +537,7 @@ const Dashboard = () => {
               >
                 <IoIosNotifications className="text-3xl text-[#E6E6E6]" />
 
-                {!unreadCount === 0 && (
+                {!(unreadCount === 0) && (
                   <div
                     style={{
                       width: "16px",

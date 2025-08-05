@@ -8,6 +8,7 @@ const categoriesApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
     addSubCategory: builders.mutation({
       query: (data) => {
         return {
@@ -17,6 +18,7 @@ const categoriesApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     deleteSubCategory: builders.mutation({
       query: (id)=>{
         return {
@@ -25,6 +27,7 @@ const categoriesApi = baseApi.injectEndpoints({
         }
       }
     }),
+
     getCategories: builders.query({
       query: ({searchTerm, page}) => ({
         url: `/category/?searchTerm=${searchTerm}&page=${page}`,
@@ -41,6 +44,7 @@ const categoriesApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     deleteCategory: builders.mutation({
       query: (id) => {
         return {
@@ -49,6 +53,7 @@ const categoriesApi = baseApi.injectEndpoints({
         };
       },
     }),
+    
     updateCategory: builders.mutation({
       query: (data) => {
         return {

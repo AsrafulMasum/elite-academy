@@ -25,8 +25,8 @@ const Topics = () => {
   const [editForm] = Form.useForm();
 
   const { data, refetch, isLoading } = useGetTopicsQuery();
-  const [addTopic] = useAddTopicMutation();
-  const [updateTopic] = useUpdateTopicMutation();
+  const [addTopic, { isLoading: isAddLoading }] = useAddTopicMutation();
+  const [updateTopic, { isLoading: isEditLoading }] = useUpdateTopicMutation();
   const [deleteTopic] = useDeleteTopicMutation();
 
   // State for preview image and file for Add
@@ -286,7 +286,7 @@ const Topics = () => {
                 name="title"
                 rules={[{ required: true, message: "Please enter topic name" }]}
               >
-                <Input placeholder="Topic Name" />
+                <Input placeholder="Topic Name" className="h-[52px]" />
               </Form.Item>
 
               <p className="text-[#6D6D6D] py-1">Image</p>
@@ -326,13 +326,22 @@ const Topics = () => {
                 </div>
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="bg-[#2E7A8A] w-full"
-              >
-                Submit
-              </Button>
+              <input
+                className="cursor-pointer"
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "44px",
+                  marginTop: "10px",
+                  background: "#2E7A8A",
+                  color: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  padding: "10px 20px",
+                }}
+                value={isAddLoading ? "Submitting" : "Submit"}
+                type="submit"
+              />
             </Form>
           </div>
         </Modal>
@@ -364,7 +373,7 @@ const Topics = () => {
                 name="name"
                 rules={[{ required: true, message: "Please enter topic name" }]}
               >
-                <Input />
+                <Input className="h-[52px]" />
               </Form.Item>
 
               <p className="text-[#6D6D6D] py-1">
@@ -419,13 +428,22 @@ const Topics = () => {
                 </div>
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="bg-[#2E7A8A] w-full"
-              >
-                Update
-              </Button>
+              <input
+                className="cursor-pointer"
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "44px",
+                  marginTop: "10px",
+                  background: "#2E7A8A",
+                  color: "white",
+                  borderRadius: "8px",
+                  outline: "none",
+                  padding: "10px 20px",
+                }}
+                value={isEditLoading ? "Uploading" : "Upload"}
+                type="submit"
+              />
             </Form>
           </div>
         </Modal>

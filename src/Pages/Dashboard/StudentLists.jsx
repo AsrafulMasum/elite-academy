@@ -25,7 +25,11 @@ const StudentLists = () => {
   const [showEnrollModal, setShowEnrollModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
 
-  const { data: userData, refetch } = useGetStudentsQuery({ searchText, page });
+  const {
+    data: userData,
+    refetch,
+    isLoading,
+  } = useGetStudentsQuery({ searchText, page });
   const { data: courses } = useGetCoursesQuery({});
 
   const [lockUser] = useLockUserMutation();
@@ -303,6 +307,7 @@ const StudentLists = () => {
               columns={columns}
               dataSource={userData?.data}
               rowKey="_id"
+              loading={isLoading}
               pagination={{
                 total: userData?.pagination?.total,
                 current: page,
@@ -316,38 +321,46 @@ const StudentLists = () => {
 
       <UserDetailsModal value={value} setValue={setValue} />
 
-      <Modal
-        centered
-        open={showEnrollModal}
-        onCancel={() => {
-          setShowEnrollModal(false);
-          setSelectedCourse(null);
-          setValue(null);
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#13333A",
+          },
         }}
-        footer={false}
       >
-        <div className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Enroll Student</h2>
-          <p className="text-[#6D6D6D] pb-2">Select Course</p>
-          <Select
-            style={{ width: "100%", marginBottom: "20px" }}
-            placeholder="Select a course"
-            onChange={(val) => setSelectedCourse(val)}
-            options={
-              courses?.data?.map((course) => ({
-                label: course.name,
-                value: course._id,
-              })) || []
-            }
-          />
-          <button
-            onClick={handleEnroll}
-            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md w-full"
-          >
-            Submit
-          </button>
-        </div>
-      </Modal>
+        <Modal
+          centered
+          open={showEnrollModal}
+          onCancel={() => {
+            setShowEnrollModal(false);
+            setSelectedCourse(null);
+            setValue(null);
+          }}
+          footer={false}
+        >
+          <div className="p-6">
+            <h2 className="text-lg font-semibold mb-4">Enroll Student</h2>
+            <p className="text-[#6D6D6D] pb-2">Select Course</p>
+            <Select
+              style={{ width: "100%", marginBottom: "20px", height: "52px" }}
+              placeholder="Select a course"
+              onChange={(val) => setSelectedCourse(val)}
+              options={
+                courses?.data?.map((course) => ({
+                  label: course.name,
+                  value: course._id,
+                })) || []
+              }
+            />
+            <button
+              onClick={handleEnroll}
+              className="bg-[#2E7A8A] px-5 text-white rounded-md w-full h-[44px]"
+            >
+              Submit
+            </button>
+          </div>
+        </Modal>
+      </ConfigProvider>
 
       <Modal
         centered

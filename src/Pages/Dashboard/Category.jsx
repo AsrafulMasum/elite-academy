@@ -41,7 +41,7 @@ const Category = () => {
     refetch,
   } = useGetCategoriesQuery({ searchTerm, page });
   const [deleteCategory] = useDeleteCategoryMutation();
-
+  
   // ------------------- Action -----------------------
 
   // Handle search input change
@@ -292,7 +292,7 @@ const Category = () => {
           </ConfigProvider>
         </div>
       </div>
-      <UserDetailsModal open={open} setOpen={setOpen} />
+      {/* <UserDetailsModal open={open} setOpen={setOpen} /> */}
 
       <AddCategoryModal
         openAddModel={openAddModel}
@@ -374,7 +374,7 @@ const Category = () => {
           </p>
           <button
             onClick={handleDelete}
-            className="bg-[#BB6D42] py-2 px-5 text-white rounded-md"
+            className="bg-[#2E7A8A] py-2 px-5 text-white rounded-md"
           >
             Confirm
           </button>

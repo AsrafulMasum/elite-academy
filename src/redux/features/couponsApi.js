@@ -22,11 +22,12 @@ const couponsApi = baseApi.injectEndpoints({
     }),
 
     updateCoupon: builder.mutation({
-      query: ({ data }) => {
+      query: (payload) => {
+        console.log(payload);
         return {
-          url: `/coupon/${data?.id}`,
+          url: `/coupon/${payload?.id}`,
           method: "PATCH",
-          body: data?.body,
+          body: payload?.body,
         };
       },
     }),

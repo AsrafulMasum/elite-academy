@@ -110,14 +110,14 @@ const AddCourseModal = ({
       width={700}
       footer={false}
     >
-      <div className="p-6 bg-action rounded-lg">
-        <h1 className="text-[20px] font-medium mb-3 text-white">
+      <div className="p-6 rounded-lg">
+        <h1 className="text-[20px] font-medium mb-3 text-black">
           {editData ? "Edit" : "Add"} Course
         </h1>
         <form onSubmit={handleSubmit}>
           {/* Title */}
           <div className="mb-4">
-            <label className="text-white mb-1 block">Course Title</label>
+            <label className="text-gray-500 mb-1 block">Course Title</label>
             <input
               type="text"
               name="name"
@@ -130,7 +130,7 @@ const AddCourseModal = ({
 
           {/* Coach */}
           <div className="mb-4">
-            <label className="text-white mb-1 block">Coach</label>
+            <label className="text-gray-500 mb-1 block">Coach</label>
             {coachLoading ? (
               <Spin />
             ) : (
@@ -171,7 +171,7 @@ const AddCourseModal = ({
           {/* Dates */}
           <div className="flex gap-4 mb-4">
             <div className="w-1/2">
-              <label className="text-white mb-1 block">Start Date</label>
+              <label className="text-gray-500 mb-1 block">Start Date</label>
               <DatePicker
                 className="w-full h-[52px]"
                 style={{ borderRadius: 8 }}
@@ -181,7 +181,7 @@ const AddCourseModal = ({
               />
             </div>
             <div className="w-1/2">
-              <label className="text-white mb-1 block">End Date</label>
+              <label className="text-gray-500 mb-1 block">End Date</label>
               <DatePicker
                 className="w-full h-[52px]"
                 style={{ borderRadius: 8 }}
@@ -194,7 +194,7 @@ const AddCourseModal = ({
 
           {/* Description */}
           <div className="mb-4">
-            <label className="text-white mb-1 block">Description</label>
+            <label className="text-gray-500 mb-1 block">Description</label>
             <textarea
               name="description"
               value={form.description}
@@ -208,9 +208,9 @@ const AddCourseModal = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[#13333A] text-white rounded-lg py-2 h-[44px] mt-2"
+            className="w-full bg-[#2E7A8A] text-white rounded-lg py-2 h-[44px] mt-2"
           >
-            {isLoading ? "Submitting..." : "Submit"}
+            {isLoading || updating ? "Submitting..." : "Submit"}
           </button>
         </form>
       </div>

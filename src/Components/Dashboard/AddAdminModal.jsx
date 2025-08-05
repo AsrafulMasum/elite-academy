@@ -33,7 +33,7 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       width={500}
       footer={false}
     >
-      <div className="p-6 ">
+      <div className="p-6">
         <h1
           className="font-semibold text-black text-xl"
           style={{ marginBottom: "12px" }}
