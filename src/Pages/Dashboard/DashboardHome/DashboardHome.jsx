@@ -21,12 +21,12 @@ function DashboardHome() {
     },
     {
       title: "Total Sold",
-      amount: overView?.totalSold,
+      amount: `$${overView?.totalSold}`,
       icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
     },
     {
       title: "Total Earnings",
-      amount: overView?.totalEarning,
+      amount: `$${overView?.totalEarning}`,
       icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
     },
     {
@@ -53,12 +53,21 @@ function DashboardHome() {
       </div>
 
       <div className="bg-[#13333A] rounded-lg p-4">
-        <UsersAreaChart setUserYear={setUserYear} userStats={data?.data?.userListByMonthsData} />
+        <UsersAreaChart
+          setUserYear={setUserYear}
+          userStats={data?.data?.userListByMonthsData}
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-x-2 mt-2">
-        <SellingLineChart setSellerYear={setSellerYear} sellingStats={data?.data?.orderListByMonthsData} />
-        <StudentsBarChart setStudentYear={setStudentYear} studentStats={data?.data?.studentListByMonthsData} />
+        <SellingLineChart
+          setSellerYear={setSellerYear}
+          sellingStats={data?.data?.orderListByMonthsData}
+        />
+        <StudentsBarChart
+          setStudentYear={setStudentYear}
+          studentStats={data?.data?.studentListByMonthsData}
+        />
       </div>
     </div>
   );
