@@ -6,6 +6,7 @@ import { useGetSubCategoriesQuery } from "../../redux/features/categoriesApi";
 import ChipsInput from "./ChipsInput";
 import { useUpdateProductMutation } from "../../redux/features/productApi";
 import toast from "react-hot-toast";
+import { ImSpinner9 } from "react-icons/im";
 
 const EditProductsModal = ({
   openEditModel,
@@ -173,7 +174,7 @@ const EditProductsModal = ({
                 style={{
                   display: "block",
                   marginBottom: "5px",
-                  color: "gray"
+                  color: "gray",
                 }}
               >
                 {input.label}
@@ -253,22 +254,13 @@ const EditProductsModal = ({
             />
           </div>
 
-          <input
-            className="cursor-pointer"
-            style={{
-              border: "none",
-              width: "100%",
-              height: "44px",
-              marginTop: "10px",
-              background: "#2E7A8A",
-              color: "white",
-              borderRadius: "8px",
-              outline: "none",
-              padding: "10px 20px",
-            }}
-            value={isLoading ? "Uploading" : "Upload"}
+          <button
             type="submit"
-          />
+            className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
+          >
+            {isLoading && <ImSpinner9 size={20} className="animate-spin" />}
+            {isLoading ? "Uploading" : "Upload"}
+          </button>
         </form>
       </div>
     </Modal>

@@ -138,17 +138,17 @@ const Courses = () => {
         <span style={{ color: "#FDFDFD" }}>{moment(text).format("L")}</span>
       ),
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      align: "left",
-      render: (text) => (
-        <span style={{ color: "#FDFDFD" }}>
-          {text?.length > 60 ? `${text?.slice(0, 30)}...` : text}
-        </span>
-      ),
-    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   align: "left",
+    //   render: (text) => (
+    //     <span style={{ color: "#FDFDFD" }}>
+    //       {text?.length > 60 ? `${text?.slice(0, 30)}...` : text}
+    //     </span>
+    //   ),
+    // },
     {
       title: "Action",
       dataIndex: "action",

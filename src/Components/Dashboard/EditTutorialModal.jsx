@@ -155,7 +155,7 @@ const EditTutorialModal = ({
       if (videoFile) {
         const chunkSize = 5 * 1024 * 1024; // 5MB
         const totalChunks = Math.ceil(videoFile.size / chunkSize);
-
+        const fileId = Date.now();
         for (let i = 0; i < totalChunks; i++) {
           const start = i * chunkSize;
           const end = Math.min(videoFile.size, start + chunkSize);
@@ -166,6 +166,7 @@ const EditTutorialModal = ({
           formData.append("chunkIndex", i);
           formData.append("totalChunks", totalChunks);
           formData.append("fileName", videoFile.name);
+          formData.append("fileId", fileId);
 
           const chunkRes = await fetch(
             `http://31.97.114.108:5000/api/v1/tutorial/${tutorialData?._id}`,

@@ -19,6 +19,7 @@ import {
   useGetCouponsQuery,
   useUpdateCouponMutation,
 } from "../../redux/features/couponsApi";
+import { ImSpinner9 } from "react-icons/im";
 
 const Coupon = () => {
   const [openAddModal, setOpenAddModel] = useState(false);
@@ -302,22 +303,15 @@ const Coupon = () => {
               >
                 <DatePicker style={{ width: "100%" }} className="h-[52px]" />
               </Form.Item>
-              <input
-                className="cursor-pointer"
-                style={{
-                  border: "none",
-                  width: "100%",
-                  height: "44px",
-                  marginTop: "10px",
-                  background: "#2E7A8A",
-                  color: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                  padding: "10px 20px",
-                }}
-                value={isAddLoading ? "Submitting" : "Submit"}
+              <button
                 type="submit"
-              />
+                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
+              >
+                {isAddLoading && (
+                  <ImSpinner9 size={20} className="animate-spin" />
+                )}
+                {isAddLoading ? "Uploading" : "Upload"}
+              </button>
             </Form>
           </div>
         </Modal>
@@ -367,22 +361,15 @@ const Coupon = () => {
               >
                 <DatePicker style={{ width: "100%" }} className="h-[52px]" />
               </Form.Item>
-              <input
-                className="cursor-pointer"
-                style={{
-                  border: "none",
-                  width: "100%",
-                  height: "44px",
-                  marginTop: "10px",
-                  background: "#2E7A8A",
-                  color: "white",
-                  borderRadius: "8px",
-                  outline: "none",
-                  padding: "10px 20px",
-                }}
-                value={isEditLoading ? "Uploading" : "Upload"}
+              <button
                 type="submit"
-              />
+                className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
+              >
+                {isEditLoading && (
+                  <ImSpinner9 size={20} className="animate-spin" />
+                )}
+                {isEditLoading ? "Uploading" : "Upload"}
+              </button>
             </Form>
           </div>
         </Modal>

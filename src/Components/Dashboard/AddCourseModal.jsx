@@ -9,6 +9,7 @@ import {
 import { useGetCoachQuery } from "../../redux/features/usersApi";
 
 import dayjs from "dayjs";
+import { ImSpinner9 } from "react-icons/im";
 
 const AddCourseModal = ({
   open,
@@ -207,10 +208,11 @@ const AddCourseModal = ({
           {/* Submit */}
           <button
             type="submit"
-            disabled={isLoading}
-            className="w-full bg-[#2E7A8A] text-white rounded-lg py-2 h-[44px] mt-2"
+            className="bg-[#2E7A8A] px-6 py-3 w-full text-[#FEFEFE] rounded-lg flex items-center justify-center gap-2"
           >
-            {isLoading || updating ? "Submitting..." : "Submit"}
+            {isLoading ||
+              (updating && <ImSpinner9 size={20} className="animate-spin" />)}
+            {isLoading || updating ? "Uploading" : "Upload"}
           </button>
         </form>
       </div>

@@ -19,6 +19,7 @@ const AddAdminModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       }
     } catch (error) {
       console.log("Validation Failed:", error);
+      toast.error(error?.data?.message);
     }
   };
 

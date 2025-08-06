@@ -141,8 +141,8 @@ const EditSessionModal = ({
               >
                 <option value="">Select Course</option>
                 {courseOptions?.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
+                  <option key={option?.id} value={option?.id}>
+                    {option?.name}
                   </option>
                 ))}
               </select>

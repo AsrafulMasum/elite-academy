@@ -22,19 +22,23 @@ const AddCoachModal = ({ openAddModel, setOpenAddModel, refetch }) => {
       formData.append("password", values?.password);
       formData.append("role", "COUCH");
 
-      if(imageFile) {
+      if (imageFile) {
         formData.append("image", imageFile);
       }
 
       const res = await addCoach(formData);
 
-      if(res?.data) {
+      if (res?.data) {
         refetch();
         form.resetFields();
         setImgURL(null);
         setImageFile(null);
         toast.success(res?.data?.message || "Coach added successfully");
         setOpenAddModel(false);
+      }
+
+      if (res?.error) {
+        toast.error(res?.error?.data?.message);
       }
     } catch (error) {
       console.error("Error adding coach:", error);
@@ -81,7 +85,7 @@ const AddCoachModal = ({ openAddModel, setOpenAddModel, refetch }) => {
                     className="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0 z-50"
                     onChange={(e) => {
                       const file = e.target.files[0];
-                      if(file) {
+                      if (file) {
                         setImgURL(URL.createObjectURL(file));
                         setImageFile(file);
                       }
