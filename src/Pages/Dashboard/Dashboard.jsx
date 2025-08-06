@@ -9,6 +9,7 @@ import {
   TbUsers,
   TbUsersGroup,
 } from "react-icons/tb";
+import { BiSupport } from "react-icons/bi";
 import { LiaHandHoldingUsdSolid } from "react-icons/lia";
 import { CiLogout, CiSettings } from "react-icons/ci";
 import { IoDocumentLockOutline, IoFootballOutline } from "react-icons/io5";
@@ -317,6 +318,19 @@ const Dashboard = () => {
             <IoMdPaper
               className={`text-xl ${
                 pathname === "/settings/terms-conditions"
+                  ? "text-[#EEEEEE]"
+                  : "text-[#A3A3A3]"
+              }`}
+            />
+          ),
+        },
+        {
+          title: "Support",
+          path: "/settings/support",
+          icon: (pathname) => (
+            <BiSupport
+              className={`text-xl ${
+                pathname === "/settings/support"
                   ? "text-[#EEEEEE]"
                   : "text-[#A3A3A3]"
               }`}

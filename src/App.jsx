@@ -33,6 +33,7 @@ import Tutorials from "./Pages/Dashboard/Tutorials";
 import ClassSchedule from "./Pages/Dashboard/ClassSchedule";
 import Coupon from "./Pages/Dashboard/Coupon";
 import Topics from "./Pages/Dashboard/Topics";
+import Support from "./Pages/Dashboard/Support";
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
               element={<PrivacyPolicy />}
             />
             <Route path="/settings/terms-conditions" element={<Terms />} />
+            <Route path="/settings/support" element={<Support />} />
           </Route>
 
           <Route path="/login" element={<Login />} />

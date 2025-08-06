@@ -21,12 +21,12 @@ function DashboardHome() {
     },
     {
       title: "Total Sold",
-      amount: `$${overView?.totalSold}`,
+      amount: `$${overView?.totalSold?.toLocaleString()}`,
       icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
     },
     {
       title: "Total Earnings",
-      amount: `$${overView?.totalEarning}`,
+      amount: `$${overView?.totalEarning?.toLocaleString()}`,
       icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
     },
     {
