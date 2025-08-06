@@ -76,8 +76,10 @@ const Notifications = () => {
           theme={{
             components: {
               Pagination: {
-                itemActiveBg: "#0F665A",
+                itemActiveBg: "#FFC107",
                 borderRadius: "100%",
+                colorText: "white",
+                colorTextDisabled: "#6C6C6C",
               },
             },
             token: {
@@ -87,7 +89,8 @@ const Notifications = () => {
         >
           <Pagination
             current={page}
-            total={notificationData?.data?.pagination?.total}
+            total={notificationData?.pagination?.total}
+            pageSize={7}
             showQuickJumper={false}
             showSizeChanger={false}
             onChange={(page) => setPage(page)}
