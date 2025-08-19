@@ -4,6 +4,9 @@ import SellingLineChart from "./SellingLineChart";
 import StudentsBarChart from "./StudentsBarChart";
 import { useStatisticsQuery } from "../../../redux/features/statisticsApi";
 import { useState } from "react";
+import { GrMoney } from "react-icons/gr";
+import { BsGraphUpArrow } from "react-icons/bs";
+import { LuBox } from "react-icons/lu";
 
 function DashboardHome() {
   const [userYear, setUserYear] = useState("");
@@ -22,17 +25,17 @@ function DashboardHome() {
     {
       title: "Total Sold",
       amount: `$${overView?.totalSold?.toLocaleString()}`,
-      icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
+      icon: <BsGraphUpArrow className="text-2xl text-[#EEEEEE]" />,
     },
     {
       title: "Total Earnings",
       amount: `$${overView?.totalEarning?.toLocaleString()}`,
-      icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
+      icon: <GrMoney className="text-2xl text-[#EEEEEE]" />,
     },
     {
       title: "Total Orders",
       amount: overView?.totalOrder,
-      icon: <FiUsers className="text-2xl text-[#EEEEEE]" />,
+      icon: <LuBox className="text-2xl text-[#EEEEEE]" />,
     },
   ];
 
